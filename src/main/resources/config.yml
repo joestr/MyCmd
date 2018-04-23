@@ -1,0 +1,21 @@
+config:
+  join: "%player_displayname% &eist dem Spiel beigetreten."
+  quit: "%player_displayname% &ehat das Spiel verlassen."
+  kick: "%player_displayname% &r&ewurde gekickt. (&7%reason%&e)"
+  ban-name: 
+  whisper_sender: "&3Du an %target_player_displayname%&3: &r&f%message%"
+  whisper_target: "&3%sender_player_displayname% &3an dich: &r&f%message%"
+  chat: "%player_displayname%&r&f: "
+  wiki: http://minecraft-de.gamepedia.com/
+  map: http://zeus.gstd.eu/
+  map-worlds:
+    - world
+  map-name: flat
+  map-zoom: 6
+  map-y: 64
+  navi-worlds:
+    - world
+  spawn: null
+  motd1: "&aServer"
+  motd2: "&7Server"
+  whitelist-message: "&cNicht auf der Whitelist."

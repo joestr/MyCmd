@@ -1,0 +1,293 @@
+name: MyCmd
+version: Build_1
+description: MyCmd
+author: joestr
+authors: [joestr_, _joestr, _joestr_]
+website: https://repo.joestr.xyz/MyCmd
+
+main: xyz.joestr.mycmd.MyCmd
+database: false
+#depend: [WorldEdit, WorldGuard]
+
+commands:
+  warps:
+    description: Listet alle Warp-Punkte auf.
+    #permission: mycmd.command.warps
+    #permission-message: Berechtigung mycmd.command.warps fehlt.
+    usage: /warps
+  warp:
+    description: Teleportiert dich zu einem angegebenen Warp-Punkt.
+    #permission: mycmd.command.warp
+    #permission-message: Berechtigung mycmd.command.warp fehlt.
+    usage: /warps <Warp-Punkt>
+  setwarp:
+    description: Setzt einen angegebenen Warp-Punkt.
+    #permission: mycmd.command.setwarp
+    #permission-message: Berechtigung mycmd.command.setwarp fehlt.
+    usage: /setwarp <Warp-Punkt>
+  delwarp:
+    description: Loescht einen angegebenen Warp-Punkt.
+    #permission: mycmd.command.delwarp
+    #permission-message: Berechtigung mycmd.command.delwarp fehlt.
+    usage: /delwarp <Warp-Punkt>
+  home:
+    description: Teleportiert dich zu deinem Home-Punkt.
+    #permission: mycmd.command.home
+    #permission-message: Berechtigung mycmd.command.home fehlt.
+    usage: /home
+  sethome:
+    description: Setzt deinen Home-Punkt.
+    #permission: mycmd.command.sethome
+    #permission-message: Berechtigung mycmd.command.sethome fehlt.
+    usage: /sethome
+  delhome:
+    description: Loescht deinen Home-Punkt.
+    #permission: mycmd.command.delhome
+    #permission-message: Berechtigung mycmd.command.delhome fehlt.
+    usage: /delhome
+  home2:
+    description: Teleportiert dich zu deinem zweiten Home-Punkt.
+    #permission: mycmd.command.home2
+    #permission-message: Berechtigung mycmd.command.home2 fehlt.
+    usage: /home2
+  sethome2:
+    description: Setzt deinen zweiten Home-Punkt.
+    #permission: mycmd.command.sethome2
+    #permission-message:Berechtigung mycmd.command.sethome2 fehlt.
+    usage: /sethome2
+  delhome2:
+    description: Loescht deinen zweiten Home-Punkt.
+    #permission: mycmd.command.delhome2
+    #permission-message: Berechtigung mycmd.command.delhome2 fehlt.
+    usage: /delhome2
+  tpa:
+    description: Stellt eine TP-Anfrage an einen Spieler.
+    #permission: mycmd.command.tpa
+    #permission-message: Berechtigung mycmd.command.tpa fehlt.
+    usage: /tpa <Spieler>
+  tpahere:
+    description: Stellt eine TP-Anfrage an einen Spieler.
+    #permission: mycmd.command.tpahere
+    #permission-message: Berechtigung mycmd.command.tpahere fehlt.
+    usage: /tpahere <Spieler>
+  tpaccept:
+    description: Akzeptiert eine TP-Anfrage von einem Spieler.
+    #permission: mycmd.command.tpaccept
+    #permission-message:Berechtigung mycmd.command.tpaccept fehlt.
+    usage: /tpaccept
+  tpdeny:
+    description: Lehnt eine TP-Anfrage von einem Spieler ab.
+    #permission: mycmd.command.tpdeny
+    #permission-message: Berechtigung mycmd.command.tpdeny fehlt.
+    usage: /tpdeny
+  spawn:
+    description: Teleportiert dich zum Spawn-Punkt.
+    #permission: mycmd.command.spawn
+    #permission-message: Berechtigung mycmd.command.spawn fehlt.
+    usage: /spawn
+  setspawn:
+    description: Setzt den Spawn-Punkt.
+    #permission: mycmd.command.setspawn
+    #permission-message: Berechtigung mycmd.command.setspawn fehlt.
+    usage: /setspawn
+  delspawn:
+    description: Loescht den Spawn-Punkt.
+    #permission: mycmd.command.delspawn
+    #permission-message: Berechtigung mycmd.command.delspawn fehlt.
+    usage: /delspawn
+  ping:
+    description: Zeigt deine Ping-Zeit zum Server.
+    #permission: mycmd.command.ping
+    #permission-message: Berechtigung mycmd.command.ping fehlt.
+    usage: /ping
+  ram:
+    description: Zeigt Werte zum RAM.
+    #permission: mycmd.command.mem
+    #permission-message: Berechtigung mycmd.command.ram fehlt.
+    usage: /ram
+  seen:
+    description: Zeigt, wie lange der letzte Spiel-Beitritt eines Spielers zurueckliegt.
+    #permission: mycmd.command.seen
+    #permission-message: Berechtigung mycmd.command.seen fehlt.
+    usage: /seen <Spieler>
+  rank:
+    description: Setzt die Raenge neu.
+    #permission: mycmd.command.rank
+    #permission-message: Berechtigung mycmd.command.rank fehlt.
+    usage: /rank
+  tell:
+    description: Schreibe eine Whisper-Nachricht an einen Spieler.
+    #permission: mycmd.command.tell
+    #permission-message: Berechtigung mycmd.command.tell fehlt.
+    usage: /tell <Spieler> <Nachricht>
+    aliases: [t, whisper, w, msg]
+  reply:
+    description: Antworte schnell auf eine gesendete oder empfangene Whsiper-Nachricht.
+    #permission: mycmd.command.reply
+    #permission-message: Berechtigung mycmd.command.reply fehlt.
+    usage: /reply <Nachricht>
+    aliases: [r, ans]
+  mycmd:
+    description: Laedt die MyCmd-Dateien neu.
+    #permission: mycmd.command.mycmd
+    #permission-message: Berechtigung mycmd.command.mycmd fehlt.
+    usage: /mycmd
+  wiki:
+    description: Gibt einen Link zum gesuchten Stichwort zum Minecraft-Wiki aus.
+    #permission: mycmd.command.wiki
+    #permission-message: Berechtigung mycmd.command.wiki fehlt.
+    usage: /wiki <Stichwort>
+  navi:
+    description: Setzte die Richtung deines Kompasses.
+    #permission: mycmd.command.navi
+    #permission-message: Berechtigung mycmd.command.navi fehlt.
+    usage: /navi <r|Spieler|X> [<Z>]
+  list:
+    description: Listet alle Spieler auf die online sind.
+    #permission: mycmd.command.list
+    #permission-message: Berechtigung mycmd.command.list fehlt.
+    usage: /list
+  map:
+    description: Link zur Map.
+    #permission: mycmd.command.map
+    #permission-message: Berechtigung mycmd.command.map fehlt.
+    usage: /map
+  setworldspawn:
+    description: Setzt den Spawn deiner Welt.
+    #permission: mycmd.command.setworldspawn
+    #permission-message: Berechtigung mycmd.command.setworldspawn fehlt.
+    usage: /setworldspawn
+  worldspawn:
+    description: Teleportiert dich zum Spawn deiner Welt.
+    #permission: mycmd.command.worldspawn
+    #permission-message: Berechtigung mycmd.command.worldspawn fehlt.
+    usage: /worldspawn
+  kick:
+    description: Kickt einen Spieler.
+    #permission: mycmd.command.kick
+    #permission-message: Berechtigung mycmd.command.kick fehlt.
+    usage: /kick <Spieler> <Grund ...>
+  ban:
+    description: Bannt einen Spieler.
+    #permission: mycmd.command.ban
+    #permission-message: Berechtigung mycmd.command.ban fehlt.
+    usage: /ban <Spieler> <Grund ...>
+  ban-ip:
+    description: Bannt eine IP.
+    #permission: mycmd.command.ban-ip
+    #permission-message: Berechtigung mycmd.command.ban-ip fehlt.
+    usage: /ban-ip <Spieler> <Grund ...>
+  banlist:
+    description: Zeigt die Bannliste an.
+    #permission: mycmd.command.banlist
+    #permission-message: Berechtigung mycmd.command.banlist fehlt.
+    usage: /banlist <ip|player>
+  pardon:
+    description: Entbannt einen Spieler.
+    #permission: mycmd.command.pardon
+    #permission-message: Berechtigung mycmd.command.pardon fehlt.
+    usage: /pardon <Spieler> <Grund ...>
+  pardon-ip:
+    description: Entbannt eine IP.
+    #permission: mycmd.command.pardon-ip
+    #permission-message: Berechtigung mycmd.command.pardon-ip fehlt.
+    usage: /pardon-ip <Spieler> <Grund ...>
+  whitelist:
+    description: Die Whitelist verwalten.
+    #permission: mycmd.command.whitelist
+    #permission-message: Berechtigung mycmd.command.whitelist fehlt.
+    usage: /whitelist <on|off|list|reload|add|remove> [<Spieler>]
+  motd:
+    description: Die Zeilen der MOTD anzeigen.
+    #permission: mycmd.command.motd
+    #permission-message: Berechtigung mycmd.command.motd fehlt.
+    usage: /motd <1|2>
+  pvp:
+    description: Verwalte deine PvP-Einstellungen.
+    #permission: mycmd.command.pvp
+    #permission-message: Berechtigung mycmd.command.pvp fehlt.
+    usage: /pvp <list|status|on|off>
+  #help:
+  #  description: Hilfe.
+  #  #permission: mycmd.command.help
+  #  #permission-messsage: Berechtigung mycmd.command.help fehlt.
+  #  usage: /help [<Seite>]
+    
+permissions:
+  mycmd.preset.admin:
+    description: Berechtigung fuer die Admin- und Spieler-Befehle von MyCmd.
+    default: op
+    children:
+      mycmd.chatcolor: true
+      mycmd.command.warps: true
+      mycmd.command.warp: true
+      mycmd.command.setwarp: true
+      mycmd.command.delwarp: true
+      mycmd.command.home: true
+      mycmd.command.sethome: true
+      mycmd.command.delhome: true
+      mycmd.command.home.other: true
+      mycmd.command.sethome.other: true
+      mycmd.command.delhome.other: true
+      mycmd.command.home2: true
+      mycmd.command.sethome2: true
+      mycmd.command.delhome2: true
+      mycmd.command.home2.other: true
+      mycmd.command.sethome2.other: true
+      mycmd.command.delhome2.other: true
+      mycmd.command.tpa: true
+      mycmd.command.tpahere: true
+      mycmd.command.tpaccept: true
+      mycmd.command.tpdeny: true
+      mycmd.command.spawn: true
+      mycmd.command.setspawn: true
+      mycmd.command.delspawn: true
+      mycmd.command.ping: true
+      mycmd.command.ping.other: true
+      mycmd.command.ram: true
+      mycmd.command.seen: true
+      mycmd.command.rank: true
+      mycmd.command.tell: true
+      mycmd.command.reply: true
+      mycmd.command.mycmd: true
+      mycmd.command.wiki: true
+      mycmd.command.navi: true
+      mycmd.command.list: true
+      mycmd.command.map: true
+      mycmd.command.worldspawn: true
+      mycmd.command.worldspawn.other: true
+      mycmd.command.kick: true
+      mycmd.command.ban: true
+      mycmd.command.ban-ip: true
+      mycmd.command.banlist: true
+      mycmd.command.pardon: true
+      mycmd.command.pardon-ip: true
+      mycmd.command.whitelist: true
+      mycmd.command.motd: true
+      mycmd.command.motd.edit: true
+      mycmd.command.pvp: true
+      mycmd.command.pvp.other: true
+      #mycmd.command.help: true
+  mycmd.preset.spieler:
+    description: Berechtigung fuer die Spieler-Befehle von MyCmd.
+    default: true
+    children:
+      mycmd.command.warps: true
+      mycmd.command.warp: true
+      mycmd.command.home: true
+      mycmd.command.sethome: true
+      mycmd.command.delhome: true
+      mycmd.command.home2: true
+      mycmd.command.sethome2: true
+      mycmd.command.delhome2: true
+      mycmd.command.spawn: true
+      mycmd.command.ping: true
+      mycmd.command.tell: true
+      mycmd.command.reply: true
+      mycmd.command.wiki: true
+      mycmd.command.navi: true
+      mycmd.command.list: true
+      mycmd.command.map: true
+      mycmd.command.worldspawn: true
+      mycmd.command.pvp: true
+      #mycmd.command.help: true
