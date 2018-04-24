@@ -51,29 +51,27 @@ public class CommandPvp implements CommandExecutor {
 				
 				if(player.hasPermission("mycmd.command.pvp") && player.hasPermission("mycmd.command.pvp.other")) {
 					
-					/*
 					// Instantiate the GUI
-					PaginatedGUI menu = new PaginatedGUI("PvP-Menü");
-					
+					//PaginatedGUI menu = new PaginatedGUI("PvP-Menü");
+					//
 					// Instantiate the GUIButton
 					// This takes an ItemStack as an argument, however I have created an
 					// ItemBuilder class to create custom ItemStacks very easily.
-					GUIButton button = new GUIButton(
-					    ItemBuilder.start(Material.BOOK).name("&eView the rules")
-					        .lore(Arrays.asList("&eMy first button!")).build()
-					);
-					
+					//GUIButton button = new GUIButton(
+					//    ItemBuilder.start(Material.BOOK).name("&eView the rules")
+					//        .lore(Arrays.asList("&eMy first button!")).build()
+					//);
+					//
 					// Yep - that's right. Lambda support!
-					button.setListener(event -> {
-					    event.setCancelled(true);
-					    event.getWhoClicked().sendMessage("1. Don't cheat!");
-					});
-					
-					menu.addButton(button);
-					
+					//button.setListener(event -> {
+					//    event.setCancelled(true);
+					//    event.getWhoClicked().sendMessage("1. Don't cheat!");
+					//});
+					//
+					//menu.addButton(button);
+					//
 					// Open the inventory on the player's screen
-					player.openInventory(menu.getInventory());
-					*/
+					//player.openInventory(menu.getInventory());
 					
 					PaginatedGUI menu = new PaginatedGUI("PvP-Menü");
 					

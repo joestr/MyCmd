@@ -280,16 +280,25 @@ public class MyCmd extends JavaPlugin {
 		
 		for(String string : this.ranks.getMap().keySet()) {
 			
+			String tString = (String)this.ranks.getMap().get(string);
+			String[] tStrings = null;
+			
+			if(tString.contains(";")) {
+				tStrings = tString.split(";");
+			}
+			
+			if(tStrings.length < 3 || tStrings.length > 4) {
+				continue;
+			}
+			
 			if(this.scoreboard.getTeam(string) == null) {
 				
 				this.scoreboard.registerNewTeam(string);
-				this.scoreboard.getTeam(string).setPrefix(this.toColorcode("&", (String)this.ranks.getMap().get(string)));
-				this.scoreboard.getTeam(string).setSuffix(this.toColorcode("&", "&r"));
-			} else {
-				
-				this.scoreboard.getTeam(string).setPrefix(this.toColorcode("&", (String)this.ranks.getMap().get(string)));
-				this.scoreboard.getTeam(string).setSuffix(this.toColorcode("&", "&r"));
 			}
+				
+			this.scoreboard.getTeam(string).setPrefix(this.toColorcode("&", tStrings[0]));
+			this.scoreboard.getTeam(string).setSuffix(this.toColorcode("&", tStrings[1]));
+			this.scoreboard.getTeam(string).setColor(ChatColor.getByChar(this.toColorcode("&", tStrings[0])));
 		}
 	}
 	
