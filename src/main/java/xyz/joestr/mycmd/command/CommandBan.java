@@ -117,7 +117,13 @@ public class CommandBan implements CommandExecutor {
 		Date date = new Date();
 		date.setTime(date.getTime() + tdiff);
 		
+		Bukkit.getServer().broadcastMessage(
+				this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("ban-temp")))
+				.replace("%player_displayname%", Bukkit.getServer().getPlayer(arg[0]).getDisplayName())
+				.replace("%player%", Bukkit.getServer().getPlayer(arg[0]).getName())
+				.replace("%reason%", message)
+		);
+		
 		Bukkit.getServer().getBanList(Type.NAME).addBan(arg[0], message, date, "MyCmd");
-		Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + arg[0] + " wurde temporär vom Server gebannt. (" + message + ")");
 	}
 }

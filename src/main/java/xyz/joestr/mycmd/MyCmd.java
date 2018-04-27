@@ -133,7 +133,7 @@ public class MyCmd extends JavaPlugin {
 	 *  /pardon-ip <Adresse> <Grund ...> -done.
 	 *  /pardon-chat <Spieler> <Grund ...> 
 	 *  /banlist <ip|player|name|chat> -half done.
-	 *  /rank [<on|off|reload|add|remove>] [Rang] [Prefix] implementieren
+	 *  /rank [<on|off|reload|list|add|remove>] [Rang] [Prefix] [Suffix] [Farbe] implementieren - done
 	 */
 	
 	public YMLDelegate config = new YMLDelegate(this, "config", "config.yml");

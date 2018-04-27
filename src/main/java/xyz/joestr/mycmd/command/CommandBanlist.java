@@ -98,18 +98,18 @@ public class CommandBanlist implements CommandExecutor {
 		
 		if(a.toArray().length == 0) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es sind " + ChatColor.GRAY + "keine" + ChatColor.GREEN + " IPs gebannt.");
+			sender.sendMessage(ChatColor.GREEN + "Es sind " + ChatColor.GRAY + "keine" + ChatColor.GREEN + " IP-Adressen gebannt.");
 		}
 		
 		if(a.toArray().length == 1) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es ist " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " IP gebannt:");
+			sender.sendMessage(ChatColor.GREEN + "Es ist " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " IP-Adresse gebannt:");
 			sender.sendMessage(str);
 		}
 		
 		if(a.toArray().length >= 2) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es sind " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " IPs gebannt:");
+			sender.sendMessage(ChatColor.GREEN + "Es sind " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " IP-Adressen gebannt:");
 			sender.sendMessage(str);
 		}
 	}

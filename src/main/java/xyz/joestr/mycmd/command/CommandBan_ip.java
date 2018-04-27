@@ -57,9 +57,15 @@ public class CommandBan_ip implements CommandExecutor {
 					message += arg[i] + " ";
 				}
 				
+				Bukkit.getServer().broadcastMessage(
+						this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("ban-ip")))
+						.replace("%ip%", arg[0])
+						.replace("%reason%", message)
+				);
+				
 				Bukkit.getServer().getBanList(Type.IP).addBan(arg[0], message, null, player.getName());
 				for(Player pl : Bukkit.getOnlinePlayers()) { if(pl.getAddress().toString().contains(arg[0])) { pl.kickPlayer(message); } }
-				Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "IP " + ChatColor.GRAY + arg[0] + ChatColor.YELLOW +" wurde gebannt. (" + ChatColor.GRAY + message + ChatColor.YELLOW + ")");
+				
 				return true;
 			}
 			
@@ -84,9 +90,15 @@ public class CommandBan_ip implements CommandExecutor {
 				message += arg[i] + " ";
 			}
 			
+			Bukkit.getServer().broadcastMessage(
+					this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("ban-ip")))
+					.replace("%ip%", arg[0])
+					.replace("%reason%", message)
+			);
+			
 			Bukkit.getServer().getBanList(Type.IP).addBan(arg[0], message, null, "KONSOLE");
 			for(Player pl : Bukkit.getOnlinePlayers()) { if(pl.getAddress().toString().contains(arg[0])) { pl.kickPlayer(message); } }
-			Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "IP " + ChatColor.GRAY + arg[0] + ChatColor.YELLOW +" wurde gebannt. (" + ChatColor.GRAY + message + ChatColor.YELLOW + ")");
+			
 			return true;
 		}
 		
@@ -125,7 +137,12 @@ public class CommandBan_ip implements CommandExecutor {
 		Date date = new Date();
 		date.setTime(date.getTime() + tdiff);
 		
-		Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + arg[0] + " wurde temporär vom Server gebannt. (" + message + ")");
+		Bukkit.getServer().broadcastMessage(
+				this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("ban-ip-temp")))
+				.replace("%ip%", arg[0])
+				.replace("%reason%", message)
+		);
+		
 		Bukkit.getServer().getBanList(Type.IP).addBan(arg[0], message, date, "MyCmd");
 	}
 }

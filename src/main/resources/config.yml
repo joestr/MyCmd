@@ -2,7 +2,10 @@ config:
   join: "%player_displayname% &eist dem Spiel beigetreten."
   quit: "%player_displayname% &ehat das Spiel verlassen."
   kick: "%player_displayname% &r&ewurde gekickt. (&7%reason%&e)"
-  ban-name: 
+  ban: "%player_displayname% &r&ewurde gebannt. (&7%reason%&e)"
+  ban-temp: "%player_displayname% &r&ewurde temporär gebannt. (&7%reason%&e)"
+  ban-ip: "&eIP-Adresse &7%ip% &r&ewurde gebannt. (&7%reason%&e)"
+  ban-ip-temp: "&eIP-Adresse &7%ip% &r&ewurde temporär gebannt. (&7%reason%&e)"
   whisper_sender: "&3Du an %target_player_displayname%&3: &r&f%message%"
   whisper_target: "&3%sender_player_displayname% &3an dich: &r&f%message%"
   chat: "%player_displayname%&r&f: "

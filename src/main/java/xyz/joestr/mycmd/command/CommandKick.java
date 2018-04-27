@@ -118,6 +118,6 @@ public class CommandKick implements CommandExecutor {
 		}
 		*/
 		
-		sender.sendMessage(ChatColor.GREEN + "Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " ist offline.");
+		sender.sendMessage(ChatColor.GRAY + string + ChatColor.RED + " ist offline.");
 	}
 }
