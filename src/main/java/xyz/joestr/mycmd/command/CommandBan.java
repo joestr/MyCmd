@@ -57,7 +57,11 @@ public class CommandBan implements CommandExecutor {
 				
 				Bukkit.getServer().getBanList(Type.NAME).addBan(arg[0], message, null, player.getName());
 				if(Bukkit.getServer().getOfflinePlayer(arg[0]).isOnline()) { Bukkit.getServer().getPlayer(arg[0]).kickPlayer(message); }
-				Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "Spieler " + ChatColor.GRAY + arg[0] + ChatColor.YELLOW +" wurde gebannt. (" + ChatColor.GRAY + message + ChatColor.YELLOW + ")");
+				Bukkit.getServer().broadcastMessage(
+						this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("ban")))
+						.replace("%player%", arg[0])
+						.replace("%reason%", message)
+				);
 				return true;
 			}
 			
@@ -81,7 +85,11 @@ public class CommandBan implements CommandExecutor {
 			
 			Bukkit.getServer().getBanList(Type.NAME).addBan(arg[0], message, null, "KONSOLE");
 			if(Bukkit.getServer().getOfflinePlayer(arg[0]).isOnline()) { Bukkit.getServer().getPlayer(arg[0]).kickPlayer(message); }
-			Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "Spieler " + ChatColor.GRAY + arg[0] + ChatColor.YELLOW +" wurde gebannt. (" + ChatColor.GRAY + message + ChatColor.YELLOW + ")");
+			Bukkit.getServer().broadcastMessage(
+					this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("ban")))
+					.replace("%player%", arg[0])
+					.replace("%reason%", message)
+			);
 			return true;
 		}
 		

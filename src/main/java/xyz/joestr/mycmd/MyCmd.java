@@ -133,7 +133,7 @@ public class MyCmd extends JavaPlugin {
 	 *  /pardon-ip <Adresse> <Grund ...> -done.
 	 *  /pardon-chat <Spieler> <Grund ...> 
 	 *  /banlist <ip|player|name|chat> -half done.
-	 *  /rank [<on|off|reload|list|add|remove>] [Rang] [Prefix] [Suffix] [Farbe] implementieren - done
+	 *  /rank [<on|off|reload|list|add|remove>] [Rang] [Prefix] [Suffix] [Displaynameprefix] implementieren - done
 	 */
 	
 	public YMLDelegate config = new YMLDelegate(this, "config", "config.yml");
@@ -298,7 +298,7 @@ public class MyCmd extends JavaPlugin {
 				
 			this.scoreboard.getTeam(string).setPrefix(this.toColorcode("&", tStrings[0]));
 			this.scoreboard.getTeam(string).setSuffix(this.toColorcode("&", tStrings[1]));
-			this.scoreboard.getTeam(string).setColor(ChatColor.getByChar(this.toColorcode("&", tStrings[0])));
+			this.scoreboard.getTeam(string).setDisplayName(this.toColorcode("&", tStrings[2]));
 		}
 	}
 	
@@ -310,7 +310,13 @@ public class MyCmd extends JavaPlugin {
 	 */
 	public void onDisable() {
 		
-		
+		for(String string : this.ranks.getMap().keySet()) {
+			
+			if(this.scoreboard.getTeam(string) != null) {
+				
+				this.scoreboard.getTeam(string).unregister();
+			}
+		}
 	}
 	
 	public void sendActionBarToPlayer(Player player, String message) {
@@ -408,7 +414,8 @@ public class MyCmd extends JavaPlugin {
 	 */
 	public void usageMessage(Player player, String command, String action, String actionValue, String show_textValue) {
 		
-		player.spigot().sendMessage(TextComponent.fromLegacyText(
+		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), 
+		"tellraw " + player.getName() + " " +
 		"[\"\"," + 
 			"{" + 
 			"\"text\":\"Benutze: \",\"color\":\"red\"" + 
@@ -432,7 +439,7 @@ public class MyCmd extends JavaPlugin {
 			"}" + 
 			"}" + 
 			"}" + 
-		"]"));
+		"]");
 	}
 	
 	/**
@@ -557,7 +564,8 @@ public class MyCmd extends JavaPlugin {
 		int i = 0;
 		for(String s : texts) {
 			
-			player.spigot().sendMessage(TextComponent.fromLegacyText(
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), 
+			"tellraw " + player.getName() + " " +
 			"[\"\"," +
 				"{" + 
 				"\"text\":\">> " + s + "\",\"color\":\"gray\"," + 
@@ -578,7 +586,7 @@ public class MyCmd extends JavaPlugin {
 				"}" + 
 				"}" + 
 				"}" + 
-			"]"));
+			"]");
 			
 			i++;
 		}
@@ -678,5 +686,14 @@ public class MyCmd extends JavaPlugin {
 		if(displayName != null) { skullMeta.setDisplayName(ChatColor.RESET + displayName); }
 		skull.setItemMeta(skullMeta);
 		return skull;
+	}
+	
+	/**
+	 * Behandelt einen String und ersetzt das spezielle Zeichen für ein Leerzeichen durch ein richtiges Leerzeichen.
+	 * @param string Zu behandelnde Zeichenkette.
+	 * @return Behandelte Zeichnkette
+	 */
+	public String replaceSpecialWhitespaceChar(String string) {
+		return string.replaceAll("%s", " ");
 	}
 }

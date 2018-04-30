@@ -1,8 +1,8 @@
 name: MyCmd
-version: Build_1
+version: build_1_pre_6
 description: MyCmd
 author: joestr
-authors: [joestr_, _joestr, _joestr_]
+authors: [9YB, Joe83, Joe84]
 website: https://repo.joestr.xyz/MyCmd
 
 main: xyz.joestr.mycmd.MyCmd

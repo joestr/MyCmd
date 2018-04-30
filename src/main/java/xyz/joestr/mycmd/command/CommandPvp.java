@@ -1,28 +1,18 @@
 package xyz.joestr.mycmd.command;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import com.cloutteam.samjakob.gui.ItemBuilder;
-import com.cloutteam.samjakob.gui.buttons.GUIButton;
-import com.cloutteam.samjakob.gui.types.PaginatedGUI;
 
 import xyz.joestr.mycmd.MyCmd;
-import xyz.joestr.mycmd.util.InventoryMenu;
 
 public class CommandPvp implements CommandExecutor {
 	
@@ -51,155 +41,33 @@ public class CommandPvp implements CommandExecutor {
 				
 				if(player.hasPermission("mycmd.command.pvp") && player.hasPermission("mycmd.command.pvp.other")) {
 					
-					// Instantiate the GUI
-					//PaginatedGUI menu = new PaginatedGUI("PvP-Menü");
-					//
-					// Instantiate the GUIButton
-					// This takes an ItemStack as an argument, however I have created an
-					// ItemBuilder class to create custom ItemStacks very easily.
-					//GUIButton button = new GUIButton(
-					//    ItemBuilder.start(Material.BOOK).name("&eView the rules")
-					//        .lore(Arrays.asList("&eMy first button!")).build()
-					//);
-					//
-					// Yep - that's right. Lambda support!
-					//button.setListener(event -> {
-					//    event.setCancelled(true);
-					//    event.getWhoClicked().sendMessage("1. Don't cheat!");
-					//});
-					//
-					//menu.addButton(button);
-					//
-					// Open the inventory on the player's screen
-					//player.openInventory(menu.getInventory());
-					
-					PaginatedGUI menu = new PaginatedGUI("PvP-Menü");
-					
-					GUIButton pvp_status = null;
-					
-					if(this.plugin.pvp.getMap().containsKey(player.getName()) && (Boolean)this.plugin.pvp.getMap().get(player.getName())) {
-						pvp_status = new GUIButton(
-								ItemBuilder.start(Material.GREEN_SHULKER_BOX).name(ChatColor.GREEN + "Dein PvP ist momentan aktiviert.")
-									.lore(Arrays.asList("Zum Ändern klicken.")).build()
-							);
-						pvp_status.setListener(event -> {
-						    event.setCancelled(true);
-						    Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "pvp off");
-						});
-					} else {
-						this.plugin.pvp.getMap().put(player.getName(), false);
-						this.plugin.pvp.Save();
-						pvp_status = new GUIButton(
-								ItemBuilder.start(Material.RED_SHULKER_BOX).name(ChatColor.RED + "Dein PvP ist momentan deaktiviert.")
-									.lore(Arrays.asList("Zum Ändern klicken.")).build()
-							);
-						pvp_status.setListener(event -> {
-						    event.setCancelled(true);
-						    Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "pvp on");
-						});
-					}
-					
-					menu.addButton(pvp_status);
-					
-					player.openInventory(menu.getInventory());
-					
-					/*
 					this.plugin.commandOverview(player, "PvP",
 							new String[] {"Dein PvP aktivieren", "Dein PvP deaktivieren", "Deinen PvP-Status anzeigen", "Liste aller dezeitigen PvP-Teilnehmer", "PvP eines Spielers aktivieren", "PvP eines Spielers deaktivieren", "PvP-Status eines Spielers anzeigen"},
 							new String[] {"run_command", "run_command", "run_command", "run_command", "suggest_command", "suggest_command", "suggest_command"},
 							new String[] {"/pvp on", "/pvp off", "/pvp status", "/pvp list", "/pvp on ", "/pvp off ", "/pvp status "},
 							new String[] {"/pvp on", "/pvp off", "/pvp status", "/pvp list", "/pvp on <Spieler>", "/pvp off <Spieler>", "/pvp status <Spieler>"});
-					*/
+					
 					return true;
 				}
 				
 				if(player.hasPermission("mycmd.command.pvp.other")) {
 					
-					ItemStack is = new ItemStack(Material.CONCRETE);
-					ItemMeta im = is.getItemMeta();
-					im.setDisplayName("PVP-Eintrag");
-					im.addEnchant(Enchantment.MENDING, 1, true);
-					is.setItemMeta(im);
-					
-					InventoryMenu imenu = new InventoryMenu(this.plugin, player, 9, "PVP-Menü",
-						new ItemStack[] { is, is, is, is, is, is, is, is, is},
-						new String[] { "/t", "/t", "/t", "/t", "/t", "/t", "/t", "/t", "/t" },
-						new String[] { "/t", "/t", "/t", "/t", "/t", "/t", "/t", "/t", "/t" }
-					);
-					
-					imenu.createMenu();
-					imenu.showToPlayer();
-					
-					/*
 					this.plugin.commandOverview(player, "PvP",
 							new String[] {"PvP eines Spielers aktivieren", "PvP eines Spielers deaktivieren", "PvP-Status eines Spielers anzeigen"},
 							new String[] {"suggest_command", "suggest_command", "suggest_command"},
 							new String[] {"/pvp on ", "/pvp off ", "pvp status "},
 							new String[] {"/pvp on <Spieler>", "/pvp off <Spieler>", "/pvp status <Spieler>"});
-					*/
 					return true;
 				}
 				
 				if(player.hasPermission("mycmd.command.pvp")) {
 					
-					ItemStack e = new ItemStack(Material.GRAY_SHULKER_BOX);
-					ItemMeta em = e.getItemMeta();
-					em.setDisplayName("");
-					e.setItemMeta(em);
-					
-					ItemStack status = new ItemStack(Material.AIR);
-					ItemMeta statusm = status.getItemMeta();
-					
-					if(Bukkit.getOnlineMode()) {
-						
-						if(this.plugin.pvp.getMap().containsKey(player.getUniqueId().toString())) {
-							
-							status = new ItemStack(Material.LIME_SHULKER_BOX);
-							statusm = status.getItemMeta();
-							statusm.setDisplayName(ChatColor.GRAY + "Dein PvP ist zurzeit " + ChatColor.GREEN + "aktiviert" + ChatColor.GRAY + ".");
-						} else {
-						
-							this.plugin.pvp.getMap().put(player.getUniqueId().toString(), false);
-							status = new ItemStack(Material.RED_SHULKER_BOX);
-							statusm = status.getItemMeta();
-							statusm.setDisplayName(ChatColor.GRAY + "Dein PvP ist zurzeit " + ChatColor.RED + "deaktiviert" + ChatColor.GRAY + ".");
-						}
-					} else {
-					
-						if(this.plugin.pvp.getMap().containsKey(player.getName())) {
-							
-							status = new ItemStack(Material.LIME_SHULKER_BOX);
-							statusm = status.getItemMeta();
-							statusm.setDisplayName(ChatColor.GRAY + "Dein PvP ist zurzeit " + ChatColor.GREEN + "aktiviert" + ChatColor.GRAY + ".");
-						} else {
-							
-							this.plugin.pvp.getMap().put(player.getUniqueId().toString(), false);
-							status = new ItemStack(Material.RED_SHULKER_BOX);
-							statusm = status.getItemMeta();
-							statusm.setDisplayName(ChatColor.GRAY + "Dein PvP ist zurzeit " + ChatColor.RED + "deaktiviert" + ChatColor.GRAY + ".");
-						}
-					}
-					
-					status.setItemMeta(statusm);
-					
-					ItemStack on = new ItemStack(Material.LIME_SHULKER_BOX);
-					ItemMeta onm = on.getItemMeta();
-					onm.setDisplayName(ChatColor.GRAY + "Dein PvP " + ChatColor.GREEN + "aktivieren" + ChatColor.GRAY + ".");
-					on.setItemMeta(onm);
-					
-					ItemStack off = new ItemStack(Material.RED_SHULKER_BOX);
-					ItemMeta offm = off.getItemMeta();
-					offm.setDisplayName(ChatColor.GRAY + "Dein PvP " + ChatColor.RED + "deaktivieren" + ChatColor.GRAY + ".");
-					off.setItemMeta(offm);
-					
-					InventoryMenu imenu = new InventoryMenu(this.plugin, player, 9, "PVP-Menü",
-						new ItemStack[] { this.plugin.getSkull(player.getUniqueId().toString(), player.getDisplayName(), 1), status, e, e, e, e, e, on, off },
-						new String[] { "", "pvp status", "", "", "", "", "", "pvp on", "pvp off" },
-						new String[] { "", "pvp", "", "", "", "", "", "pvp", "pvp" }
-					);
-					
-					imenu.createMenu();
-					imenu.showToPlayer();
+					this.plugin.commandOverview(player, "PvP",
+							new String[] {"Dein PvP aktivieren", "Dein PvP deaktivieren", "Deinen PvP-Status anzeigen", "Liste aller dezeitigen PvP-Teilnehmer"},
+							new String[] {"run_command", "run_command", "run_command", "run_command"},
+							new String[] {"/pvp on", "/pvp off", "/pvp status", "/pvp list"},
+							new String[] {"/pvp on", "/pvp off", "/pvp status", "/pvp list"}
+							);
 					
 					return true;
 				}
@@ -211,39 +79,6 @@ public class CommandPvp implements CommandExecutor {
 					
 					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.pvp"));
 					return true;
-				}
-				
-				if(arg[0].equalsIgnoreCase("info")) {
-					
-					if(player.hasPermission("mycmd.command.pvp") && player.hasPermission("mycmd.command.pvp.other")) {
-						
-						this.plugin.commandOverview(player, "PvP",
-								new String[] {"Dein PvP aktivieren", "Dein PvP deaktivieren", "Deinen PvP-Status anzeigen", "Liste aller dezeitigen PvP-Teilnehmer", "PvP eines Spielers aktivieren", "PvP eines Spielers deaktivieren", "PvP-Status eines Spielers anzeigen"},
-								new String[] {"run_command", "run_command", "run_command", "run_command", "suggest_command", "suggest_command", "suggest_command"},
-								new String[] {"/pvp on", "/pvp off", "/pvp status", "/pvp list", "/pvp on ", "/pvp off ", "/pvp status "},
-								new String[] {"/pvp on", "/pvp off", "/pvp status", "/pvp list", "/pvp on <Spieler>", "/pvp off <Spieler>", "/pvp status <Spieler>"});
-						return true;
-					}
-					
-					if(player.hasPermission("mycmd.command.pvp.other")) {
-						
-						this.plugin.commandOverview(player, "PvP",
-								new String[] {"PvP eines Spielers aktivieren", "PvP eines Spielers deaktivieren", "PvP-Status eines Spielers anzeigen"},
-								new String[] {"suggest_command", "suggest_command", "suggest_command"},
-								new String[] {"/pvp on ", "/pvp off ", "pvp status "},
-								new String[] {"/pvp on <Spieler>", "/pvp off <Spieler>", "/pvp status <Spieler>"});
-						return true;
-					}
-					
-					if(player.hasPermission("mycmd.command.pvp")) {
-						
-						this.plugin.commandOverview(player, "PvP",
-								new String[] {"Dein PvP aktivieren", "Dein PvP deaktivieren", "Deinen PvP-Status anzeigen", "Liste aller dezeitigen PvP-Teilnehmer"},
-								new String[] {"run_command", "run_command", "run_command", "run_command"},
-								new String[] {"/pvp on", "/pvp off", "/pvp status", "/pvp list"},
-								new String[] {"/pvp on", "/pvp off", "/pvp status", "/pvp list"});
-						return true;
-					}
 				}
 				
 				if(arg[0].equalsIgnoreCase("status")) {

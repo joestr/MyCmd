@@ -71,7 +71,7 @@ public class CommandBan_ip implements CommandExecutor {
 			
 			if(player.hasPermission("mycmd.command.ban-ip")) {
 				
-				this.plugin.usageMessage(player, "/ban-ip <Adresse> <Grund ...>", "suggest_command", "/ban-ip ", "/ban-ip <Adresse> <Grund ...>");
+				this.plugin.usageMessage(player, "/ban-ip <Adresse> <Grund ...>", "suggest_command", "/ban-ip ", "/ban-ip <IP-Adresse> <Grund ...>");
 				return true;
 			}
 		}
@@ -102,7 +102,7 @@ public class CommandBan_ip implements CommandExecutor {
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/ban-ip <Adresse> <Grund ...>"));
+		sender.sendMessage(this.plugin.usageMessage("/ban-ip <IP-Adresse> <Grund ...>"));
 		return true;
 	}
 	

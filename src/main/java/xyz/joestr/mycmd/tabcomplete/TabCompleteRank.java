@@ -66,7 +66,6 @@ public class TabCompleteRank
 		//End Player
 		
 		//Console
-		Player player = (Player)sender;
 		
 		if(arg.length <= 1) {
 			
@@ -83,17 +82,18 @@ public class TabCompleteRank
 		
 		if(arg.length <= 2) {
 			
-			if(!player.hasPermission("mycmd.command.rank")) { return list; }
-			
-			for(Team t : Bukkit.getServer().getScoreboardManager().getMainScoreboard().getTeams()) { list.add(t.getName()); }
-			
-			if(arg.length == 2) {
+			if(arg[0].equalsIgnoreCase("remove")) {
 				
-				for(String key : list) { if(key.startsWith(arg[1])) { l.add(key); } }
-				list = l;
+				for(Team t : Bukkit.getServer().getScoreboardManager().getMainScoreboard().getTeams()) { list.add(t.getName()); }
+				
+				if(arg.length == 2) {
+					
+					for(String key : list) { if(key.startsWith(arg[1])) { l.add(key); } }
+					list = l;
+				}
+					
+				return list;
 			}
-				
-			return list;
 		}
 		
 		return list;

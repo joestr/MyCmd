@@ -57,8 +57,8 @@ public class EventLogin
 			if (event.getPlayer().hasPermission("mycmd.rank." + str))
 			{
 				this.plugin.scoreboard.getTeam(str).addEntry(event.getPlayer().getName());
-				String str_ = this.plugin.scoreboard.getTeam(str).getPrefix() + event.getPlayer().getName() + this.plugin.scoreboard.getTeam(str).getSuffix();
-				event.getPlayer().setDisplayName(str_);
+				event.getPlayer().setDisplayName(this.plugin.scoreboard.getTeam(str).getDisplayName() + event.getPlayer().getName());
+				//event.getPlayer().setPlayerListName(this.plugin.scoreboard.getTeam(str).getPrefix() + event.getPlayer().getName() + this.plugin.scoreboard.getTeam(str).getSuffix());
 			}
 		}
 	}
