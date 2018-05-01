@@ -1,5 +1,5 @@
 name: MyCmd
-version: build_1_pre_6
+version: build_1_pre_7
 description: MyCmd
 author: joestr
 authors: [9YB, Joe83, Joe84]
@@ -19,7 +19,7 @@ commands:
     description: Teleportiert dich zu einem angegebenen Warp-Punkt.
     #permission: mycmd.command.warp
     #permission-message: Berechtigung mycmd.command.warp fehlt.
-    usage: /warps <Warp-Punkt>
+    usage: /warp <Warp-Punkt>
   setwarp:
     description: Setzt einen angegebenen Warp-Punkt.
     #permission: mycmd.command.setwarp
@@ -256,6 +256,7 @@ permissions:
       mycmd.command.map: true
       mycmd.command.worldspawn: true
       mycmd.command.worldspawn.other: true
+      mycmd.command.setworldspawn: true
       mycmd.command.kick: true
       mycmd.command.ban: true
       mycmd.command.ban-ip: true

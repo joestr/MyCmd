@@ -50,7 +50,7 @@ public class CommandTpdeny implements CommandExecutor {
 						return true;
 					}
 					
-					if(this.plugin.tpa.containsKey(this.plugin.tpahereSwitched.get(player.getName()))) {
+					if(this.plugin.Tpahere.containsKey(this.plugin.tpahereSwitched.get(player.getName()))) {
 						
 						if(Bukkit.getOfflinePlayer((String)this.plugin.tpahereSwitched.get(player.getName())).isOnline()) {
 							

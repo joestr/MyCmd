@@ -45,9 +45,31 @@ public class CommandTpaccept implements CommandExecutor {
 						
 						if(Bukkit.getOfflinePlayer((String)this.plugin.tpaSwitched.get(player.getName())).isOnline()) {
 							
-							Bukkit.getPlayer((String)this.plugin.tpaSwitched.get(player.getName())).teleport(player);
-							player.sendMessage(ChatColor.GREEN + "Du wurdest zu " + Bukkit.getPlayer((String)this.plugin.tpaSwitched.get(player.getName())).getDisplayName() + ChatColor.GREEN + " teleportiert.");
-							Bukkit.getPlayer((String)this.plugin.tpaSwitched.get(player.getName())).sendMessage(player.getDisplayName() + ChatColor.GREEN + " wurde zu dir teleportiert.");
+							Bukkit.getPlayer(
+									(String) this.plugin.tpaSwitched.get(player.getName())
+							).teleport(player);
+							
+							player.sendMessage(
+									player.getDisplayName() +
+									ChatColor.GREEN +
+									" wurde zu dir teleportiert."
+							);
+							
+							Bukkit.getPlayer(
+									(String) this.plugin.tpaSwitched.get(
+											player.getName()
+									)
+							).sendMessage(
+									ChatColor.GREEN + "Du wurdest zu " +
+											Bukkit.getPlayer(
+													(String)this.plugin.tpaSwitched.get(
+															player.getName()
+													)
+											).getDisplayName() +
+									ChatColor.GREEN +
+									" teleportiert."
+							);
+							
 							this.plugin.tpa.remove(this.plugin.tpaSwitched.get(player.getName()));
 							this.plugin.tpaSwitched.remove(player.getName());
 							return true;
@@ -68,15 +90,42 @@ public class CommandTpaccept implements CommandExecutor {
 						
 						if(Bukkit.getOfflinePlayer((String)this.plugin.tpahereSwitched.get(player.getName())).isOnline()) {
 							
-							player.teleport(Bukkit.getPlayer((String)this.plugin.tpahereSwitched.get(player.getName())));
-							player.sendMessage(Bukkit.getPlayer((String)this.plugin.tpahereSwitched.get(player.getName())).getDisplayName() + ChatColor.GREEN + " wurde zu dir teleportiert.");
-							Bukkit.getPlayer((String)this.plugin.tpahereSwitched.get(player.getName())).sendMessage(ChatColor.GREEN + "Du wurdest zu " + player.getDisplayName() + ChatColor.GREEN + " teleportiert.");
+							player.teleport(
+									Bukkit.getPlayer(
+											(String) this.plugin.tpahereSwitched.get(
+													player.getName()
+											)
+									)
+							);
+							
+							player.sendMessage(
+									ChatColor.GREEN +
+									"Du wurdest zu " +
+									player.getDisplayName() +
+									ChatColor.GREEN +
+									" teleportiert."
+							);
+							
+							Bukkit.getPlayer(
+									(String) this.plugin.tpahereSwitched.get(
+											player.getName()
+									)
+							).sendMessage(
+									Bukkit.getPlayer(
+											(String) this.plugin.tpahereSwitched.get(
+													player.getName()
+											)
+									).getDisplayName() + 
+									ChatColor.GREEN + 
+									" wurde zu dir teleportiert."
+							);
+							
 							this.plugin.Tpahere.remove(this.plugin.tpahereSwitched.get(player.getName()));
 							this.plugin.tpahereSwitched.remove(player.getName());
 							return true;
 						}
 						
-						player.sendMessage(ChatColor.RED + "Spieler " + ChatColor.GRAY + (String)this.plugin.tpahereSwitched.get(player.getName()) + ChatColor.GRAY + " ist gerade nicht online.");
+						player.sendMessage(ChatColor.GRAY + (String)this.plugin.tpahereSwitched.get(player.getName()) + ChatColor.GRAY + " ist gerade nicht online.");
 						return true;
 					}
 					
@@ -99,7 +148,7 @@ public class CommandTpaccept implements CommandExecutor {
 		//Console
 		if(arg.length == 0) {
 			
-			sender.sendMessage(ChatColor.RED + "Der Befehl /tpaccept ist in der Konsoole nicht verfügbar.");
+			sender.sendMessage(ChatColor.RED + "Der Befehl /tpaccept ist in der Konsole nicht verfügbar.");
 			return true;
 		}
 		

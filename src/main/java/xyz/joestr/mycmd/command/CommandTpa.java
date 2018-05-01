@@ -51,7 +51,7 @@ public class CommandTpa implements CommandExecutor {
 						
 						if(this.plugin.tpaSwitched.containsKey(arg[0])) {
 							
-							player.sendMessage(ChatColor.RED + "Spieler " + Bukkit.getServer().getPlayer(arg[0]).getDisplayName() + ChatColor.RED + " hat bereits eine TP-Anfrage erhalten.");
+							player.sendMessage(Bukkit.getServer().getPlayer(arg[0]).getDisplayName() + ChatColor.RED + " hat bereits eine TP-Anfrage erhalten.");
 							return true;
 						}
 						
@@ -133,11 +133,11 @@ public class CommandTpa implements CommandExecutor {
 						return true;
 					}
 					
-					player.sendMessage(ChatColor.RED + "Spieler " + Bukkit.getPlayer(arg[0]).getDisplayName() + ChatColor.RED + " hat keine Berechtigung.");
+					player.sendMessage(Bukkit.getPlayer(arg[0]).getDisplayName() + ChatColor.RED + " hat keine Berechtigung.");
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.RED + "Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED +" ist nicht online.");
+				player.sendMessage(ChatColor.GRAY + arg[0] + ChatColor.RED +" ist nicht online.");
 				return true;
 			}
 			
