@@ -41,8 +41,9 @@ public class CommandWorldspawn implements CommandExecutor {
 					return true;
 				}
 				
-				player.teleport(player.getWorld().getSpawnLocation());
-				player.sendMessage(ChatColor.GREEN + "Du wurdest zum " + ChatColor.GRAY + "Spawn-Punkt deiner Welt" + ChatColor.GREEN + " teleportiert.");
+				if(player.teleport(player.getWorld().getSpawnLocation())) {
+					player.sendMessage(ChatColor.GREEN + "Du wurdest zum " + ChatColor.GRAY + "Spawn-Punkt deiner Welt" + ChatColor.GREEN + " teleportiert.");
+				}
 				return true;
 			}
 			
@@ -65,8 +66,9 @@ public class CommandWorldspawn implements CommandExecutor {
 					return true;
 				}
 				
-				player.teleport(player.getWorld().getSpawnLocation());
-				player.sendMessage(ChatColor.GREEN + "Du wurdest zum " + ChatColor.GRAY + "Spawn-Punkt der Welt "+ w.getName() + ChatColor.GREEN + " teleportiert.");
+				if(player.teleport(player.getWorld().getSpawnLocation())) {
+					player.sendMessage(ChatColor.GREEN + "Du wurdest zum " + ChatColor.GRAY + "Spawn-Punkt der Welt "+ w.getName() + ChatColor.GREEN + " teleportiert.");
+				}
 				return true;
 			}
 			
@@ -91,12 +93,13 @@ public class CommandWorldspawn implements CommandExecutor {
 				
 				if(!Bukkit.getOfflinePlayer(arg[1]).isOnline()) {
 					
-					player.sendMessage(ChatColor.RED + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
+					player.sendMessage(ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
 					return true;
 				}
 				
-				Bukkit.getPlayer(arg[0]).teleport(w.getSpawnLocation());
-				player.sendMessage(ChatColor.GREEN + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde zum " + ChatColor.GRAY + "Spawn-Punkt der Welt " + arg[0] + ChatColor.GREEN + " teleportiert.");
+				if(Bukkit.getPlayer(arg[0]).teleport(w.getSpawnLocation())) {
+					player.sendMessage(ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde zum " + ChatColor.GRAY + "Spawn-Punkt der Welt " + arg[0] + ChatColor.GREEN + " teleportiert.");
+				}
 				return true;
 			}
 			
@@ -154,12 +157,12 @@ public class CommandWorldspawn implements CommandExecutor {
 			
 			if(!Bukkit.getOfflinePlayer(arg[1]).isOnline()) {
 				
-				sender.sendMessage(ChatColor.RED + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
+				sender.sendMessage(ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
 				return true;
 			}
 			
 			Bukkit.getPlayer(arg[1]).teleport(w.getSpawnLocation());
-			sender.sendMessage(ChatColor.GREEN + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde zum " + ChatColor.GRAY + "Spawn-Punkt der Welt " + arg[0] + ChatColor.GREEN + " teleportiert.");
+			sender.sendMessage(ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde zum " + ChatColor.GRAY + "Spawn-Punkt der Welt " + arg[0] + ChatColor.GREEN + " teleportiert.");
 			return true;
 		}
 		

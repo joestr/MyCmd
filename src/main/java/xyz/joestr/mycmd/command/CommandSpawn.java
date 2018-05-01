@@ -44,8 +44,9 @@ public class CommandSpawn implements CommandExecutor {
 				}
 				
 				Location location = (Location) this.plugin.config.getMap().get("spawn");
-				player.teleport(location);
-				player.sendMessage(ChatColor.GREEN + "Du wurdest zum Spawn-Punkt teleportiert.");
+				if(player.teleport(location)) {
+					player.sendMessage(ChatColor.GREEN + "Du wurdest zum Spawn-Punkt teleportiert.");
+				}
 				return true;
 			}
 			
