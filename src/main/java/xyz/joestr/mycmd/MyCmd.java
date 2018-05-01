@@ -136,23 +136,52 @@ public class MyCmd extends JavaPlugin {
 	 *  /rank [<on|off|reload|list|add|remove>] [Rang] [Prefix] [Suffix] [Displaynameprefix] implementieren - done
 	 */
 	
+	// Beeinhaltet die Einstellungen aus der config.yml
 	public YMLDelegate config = new YMLDelegate(this, "config", "config.yml");
+	
+	// Beeinhaltet die Warps aus der warps.yml
 	public YMLDelegate warps = new YMLDelegate(this, "warps", "warps.yml");
+	
+	// Beeinhaltet die Homes aus der homes.yml
 	public YMLDelegate homes = new YMLDelegate(this, "homes", "homes.yml");
-	public YMLDelegate ranks = new YMLDelegate(this, "ranks", "ranks.yml");
+	
+	// Beeinhaltet die zweiten Homes aus der home2.yml
 	public YMLDelegate homes2 = new YMLDelegate(this, "homes2", "homes2.yml");
+	
+	// Beeinhaltet die Ränge aus der ranks.yml
+	public YMLDelegate ranks = new YMLDelegate(this, "ranks", "ranks.yml");
+	
+	// Beeinhaltet die PvP-Einstellungen aus der pvp.yml
 	public YMLDelegate pvp = new YMLDelegate(this, "pvp", "pvp.yml");
+	
+	// Alle oben definierten YMLDelegates werden in dieser Liste gespeichert
 	public ArrayList<YMLDelegate> delegates = new ArrayList<YMLDelegate>();
+	
+	// Maps für /tpa
 	public Map<String, String> tpa = new HashMap<String, String>();
 	public Map<String, String> tpaSwitched = new HashMap<String, String>();
-	public Map<String, String> Tpahere = new HashMap<String, String>();
+	
+	// Maps für /tpahere
+	public Map<String, String> tpahere = new HashMap<String, String>();
 	public Map<String, String> tpahereSwitched = new HashMap<String, String>();
+	
+	// Hier sind die Whisper-Partner
 	public Map<String, String> whisper = new HashMap<String, String>();
+	
+	// Maps für /navi
 	public Map<String, String> navi = new HashMap<String, String>();
 	public Map<String, String> naviSwitched = new HashMap<String, String>();
+	
+	// Hier sind PvP-Sachen drin
 	public Map<String, Date> pvpList = new HashMap<String, Date>();
-	public ArrayList<String> KickEventList = new ArrayList<String>(); 
+	
+	// Liste für gekickte Spieler
+	public ArrayList<String> KickEventList = new ArrayList<String>();
+	
+	// Kommandoliste
 	public ArrayList<Command> commandList = new ArrayList<Command>();
+	
+	// Zugriff auf das Scoreboard
 	public Scoreboard scoreboard;
 	
 	/**
@@ -163,141 +192,163 @@ public class MyCmd extends JavaPlugin {
 	 */
 	public void onEnable() {
 		
-		Bukkit.getServer().getScheduler().runTask(this, new Runnable() {
-
-			@Override
-			public void run() { removeFallbackAliases(); }
-		});
+		Bukkit.getServer().getScheduler().runTask(
+				this,
+				new Runnable() {
+					@Override 
+					public void run() {
+						removeFallbackAliases();
+					}
+				}
+		);
 		
-		delegates.add(config);
-		delegates.add(warps);
-		delegates.add(homes);
-		delegates.add(ranks);
-		delegates.add(homes2);
-		delegates.add(pvp);
+		// Die Delegates zur Liste hinzufügen
+		this.delegates.add(this.config);
+		this.delegates.add(this.warps);
+		this.delegates.add(this.homes);
+		this.delegates.add(this.ranks);
+		this.delegates.add(this.homes2);
+		this.delegates.add(this.pvp);
 		
+		// Scoreboard setzten (Verwendung des Hauptscoreboards)
 		this.scoreboard = Bukkit.getServer().getScoreboardManager().getMainScoreboard();
 		
-		getCommand("warps").setExecutor(new CommandWarps(this));
-		getCommand("warps").setTabCompleter(new TabCompleteWarps(this));
-		getCommand("setwarp").setExecutor(new CommandSetwarp(this));
-		getCommand("setwarp").setTabCompleter(new TabCompleteSetwarp(this));
-		getCommand("delwarp").setExecutor(new CommandDelwarp(this));
-		getCommand("delwarp").setTabCompleter(new TabCompleteDelwarp(this));
-		getCommand("warp").setExecutor(new CommandWarp(this));
-		getCommand("warp").setTabCompleter(new TabCompleteWarp(this));
-		getCommand("home").setExecutor(new CommandHome(this));
-		getCommand("home").setTabCompleter(new TabCompleteHome(this));
-		getCommand("home2").setExecutor(new CommandHome2(this));
-		getCommand("home2").setTabCompleter(new TabCompleteHome2(this));
-		getCommand("sethome").setExecutor(new CommandSethome(this));
-		getCommand("sethome").setTabCompleter(new TabCompleteSethome(this));
-		getCommand("sethome2").setExecutor(new CommandSethome2(this));
-		getCommand("sethome2").setTabCompleter(new TabCompleteSethome2(this));
-		getCommand("delhome").setExecutor(new CommandDelhome(this));
-		getCommand("delhome").setTabCompleter(new TabCompleteDelhome(this));
-		getCommand("delhome2").setExecutor(new CommandDelhome2(this));
-		getCommand("delhome2").setTabCompleter(new TabCompleteDelhome2(this));
-		getCommand("tpa").setExecutor(new CommandTpa(this));
-		getCommand("tpa").setTabCompleter(new TabCompleteTpa(this));
-		getCommand("tpahere").setExecutor(new CommandTpahere(this));
-		getCommand("tpahere").setTabCompleter(new TabCompleteTpahere(this));
-		getCommand("tpaccept").setExecutor(new CommandTpaccept(this));
-		getCommand("tpaccept").setTabCompleter(new TabCompleteTpaccept(this));
-		getCommand("tpdeny").setExecutor(new CommandTpdeny(this));
-		getCommand("tpdeny").setTabCompleter(new TabCompleteTpdeny(this));
-		getCommand("setspawn").setExecutor(new CommandSetspawn(this));
-		getCommand("setspawn").setTabCompleter(new TabCompleteSetspawn(this));
-		getCommand("spawn").setExecutor(new CommandSpawn(this));
-		getCommand("spawn").setTabCompleter(new TabCompleteSpawn(this));
-		getCommand("delspawn").setExecutor(new CommandDelspawn(this));
-		getCommand("delspawn").setTabCompleter(new TabCompleteDelspawn(this));
-		getCommand("ram").setExecutor(new CommandRam(this));
-		getCommand("ram").setTabCompleter(new TabCompleteRam(this));
-		getCommand("ping").setExecutor(new CommandPing(this));
-		getCommand("ping").setTabCompleter(new TabCompletePing(this));
-		getCommand("seen").setExecutor(new CommandSeen(this));
-		getCommand("seen").setTabCompleter(new TabCompleteSeen(this));
-		getCommand("rank").setExecutor(new CommandRank(this));
-		getCommand("rank").setTabCompleter(new TabCompleteRank(this));
-		getCommand("tell").setExecutor(new CommandTell(this));
-		getCommand("tell").setTabCompleter(new TabCompleteTell(this));
-		getCommand("reply").setExecutor(new CommandReply(this));
-		getCommand("reply").setTabCompleter(new TabCompleteReply(this));
-		getCommand("mycmd").setExecutor(new CommandMycmd(this));
-		getCommand("mycmd").setTabCompleter(new TabCompleteMycmd(this));
-		getCommand("wiki").setExecutor(new CommandWiki(this));
-		getCommand("wiki").setTabCompleter(new TabCompleteWiki(this));
-		getCommand("navi").setExecutor(new CommandNavi(this));
-		getCommand("navi").setTabCompleter(new TabCompleteNavi(this));
-		getCommand("list").setExecutor(new CommandList(this));
-		getCommand("list").setTabCompleter(new TabCompleteList(this));
-		getCommand("map").setExecutor(new CommandMap(this));
-		getCommand("map").setTabCompleter(new TabCompleteMap(this));
-		getCommand("worldspawn").setExecutor(new CommandWorldspawn(this));
-		getCommand("worldspawn").setTabCompleter(new TabCompleteWorldspawn(this));
-		getCommand("kick").setExecutor(new CommandKick(this));
-		getCommand("kick").setTabCompleter(new TabCompleteKick(this));
-		getCommand("ban").setExecutor(new CommandBan(this));
-		getCommand("ban").setTabCompleter(new TabCompleteBan(this));
-		getCommand("ban-ip").setExecutor(new CommandBan_ip(this));
-		getCommand("ban-ip").setTabCompleter(new TabCompleteBan_ip(this));
-		getCommand("banlist").setExecutor(new CommandBanlist(this));
-		getCommand("banlist").setTabCompleter(new TabCompleteBanlist(this));
-		getCommand("pardon").setExecutor(new CommandPardon(this));
-		getCommand("pardon").setTabCompleter(new TabCompletePardon(this));
-		getCommand("pardon-ip").setExecutor(new CommandPardon_ip(this));
-		getCommand("pardon-ip").setTabCompleter(new TabCompletePardon_ip(this));
-		getCommand("whitelist").setExecutor(new CommandWhitelist(this));
-		getCommand("whitelist").setTabCompleter(new TabCompleteWhitelist(this));
-		getCommand("motd").setExecutor(new CommandMotd(this));
-		getCommand("motd").setTabCompleter(new TabCompleteMotd(this));
-		getCommand("pvp").setExecutor(new CommandPvp(this));
-		getCommand("pvp").setTabCompleter(new TabCompletePvp(this));
-		//getCommand("help").setExecutor(new CommandHelp(this));
-		//getCommand("help").setTabCompleter(new TabCompleteHelp(this));
+		// Kommandos registrieren
+		this.getCommand("warps").setExecutor(new CommandWarps(this));
+		this.getCommand("warps").setTabCompleter(new TabCompleteWarps(this));
+		this.getCommand("setwarp").setExecutor(new CommandSetwarp(this));
+		this.getCommand("setwarp").setTabCompleter(new TabCompleteSetwarp(this));
+		this.getCommand("delwarp").setExecutor(new CommandDelwarp(this));
+		this.getCommand("delwarp").setTabCompleter(new TabCompleteDelwarp(this));
+		this.getCommand("warp").setExecutor(new CommandWarp(this));
+		this.getCommand("warp").setTabCompleter(new TabCompleteWarp(this));
+		this.getCommand("home").setExecutor(new CommandHome(this));
+		this.getCommand("home").setTabCompleter(new TabCompleteHome(this));
+		this.getCommand("home2").setExecutor(new CommandHome2(this));
+		this.getCommand("home2").setTabCompleter(new TabCompleteHome2(this));
+		this.getCommand("sethome").setExecutor(new CommandSethome(this));
+		this.getCommand("sethome").setTabCompleter(new TabCompleteSethome(this));
+		this.getCommand("sethome2").setExecutor(new CommandSethome2(this));
+		this.getCommand("sethome2").setTabCompleter(new TabCompleteSethome2(this));
+		this.getCommand("delhome").setExecutor(new CommandDelhome(this));
+		this.getCommand("delhome").setTabCompleter(new TabCompleteDelhome(this));
+		this.getCommand("delhome2").setExecutor(new CommandDelhome2(this));
+		this.getCommand("delhome2").setTabCompleter(new TabCompleteDelhome2(this));
+		this.getCommand("tpa").setExecutor(new CommandTpa(this));
+		this.getCommand("tpa").setTabCompleter(new TabCompleteTpa(this));
+		this.getCommand("tpahere").setExecutor(new CommandTpahere(this));
+		this.getCommand("tpahere").setTabCompleter(new TabCompleteTpahere(this));
+		this.getCommand("tpaccept").setExecutor(new CommandTpaccept(this));
+		this.getCommand("tpaccept").setTabCompleter(new TabCompleteTpaccept(this));
+		this.getCommand("tpdeny").setExecutor(new CommandTpdeny(this));
+		this.getCommand("tpdeny").setTabCompleter(new TabCompleteTpdeny(this));
+		this.getCommand("setspawn").setExecutor(new CommandSetspawn(this));
+		this.getCommand("setspawn").setTabCompleter(new TabCompleteSetspawn(this));
+		this.getCommand("spawn").setExecutor(new CommandSpawn(this));
+		this.getCommand("spawn").setTabCompleter(new TabCompleteSpawn(this));
+		this.getCommand("delspawn").setExecutor(new CommandDelspawn(this));
+		this.getCommand("delspawn").setTabCompleter(new TabCompleteDelspawn(this));
+		this.getCommand("ram").setExecutor(new CommandRam(this));
+		this.getCommand("ram").setTabCompleter(new TabCompleteRam(this));
+		this.getCommand("ping").setExecutor(new CommandPing(this));
+		this.getCommand("ping").setTabCompleter(new TabCompletePing(this));
+		this.getCommand("seen").setExecutor(new CommandSeen(this));
+		this.getCommand("seen").setTabCompleter(new TabCompleteSeen(this));
+		this.getCommand("rank").setExecutor(new CommandRank(this));
+		this.getCommand("rank").setTabCompleter(new TabCompleteRank(this));
+		this.getCommand("tell").setExecutor(new CommandTell(this));
+		this.getCommand("tell").setTabCompleter(new TabCompleteTell(this));
+		this.getCommand("reply").setExecutor(new CommandReply(this));
+		this.getCommand("reply").setTabCompleter(new TabCompleteReply(this));
+		this.getCommand("mycmd").setExecutor(new CommandMycmd(this));
+		this.getCommand("mycmd").setTabCompleter(new TabCompleteMycmd(this));
+		this.getCommand("wiki").setExecutor(new CommandWiki(this));
+		this.getCommand("wiki").setTabCompleter(new TabCompleteWiki(this));
+		this.getCommand("navi").setExecutor(new CommandNavi(this));
+		this.getCommand("navi").setTabCompleter(new TabCompleteNavi(this));
+		this.getCommand("list").setExecutor(new CommandList(this));
+		this.getCommand("list").setTabCompleter(new TabCompleteList(this));
+		this.getCommand("map").setExecutor(new CommandMap(this));
+		this.getCommand("map").setTabCompleter(new TabCompleteMap(this));
+		this.getCommand("worldspawn").setExecutor(new CommandWorldspawn(this));
+		this.getCommand("worldspawn").setTabCompleter(new TabCompleteWorldspawn(this));
+		this.getCommand("kick").setExecutor(new CommandKick(this));
+		this.getCommand("kick").setTabCompleter(new TabCompleteKick(this));
+		this.getCommand("ban").setExecutor(new CommandBan(this));
+		this.getCommand("ban").setTabCompleter(new TabCompleteBan(this));
+		this.getCommand("ban-ip").setExecutor(new CommandBan_ip(this));
+		this.getCommand("ban-ip").setTabCompleter(new TabCompleteBan_ip(this));
+		this.getCommand("banlist").setExecutor(new CommandBanlist(this));
+		this.getCommand("banlist").setTabCompleter(new TabCompleteBanlist(this));
+		this.getCommand("pardon").setExecutor(new CommandPardon(this));
+		this.getCommand("pardon").setTabCompleter(new TabCompletePardon(this));
+		this.getCommand("pardon-ip").setExecutor(new CommandPardon_ip(this));
+		this.getCommand("pardon-ip").setTabCompleter(new TabCompletePardon_ip(this));
+		this.getCommand("whitelist").setExecutor(new CommandWhitelist(this));
+		this.getCommand("whitelist").setTabCompleter(new TabCompleteWhitelist(this));
+		this.getCommand("motd").setExecutor(new CommandMotd(this));
+		this.getCommand("motd").setTabCompleter(new TabCompleteMotd(this));
+		this.getCommand("pvp").setExecutor(new CommandPvp(this));
+		this.getCommand("pvp").setTabCompleter(new TabCompletePvp(this));
+		//this.getCommand("help").setExecutor(new CommandHelp(this));
+		//this.getCommand("help").setTabCompleter(new TabCompleteHelp(this));
 		
-		Bukkit.getPluginManager().registerEvents(new EventEntityDamageByEntity(this), this);
-		Bukkit.getPluginManager().registerEvents(new EventTeleport(this), this);
-		Bukkit.getPluginManager().registerEvents(new EventLogin(this), this);
-		Bukkit.getPluginManager().registerEvents(new EventJoin(this), this);
-		Bukkit.getPluginManager().registerEvents(new EventQuit(this), this);
-		Bukkit.getPluginManager().registerEvents(new EventAsyncChat(this), this);
-		Bukkit.getPluginManager().registerEvents(new EventKick(this), this);
-		Bukkit.getPluginManager().registerEvents(new EventListPing(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new EventEntityDamageByEntity(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new EventTeleport(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new EventLogin(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new EventJoin(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new EventQuit(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new EventAsyncChat(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new EventKick(this), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new EventListPing(this), this);
 		
+		// Delegates prüfen
 		for(YMLDelegate delegate : delegates) {
+			if(!delegate.Exist()) {
+				delegate.Create();
+			}
 			
-			if(!delegate.Exist()) { delegate.Create(); }
 			delegate.Load();
 		}
 		
+		// Überprüfung des Config-Delegates
+		// Es muss nur das Config-Delegate gepüft werden,
+		// da die anderen Delegates Variable EInträge haben.
 		if(!config.Check()) {
-			
 			Bukkit.getLogger().log(Level.WARNING, "Error in the " + config.getFileName() + " file.");
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
 		
+		// Ränge aus der ranks.yml bearbeiten
 		for(String string : this.ranks.getMap().keySet()) {
 			
-			String tString = (String)this.ranks.getMap().get(string);
+			// Temporäre Variablen
+			String tString = (String) this.ranks.getMap().get(string);
 			String[] tStrings = null;
 			
+			// Sind ;-te im String?
 			if(tString.contains(";")) {
 				tStrings = tString.split(";");
 			}
 			
+			// 3 oder 4 elemente
+			// 3: text;text;text
+			// 4: text;text;text;
+			// Wichtig ist eigentlich nur das es mind. 3 Elemnte gibt.
 			if(tStrings.length < 3 || tStrings.length > 4) {
 				continue;
 			}
 			
+			// Wenn es das Team noch nicht gibt ...
 			if(this.scoreboard.getTeam(string) == null) {
-				
+				// ... neues Team registrieren.
 				this.scoreboard.registerNewTeam(string);
 			}
-				
+			
+			// Dem Team Preäfix, Suffix und Anzeigename-Präfix setzen.
 			this.scoreboard.getTeam(string).setPrefix(this.toColorcode("&", tStrings[0]));
 			this.scoreboard.getTeam(string).setSuffix(this.toColorcode("&", tStrings[1]));
+			// Anzeigename-Präfix hier faul über den Team-Anzeigename gesetzt ;D
 			this.scoreboard.getTeam(string).setDisplayName(this.toColorcode("&", tStrings[2]));
 		}
 	}
@@ -310,15 +361,22 @@ public class MyCmd extends JavaPlugin {
 	 */
 	public void onDisable() {
 		
+		// Scoreboard sauber machen (Teams aus dem Delegate entfernen)
 		for(String string : this.ranks.getMap().keySet()) {
-			
 			if(this.scoreboard.getTeam(string) != null) {
-				
 				this.scoreboard.getTeam(string).unregister();
 			}
 		}
 	}
 	
+	/**
+	 * Sendet eine Actionbar-Nachricht an einen Spieler.
+	 * @author joestr
+	 * @version 1
+	 * @since 1
+	 * @param player {@link Player} Ziel-Spieler
+	 * @param message {@link String} Nachricht
+	 */
 	public void sendActionBarToPlayer(Player player, String message) {
 		player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
 	}
@@ -328,9 +386,9 @@ public class MyCmd extends JavaPlugin {
 	 * @author joestr
 	 * @version 1
 	 * @since 1
-	 * @param alternativeColorcode Alternativer String, welcher einen Farb-Code bezeichnet.
-	 * @param target Zeichenkette, welche behandelt werden sollte.
-	 * @return Behandelte Zeichenkette.
+	 * @param alternativeColorcode {@link String} Alternativer String welcher einen Farb-Code bezeichnet.
+	 * @param target {@link String} Zeichenkette welche behandelt werden sollte.
+	 * @return {@link String} Behandelte Zeichenkette.
 	 */
 	public String toColorcode(String alternativeColorcode, String target) { return target.replace(alternativeColorcode, "§"); }
 	
@@ -339,9 +397,9 @@ public class MyCmd extends JavaPlugin {
 	 * @author joestr
 	 * @version 1
 	 * @since 1
-	 * @param alternativeColorcode Alternativer String, welcher einen Farb-Code bezeichnet.
-	 * @param target Zeichenkette, welche behandelt werden sollte.
-	 * @return Behandelte Zeichenkette.
+	 * @param alternativeColorcode {@link String} Alternativer String welcher einen Farb-Code bezeichnet.
+	 * @param target {@link String} Zeichenkette welche behandelt werden sollte.
+	 * @return {@link String} Behandelte Zeichenkette.
 	 */
 	public String toAlternativeColorcode(String alternativeColorcode, String target) { return target.replace("§", alternativeColorcode); }
 	
@@ -350,26 +408,25 @@ public class MyCmd extends JavaPlugin {
 	 * @author joestr
 	 * @version 1
 	 * @since 1
-	 * @param command Befehl als Zeichenkette.
-	 * @return Formatierte Zeichekette.
+	 * @param command {@link String} Befehl als Zeichenkette.
+	 * @return {@link String} Formatierte Zeichekette.
 	 */
 	public String usageMessage(String command) {
-		
 		return ChatColor.RED + "Benutze: " + ChatColor.GRAY + command;
 	}
 	
 	/**
 	 * Gibt einen String zur richtigen Benutzung eines Befehls zurück.
-	 * @deprecated
+	 * @deprecated Vereinfacht. Benutzung von {@link MyCmd#usageMessage(Player, String, String, String, String)} empfohlen.
 	 * @author joestr
 	 * @version 1
 	 * @since 1
-	 * @param pln Spielername
-	 * @param cmd Befehl
-	 * @param act Aktion
-	 * @param actv Wert der Aktion
-	 * @param stv Wert der Aktion "show_text"
-	 * @return tellraw-Befehlszeichenkette
+	 * @param pln {@link String} Spielername
+	 * @param cmd {@link String} Befehl
+	 * @param act {@link String} Aktion
+	 * @param actv {@link String} Wert der Aktion
+	 * @param stv {@link String} Wert der Aktion "show_text"
+	 * @return {@link String} tellraw-Befehlszeichenkette
 	 */
 	public String usageMessage(String pln, String cmd, String act, String actv, String stv) {
 		
@@ -406,11 +463,11 @@ public class MyCmd extends JavaPlugin {
 	 * @author joestr
 	 * @version 1
 	 * @since 1
-	 * @param player Spieler
-	 * @param command Befehl als Zeichenkette
-	 * @param action Aktion
-	 * @param actionValue Wert der Aktion
-	 * @param show_textValue Wert der Aktion "show_text"
+	 * @param player {@link Player} Spieler
+	 * @param command {@link String} Befehl als Zeichenkette
+	 * @param action {@link String} Aktion
+	 * @param actionValue {@link String} Wert der Aktion
+	 * @param show_textValue {@link String} Wert der Aktion "show_text"
 	 */
 	public void usageMessage(Player player, String command, String action, String actionValue, String show_textValue) {
 		
@@ -444,11 +501,11 @@ public class MyCmd extends JavaPlugin {
 	
 	/**
 	 * Gibt eine Nachricht die auf fehlende Rechte hinweist zurück.
-	 * @deprecated
+	 * @deprecated Vereinfacht. Benutzung von {@link MyCmd#noPermissionMessage(Player)} empfohlen.
 	 * @author joestr
 	 * @version 1
 	 * @since 1
-	 * @return Formatierte Zeichenkette
+	 * @return {@link String} Formatierte Zeichenkette
 	 */
 	public String noPermissionMessage() {
 		
@@ -466,15 +523,14 @@ public class MyCmd extends JavaPlugin {
 	
 	/**
 	 * Gibt eine Nachricht die auf fehlende Rechte hinweist zurück.
-	 * @deprecated
+	 * @deprecated Vereinfacht. Benutzung von {@link MyCmd#noPermissionMessage(Player, String)} empfohlen.
 	 * @author joestr
 	 * @version 1
 	 * @since 1
-	 * @param perm Berechtigung als Zeichenkette
-	 * @return Formatierte Zeichenkette mit Berechtigungszeichenkette
+	 * @param perm {@link String} Berechtigung als Zeichenkette
+	 * @return {@link String} Formatierte Zeichenkette mit Berechtigungszeichenkette
 	 */
 	public String noPermissionMessage(String perm) {
-		
 		return ChatColor.RED + "Berechtigung " + ChatColor.GRAY + perm + ChatColor.RED + " fehlt.";
 	}
 	
@@ -483,19 +539,21 @@ public class MyCmd extends JavaPlugin {
 	 * @author joestr
 	 * @version 1
 	 * @since 1
-	 * @param player Spieler
-	 * @param perm Berechtigung als Zeichenkette
+	 * @param player {@link Player} Spieler
+	 * @param perm {@link String} Berechtigung als Zeichenkette
 	 */
-	public void noPermissionMessage(Player player, String perm) { player.sendMessage(ChatColor.RED + "Berechtigung " + ChatColor.GRAY + perm + ChatColor.RED + " fehlt."); }
+	public void noPermissionMessage(Player player, String perm) {
+		player.sendMessage(ChatColor.RED + "Berechtigung " + ChatColor.GRAY + perm + ChatColor.RED + " fehlt.");
+	}
 	
 	/**
 	 * Spielt ein Spielerlisten-Paket an alle Spieler aus, welche online sind.
 	 * @author joestr
 	 * @version 1
 	 * @since 1
-	 * @param player Spieler
-	 * @param header Spielerlisten-Header
-	 * @param footer Spielerlisten-Footer
+	 * @param player {@link Player} Spieler
+	 * @param header {@link String} Spielerlisten-Header
+	 * @param footer {@link String} Spielerlisten-Footer
 	 */
 	public void sendPlayerlistHeaderFooter(Player player, String header, String footer) {
 		
@@ -548,12 +606,12 @@ public class MyCmd extends JavaPlugin {
 	 * @author joestr
 	 * @version 1
 	 * @since 1
-	 * @param player Spieler
-	 * @param title Titel
-	 * @param texts Feld für Texte
-	 * @param actions Feld für Aktionen
-	 * @param commands Feld für Befehle als Zeichenketten
-	 * @param hovers Feld für Hover-Texte
+	 * @param player {@link Player} Spieler
+	 * @param title {@link String}[] Titel
+	 * @param texts {@link String}[] Feld für Texte
+	 * @param actions {@link String}[] Feld für Aktionen
+	 * @param commands {@link String}[] Feld für Befehle als Zeichenketten
+	 * @param hovers {@link String}[] Feld für Hover-Texte
 	 */
 	public void commandOverview(Player player, String title, String[] texts,  String[] actions, String[] commands, String[] hovers) {
 		
@@ -597,7 +655,7 @@ public class MyCmd extends JavaPlugin {
 	 * @author joestr
 	 * @version 1
 	 * @since 1
-	 * @param kC Map
+	 * @param kC {@link Map} Map
 	 */
 	public void fillCommandList(HashMap<String, Command> kC) {
 		
@@ -657,11 +715,11 @@ public class MyCmd extends JavaPlugin {
 	 * @author joestr
 	 * @version 1
 	 * @since 1
-	 * @param obj Objekt
-	 * @param fieldName Feldname
-	 * @return Objekt
-	 * @throws NoSuchFieldException Feld nicht gefunden
-	 * @throws IllesgalAccessException Verbotener Zugriff
+	 * @param obj {@link Object} Objekt
+	 * @param fieldName {@link String} Feldname
+	 * @return {@link Object} Objekt
+	 * @throws {@link NoSuchFieldException} Feld nicht gefunden
+	 * @throws {@link IllesgalAccessException} Verbotener Zugriff
 	 */
 	private Object customGet(Object obj, String fieldName) throws NoSuchFieldException, IllegalAccessException {
 		
@@ -672,10 +730,13 @@ public class MyCmd extends JavaPlugin {
 	
 	/**
 	 * Einen Spielerkopf bekommen.
-	 * @param skullOwner Name des Kopf-Besitzers
-	 * @param displayName Anzeigename
-	 * @param quantity Menge
-	 * @return ItemStack
+	 * @author joestr
+	 * @version 1
+	 * @since 1
+	 * @param skullOwner {@link String} Name des Kopf-Besitzers
+	 * @param displayName {@link String} Anzeigename
+	 * @param quantity {@link Integer} Menge
+	 * @return {@link ItemStack} ItemStack
 	 */
 	@SuppressWarnings("deprecation")
 	public ItemStack getSkull(String skullOwner, String displayName, int quantity) {
@@ -690,8 +751,11 @@ public class MyCmd extends JavaPlugin {
 	
 	/**
 	 * Behandelt einen String und ersetzt das spezielle Zeichen für ein Leerzeichen durch ein richtiges Leerzeichen.
-	 * @param string Zu behandelnde Zeichenkette.
-	 * @return Behandelte Zeichnkette
+	 * @author joestr
+	 * @version 1
+	 * @since 1
+	 * @param string {@link String} Zu behandelnde Zeichenkette.
+	 * @return {@link String} Behandelte Zeichnkette
 	 */
 	public String replaceSpecialWhitespaceChar(String string) {
 		return string.replaceAll("%s", " ");

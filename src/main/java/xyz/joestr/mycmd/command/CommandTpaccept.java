@@ -27,7 +27,7 @@ public class CommandTpaccept implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.tpaccept")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.tpaccept"));
+				this.plugin.noPermissionMessage(player, "mycmd.command.tpaccept");
 				return true;
 			}
 			
@@ -35,7 +35,7 @@ public class CommandTpaccept implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.tpaccept")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage());
+					this.plugin.noPermissionMessage(player, "mycmd.command.tpaccept");
 					return true;
 				}
 				
@@ -86,7 +86,7 @@ public class CommandTpaccept implements CommandExecutor {
 				
 				if(this.plugin.tpahereSwitched.containsKey(player.getName())) {
 					
-					if(this.plugin.Tpahere.containsKey(this.plugin.tpahereSwitched.get(player.getName()))) {
+					if(this.plugin.tpahere.containsKey(this.plugin.tpahereSwitched.get(player.getName()))) {
 						
 						if(Bukkit.getOfflinePlayer((String)this.plugin.tpahereSwitched.get(player.getName())).isOnline()) {
 							
@@ -120,7 +120,7 @@ public class CommandTpaccept implements CommandExecutor {
 									" wurde zu dir teleportiert."
 							);
 							
-							this.plugin.Tpahere.remove(this.plugin.tpahereSwitched.get(player.getName()));
+							this.plugin.tpahere.remove(this.plugin.tpahereSwitched.get(player.getName()));
 							this.plugin.tpahereSwitched.remove(player.getName());
 							return true;
 						}
@@ -140,7 +140,7 @@ public class CommandTpaccept implements CommandExecutor {
 			
 			if (player.hasPermission("mycmd.command.tpaccept")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/tpaccept", "run_command", "/tpaccept", "/tpaccept"));
+				this.plugin.usageMessage(player, "/tpaccept", "run_command", "/tpaccept", "/tpaccept");
 				return true;
 			}
 		}

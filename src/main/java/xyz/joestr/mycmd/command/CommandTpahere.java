@@ -33,7 +33,7 @@ public class CommandTpahere implements CommandExecutor {
 			
 			if(arg.length == 1) {
 				
-				if(this.plugin.Tpahere.containsKey(player.getName())) {
+				if(this.plugin.tpahere.containsKey(player.getName())) {
 					
 					player.sendMessage(ChatColor.RED + "Du kannst nur alle 60 Sekunden eine TP-Anfrage versenden.");
 					return true;
@@ -55,14 +55,14 @@ public class CommandTpahere implements CommandExecutor {
 							return true;
 						}
 						
-						this.plugin.Tpahere.put(player.getName(), Bukkit.getPlayer(arg[0]).getName());
+						this.plugin.tpahere.put(player.getName(), Bukkit.getPlayer(arg[0]).getName());
 						this.plugin.tpahereSwitched.put(Bukkit.getPlayer(arg[0]).getName(), player.getName());
 						
 						Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable() {
 							
 							public void run() {
 									
-								CommandTpahere.this.plugin.Tpahere.remove(player.getName());
+								CommandTpahere.this.plugin.tpahere.remove(player.getName());
 								CommandTpahere.this.plugin.tpahereSwitched.remove(arg[0]);
 							}
 						}, 600L);

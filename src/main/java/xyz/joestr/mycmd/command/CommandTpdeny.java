@@ -27,7 +27,7 @@ public class CommandTpdeny implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.tpdeny")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.tpdeny"));
+				this.plugin.noPermissionMessage(player, "mycmd.command.tpdeny");
 				return true;
 			}
 			
@@ -50,13 +50,13 @@ public class CommandTpdeny implements CommandExecutor {
 						return true;
 					}
 					
-					if(this.plugin.Tpahere.containsKey(this.plugin.tpahereSwitched.get(player.getName()))) {
+					if(this.plugin.tpahere.containsKey(this.plugin.tpahereSwitched.get(player.getName()))) {
 						
 						if(Bukkit.getOfflinePlayer((String)this.plugin.tpahereSwitched.get(player.getName())).isOnline()) {
 							
 							player.sendMessage(ChatColor.RED + "Du hast die TP-Anfrage von " + Bukkit.getPlayer((String)this.plugin.tpahereSwitched.get(player.getName())).getDisplayName() + ChatColor.RED + " abgelehnt.");
 							Bukkit.getPlayer((String)this.plugin.tpahereSwitched.get(player.getName())).sendMessage(player.getDisplayName() + ChatColor.RED + " hat deine TP-Anfrage abgelehnt.");
-							this.plugin.Tpahere.remove(this.plugin.tpahereSwitched.get(player.getName()));
+							this.plugin.tpahere.remove(this.plugin.tpahereSwitched.get(player.getName()));
 							this.plugin.tpahereSwitched.remove(player.getName());
 							return true;
 						}
@@ -76,7 +76,7 @@ public class CommandTpdeny implements CommandExecutor {
 			
 			if (player.hasPermission("mycmd.command.tpdeny")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/tpdeny", "run_command", "/tpdeny", "/tpdeny"));
+				this.plugin.usageMessage(player, "/tpdeny", "run_command", "/tpdeny", "/tpdeny");
 				return true;
 			}
 		}
@@ -85,7 +85,7 @@ public class CommandTpdeny implements CommandExecutor {
 		
 		if(arg.length == 0) {
 			
-			sender.sendMessage(ChatColor.RED + "Der Befehl /tpdeny ist in der Konsoole nicht verfügbar.");
+			sender.sendMessage(ChatColor.RED + "Der Befehl /tpdeny ist in der Konsole nicht verfügbar.");
 			return true;
 		}
 		
