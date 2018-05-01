@@ -50,7 +50,11 @@ public class CommandTpaccept implements CommandExecutor {
 							).teleport(player);
 							
 							player.sendMessage(
-									player.getDisplayName() +
+									Bukkit.getPlayer(
+											(String)this.plugin.tpaSwitched.get(
+													player.getName()
+											)
+									).getDisplayName() +
 									ChatColor.GREEN +
 									" wurde zu dir teleportiert."
 							);
@@ -61,11 +65,7 @@ public class CommandTpaccept implements CommandExecutor {
 									)
 							).sendMessage(
 									ChatColor.GREEN + "Du wurdest zu " +
-											Bukkit.getPlayer(
-													(String)this.plugin.tpaSwitched.get(
-															player.getName()
-													)
-											).getDisplayName() +
+									player.getDisplayName() +
 									ChatColor.GREEN +
 									" teleportiert."
 							);
@@ -101,7 +101,11 @@ public class CommandTpaccept implements CommandExecutor {
 							player.sendMessage(
 									ChatColor.GREEN +
 									"Du wurdest zu " +
-									player.getDisplayName() +
+									Bukkit.getPlayer(
+											(String) this.plugin.tpahereSwitched.get(
+													player.getName()
+											)
+									).getDisplayName() +
 									ChatColor.GREEN +
 									" teleportiert."
 							);
@@ -111,11 +115,7 @@ public class CommandTpaccept implements CommandExecutor {
 											player.getName()
 									)
 							).sendMessage(
-									Bukkit.getPlayer(
-											(String) this.plugin.tpahereSwitched.get(
-													player.getName()
-											)
-									).getDisplayName() + 
+									player.getDisplayName() + 
 									ChatColor.GREEN + 
 									" wurde zu dir teleportiert."
 							);
