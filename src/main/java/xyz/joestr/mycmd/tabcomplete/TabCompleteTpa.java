@@ -24,6 +24,7 @@ public class TabCompleteTpa implements TabCompleter {
 					for (OfflinePlayer pl : Bukkit.getServer().getOnlinePlayers()) {
 						list.add(pl.getName());
 					}
+					list.remove(player.getName());
 
 					if (arg.length == 1) {
 						for (String key : list) {
