@@ -1,5 +1,5 @@
 name: MyCmd
-version: build_1_pre_7
+version: ${project.version}
 description: MyCmd
 author: joestr
 authors: [9YB, Joe83, Joe84]
