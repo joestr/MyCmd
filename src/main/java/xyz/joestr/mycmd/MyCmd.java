@@ -349,7 +349,7 @@ public class MyCmd extends JavaPlugin {
 				this.scoreboard.registerNewTeam(string);
 			}
 			
-			// Dem Team Preäfix, Suffix und Anzeigename-Präfix setzen.
+			// Dem Team Präfix, Suffix und Anzeigename-Präfix setzen.
 			this.scoreboard.getTeam(string).setPrefix(this.toColorcode("&", tStrings[0]));
 			this.scoreboard.getTeam(string).setSuffix(this.toColorcode("&", tStrings[1]));
 			// Anzeigename-Präfix hier faul über den Team-Anzeigename gesetzt ;D
@@ -365,7 +365,7 @@ public class MyCmd extends JavaPlugin {
 	 */
 	public void onDisable() {
 		
-		// Scoreboard sauber machen (Teams aus dem Delegate entfernen)
+		// Scoreboard sauber machen (Teams aus dem Scoreboard entfernen, welche im Delegate drin sind)
 		for(String string : this.ranks.getMap().keySet()) {
 			if(this.scoreboard.getTeam(string) != null) {
 				this.scoreboard.getTeam(string).unregister();
