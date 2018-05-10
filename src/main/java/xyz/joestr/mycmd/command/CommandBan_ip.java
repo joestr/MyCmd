@@ -35,7 +35,6 @@ public class CommandBan_ip implements CommandExecutor {
 	ProxiedCommandBan_ip proxiedCommandBan_ip = null;
 	RemoteConsoleCommandBan_ip remoteConsoleCommandBan_ip = null;
 	
-	
 	public CommandBan_ip(MyCmd mycmd) {
 		
 		this.plugin = mycmd;
@@ -45,7 +44,6 @@ public class CommandBan_ip implements CommandExecutor {
 		consoleCommandBan_ip = new ConsoleCommandBan_ip(this.plugin);
 		proxiedCommandBan_ip = new ProxiedCommandBan_ip(this.plugin);
 		remoteConsoleCommandBan_ip = new RemoteConsoleCommandBan_ip(this.plugin);
-		
 	}
 	
 	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
