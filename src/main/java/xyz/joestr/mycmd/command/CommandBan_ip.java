@@ -9,28 +9,52 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.BanList.Type;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.ProxiedCommandSender;
+import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import xyz.joestr.mycmd.MyCmd;
+import xyz.joestr.mycmd.command.blockcommand.BlockCommandBan_ip;
+import xyz.joestr.mycmd.command.consolecommand.ConsoleCommandBan_ip;
+import xyz.joestr.mycmd.command.playercommand.PlayerCommandBan_ip;
+import xyz.joestr.mycmd.command.proxiedcommand.ProxiedCommandBan_ip;
+import xyz.joestr.mycmd.command.remoteconsolecommand.RemoteConsoleCommandBan_ip;
 
 public class CommandBan_ip implements CommandExecutor {
 	
 	MyCmd plugin;
 	
+	PlayerCommandBan_ip playerCommandBan_ip = null;
+	BlockCommandBan_ip blockCommandBan_ip = null;
+	ConsoleCommandBan_ip consoleCommandBan_ip = null;
+	ProxiedCommandBan_ip proxiedCommandBan_ip = null;
+	RemoteConsoleCommandBan_ip remoteConsoleCommandBan_ip = null;
+	
+	
 	public CommandBan_ip(MyCmd mycmd) {
 		
 		this.plugin = mycmd;
+		
+		playerCommandBan_ip = new PlayerCommandBan_ip(this.plugin);
+		blockCommandBan_ip = new BlockCommandBan_ip(this.plugin);
+		consoleCommandBan_ip = new ConsoleCommandBan_ip(this.plugin);
+		proxiedCommandBan_ip = new ProxiedCommandBan_ip(this.plugin);
+		remoteConsoleCommandBan_ip = new RemoteConsoleCommandBan_ip(this.plugin);
+		
 	}
 	
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		// From a player
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player) commandSender;
 			
 			if(!player.hasPermission("mycmd.command.ban-ip")) {
 				
@@ -38,7 +62,7 @@ public class CommandBan_ip implements CommandExecutor {
 				return true;
 			}
 			
-			if(arg.length >= 2) {
+			if(args.length >= 2) {
 				
 				if(!player.hasPermission("mycmd.command.ban-ip")) {
 					
@@ -46,27 +70,7 @@ public class CommandBan_ip implements CommandExecutor {
 					return true;
 				}
 				
-				Pattern p = Pattern.compile("(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))");
-				if(!arg[0].matches(p.toString())) { sender.sendMessage(ChatColor.RED + "Es muss eine gültige IP-Adresse angegeben werden."); return true; }
-				
-				String message = "";
-				
-				for(int i = 1; i < arg.length; i++) { 
-					
-					if(i + 1 == arg.length) { message += arg[i]; continue; }
-					message += arg[i] + " ";
-				}
-				
-				Bukkit.getServer().broadcastMessage(
-						this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("ban-ip")))
-						.replace("%ip%", arg[0])
-						.replace("%reason%", message)
-				);
-				
-				Bukkit.getServer().getBanList(Type.IP).addBan(arg[0], message, null, player.getName());
-				for(Player pl : Bukkit.getOnlinePlayers()) { if(pl.getAddress().toString().contains(arg[0])) { pl.kickPlayer(message); } }
-				
-				return true;
+				this.playerCommandBan_ip.process(player, args);
 			}
 			
 			if(player.hasPermission("mycmd.command.ban-ip")) {
@@ -76,33 +80,63 @@ public class CommandBan_ip implements CommandExecutor {
 			}
 		}
 		
-		//Console
-		if(arg.length >= 2) {
+		// From a Block
+		if(commandSender instanceof BlockCommandSender) {
 			
-			Pattern p = Pattern.compile("(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))");
-			if(!arg[0].matches(p.toString())) { sender.sendMessage(ChatColor.RED + "Es muss eine gültige IP-Adresse angegeben werden."); return true; }
+			BlockCommandSender blockCommandSender = (BlockCommandSender) commandSender;
 			
-			String message = "";
-			
-			for(int i = 1; i < arg.length; i++) { 
+			if(args.length >= 2) {
 				
-				if(i + 1 == arg.length) { message += arg[i]; continue; }
-				message += arg[i] + " ";
+				this.blockCommandBan_ip.process(blockCommandSender, args);
 			}
 			
-			Bukkit.getServer().broadcastMessage(
-					this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("ban-ip")))
-					.replace("%ip%", arg[0])
-					.replace("%reason%", message)
-			);
-			
-			Bukkit.getServer().getBanList(Type.IP).addBan(arg[0], message, null, "KONSOLE");
-			for(Player pl : Bukkit.getOnlinePlayers()) { if(pl.getAddress().toString().contains(arg[0])) { pl.kickPlayer(message); } }
-			
+			blockCommandSender.sendMessage(this.plugin.usageMessage("/ban-ip <IP-Adresse> <Grund ...>"));
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/ban-ip <IP-Adresse> <Grund ...>"));
+		// Console
+		if(commandSender instanceof ConsoleCommandSender) {
+			
+			ConsoleCommandSender consoleCommandSender = (ConsoleCommandSender) commandSender;
+			if(args.length >= 2) {
+				
+				this.consoleCommandBan_ip.process(consoleCommandSender, args);
+			}
+			
+			consoleCommandSender.sendMessage(this.plugin.usageMessage("/ban-ip <IP-Adresse> <Grund ...>"));
+			return true;
+		}
+		
+		// Proxied Command
+		if(commandSender instanceof ProxiedCommandSender) {
+			
+			ProxiedCommandSender proxiedCommandSender = (ProxiedCommandSender) commandSender;
+			
+			if(args.length >= 2) {
+				
+				this.proxiedCommandBan_ip.process(proxiedCommandSender, args);
+			}
+			
+			proxiedCommandSender.sendMessage(this.plugin.usageMessage("/ban-ip <IP-Adresse> <Grund ...>"));
+			return true;
+			
+		}
+		
+		// Remote console
+		if(commandSender instanceof RemoteConsoleCommandSender) {
+			
+			RemoteConsoleCommandSender remoteConsoleCommandSender = (RemoteConsoleCommandSender) commandSender;
+			
+			if(args.length >= 2) {
+				
+				this.remoteConsoleCommandBan_ip.process(remoteConsoleCommandSender, args);
+			}
+			
+			remoteConsoleCommandSender.sendMessage(this.plugin.usageMessage("/ban-ip <IP-Adresse> <Grund ...>"));
+			return true;	
+		}
+		
+		// Hier sollte man eigentlich nicht hinkommen.
 		return true;
 	}
 	
