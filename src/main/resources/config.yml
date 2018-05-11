@@ -22,3 +22,4 @@ config:
   motd1: "&aServer"
   motd2: "&7Server"
   whitelist-message: "&cNicht auf der Whitelist."
+  plugin-prefix: ""

@@ -186,6 +186,9 @@ public class MyCmd extends JavaPlugin {
 	// Zugriff auf das Scoreboard
 	public Scoreboard scoreboard;
 	
+	// Plugin-Prefix
+	public String pluginPrefix = "";
+	
 	/**
 	 * Plugin-Start
 	 * @author joestr
@@ -193,6 +196,32 @@ public class MyCmd extends JavaPlugin {
 	 * @since 1
 	 */
 	public void onEnable() {
+		
+		// Die Delegates zur Liste hinzufügen
+		this.delegates.add(this.config);
+		this.delegates.add(this.warps);
+		this.delegates.add(this.homes);
+		this.delegates.add(this.ranks);
+		this.delegates.add(this.homes2);
+		this.delegates.add(this.pvp);
+		
+		// Delegates prüfen
+		for(YMLDelegate delegate : delegates) {
+			if(!delegate.Exist()) {
+				delegate.Create();
+			}
+			
+			delegate.Load();
+		}
+				
+		// Überprüfung des Config-Delegates
+		// Es muss nur das Config-Delegate gepüft werden,
+		// da die anderen Delegates Variable EInträge haben.
+		if(!config.Check()) {
+			Bukkit.getLogger().log(Level.WARNING, "Error in the " + config.getFileName() + " file.");
+			Bukkit.getPluginManager().disablePlugin(this);
+			return;
+		}
 		
 		Bukkit.getServer().getScheduler().runTask(
 				this,
@@ -204,16 +233,11 @@ public class MyCmd extends JavaPlugin {
 				}
 		);
 		
-		// Die Delegates zur Liste hinzufügen
-		this.delegates.add(this.config);
-		this.delegates.add(this.warps);
-		this.delegates.add(this.homes);
-		this.delegates.add(this.ranks);
-		this.delegates.add(this.homes2);
-		this.delegates.add(this.pvp);
-		
 		// Scoreboard setzten (Verwendung des Hauptscoreboards)
 		this.scoreboard = Bukkit.getServer().getScoreboardManager().getMainScoreboard();
+		
+		// Plugin-Präfix setzen
+		this.pluginPrefix = this.toColorcode("§", (String) this.config.getMap().get("plugin-prefix"));
 		
 		// Kommandos registrieren
 		this.getCommand("warps").setExecutor(new CommandWarps(this));
@@ -306,23 +330,6 @@ public class MyCmd extends JavaPlugin {
 		Bukkit.getServer().getPluginManager().registerEvents(new EventKick(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new EventListPing(this), this);
 		
-		// Delegates prüfen
-		for(YMLDelegate delegate : delegates) {
-			if(!delegate.Exist()) {
-				delegate.Create();
-			}
-			
-			delegate.Load();
-		}
-		
-		// Überprüfung des Config-Delegates
-		// Es muss nur das Config-Delegate gepüft werden,
-		// da die anderen Delegates Variable EInträge haben.
-		if(!config.Check()) {
-			Bukkit.getLogger().log(Level.WARNING, "Error in the " + config.getFileName() + " file.");
-			Bukkit.getPluginManager().disablePlugin(this);
-		}
-		
 		// Ränge aus der ranks.yml bearbeiten
 		for(String string : this.ranks.getMap().keySet()) {
 			
@@ -394,7 +401,14 @@ public class MyCmd extends JavaPlugin {
 	 * @param target {@link String} Zeichenkette welche behandelt werden sollte.
 	 * @return {@link String} Behandelte Zeichenkette.
 	 */
-	public String toColorcode(String alternativeColorcode, String target) { return target.replace(alternativeColorcode, "§"); }
+	public String toColorcode(String alternativeColorcode, String target) {
+		
+		if(alternativeColorcode.length() > 0) {
+			return ChatColor.translateAlternateColorCodes(alternativeColorcode.charAt(0), target);
+		} else {
+			return target;
+		}
+	}
 	
 	/**
 	 * Wandelt eine Zeichenkette mit gültigen Farb-Codes in eine Zeichenkette mit alternativen Farb-Codes um.
@@ -405,7 +419,14 @@ public class MyCmd extends JavaPlugin {
 	 * @param target {@link String} Zeichenkette welche behandelt werden sollte.
 	 * @return {@link String} Behandelte Zeichenkette.
 	 */
-	public String toAlternativeColorcode(String alternativeColorcode, String target) { return target.replace("§", alternativeColorcode); }
+	public String toAlternativeColorcode(String alternativeColorcode, String target) {
+		
+		if(alternativeColorcode.length() > 0) {
+			return target.replace(ChatColor.COLOR_CHAR, alternativeColorcode.charAt(0));
+		} else {
+			return target;
+		}
+	}
 	
 	/**
 	 * Gibt einen String zur richtigen Benutzung eines Befehls zurück.
