@@ -29,7 +29,7 @@ public class CommandWorldspawn implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.worldspawn")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 				return true;
 			}
 			
@@ -37,12 +37,12 @@ public class CommandWorldspawn implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.worldspawn")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.worldspawn"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.worldspawn"));
 					return true;
 				}
 				
 				if(player.teleport(player.getWorld().getSpawnLocation())) {
-					player.sendMessage(ChatColor.GREEN + "Du wurdest zum " + ChatColor.GRAY + "Spawn-Punkt deiner Welt" + ChatColor.GREEN + " teleportiert.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du wurdest zum " + ChatColor.GRAY + "Spawn-Punkt deiner Welt" + ChatColor.GREEN + " teleportiert.");
 				}
 				return true;
 			}
@@ -51,7 +51,7 @@ public class CommandWorldspawn implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.worldspawn")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.worldspawn.other"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.worldspawn.other"));
 					return true;
 				}
 				
@@ -62,12 +62,12 @@ public class CommandWorldspawn implements CommandExecutor {
 					w = Bukkit.getWorld(arg[1]);
 				} catch(Exception e) {
 					
-					player.sendMessage(ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
 					return true;
 				}
 				
 				if(player.teleport(player.getWorld().getSpawnLocation())) {
-					player.sendMessage(ChatColor.GREEN + "Du wurdest zum " + ChatColor.GRAY + "Spawn-Punkt der Welt "+ w.getName() + ChatColor.GREEN + " teleportiert.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du wurdest zum " + ChatColor.GRAY + "Spawn-Punkt der Welt "+ w.getName() + ChatColor.GREEN + " teleportiert.");
 				}
 				return true;
 			}
@@ -76,7 +76,7 @@ public class CommandWorldspawn implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.worldspawn.other")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.worldspawn.other"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.worldspawn.other"));
 					return true;
 				}
 				
@@ -87,18 +87,18 @@ public class CommandWorldspawn implements CommandExecutor {
 					w = Bukkit.getWorld(arg[0]);
 				} catch(Exception e) {
 					
-					player.sendMessage(ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
 					return true;
 				}
 				
 				if(!Bukkit.getOfflinePlayer(arg[1]).isOnline()) {
 					
-					player.sendMessage(ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
 					return true;
 				}
 				
 				if(Bukkit.getPlayer(arg[0]).teleport(w.getSpawnLocation())) {
-					player.sendMessage(ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde zum " + ChatColor.GRAY + "Spawn-Punkt der Welt " + arg[0] + ChatColor.GREEN + " teleportiert.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde zum " + ChatColor.GRAY + "Spawn-Punkt der Welt " + arg[0] + ChatColor.GREEN + " teleportiert.");
 				}
 				return true;
 			}
@@ -132,12 +132,12 @@ public class CommandWorldspawn implements CommandExecutor {
 				w = Bukkit.getWorld(arg[0]);
 			} catch(Exception e) {
 				
-				sender.sendMessage(ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
 				return true;
 			}
 			
 			Location location = w.getSpawnLocation();
-			sender.sendMessage(ChatColor.GREEN + "Der " + ChatColor.GRAY + "Spawn-Punkt der Welt " + arg[0] + ChatColor.GREEN + " befindet sich bei " +
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der " + ChatColor.GRAY + "Spawn-Punkt der Welt " + arg[0] + ChatColor.GREEN + " befindet sich bei " +
 					ChatColor.GRAY + "/" + location.getX() + "/" + location.getBlockY() + "/" + location.getZ() + ChatColor.GREEN + ".");
 			return true;
 		}
@@ -151,22 +151,22 @@ public class CommandWorldspawn implements CommandExecutor {
 				w = Bukkit.getWorld(arg[0]);
 			} catch(Exception e) {
 				
-				sender.sendMessage(ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
 				return true;
 			}
 			
 			if(!Bukkit.getOfflinePlayer(arg[1]).isOnline()) {
 				
-				sender.sendMessage(ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
 				return true;
 			}
 			
 			Bukkit.getPlayer(arg[1]).teleport(w.getSpawnLocation());
-			sender.sendMessage(ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde zum " + ChatColor.GRAY + "Spawn-Punkt der Welt " + arg[0] + ChatColor.GREEN + " teleportiert.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde zum " + ChatColor.GRAY + "Spawn-Punkt der Welt " + arg[0] + ChatColor.GREEN + " teleportiert.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/worldspawn <Welt> [<Spieler>]"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/worldspawn <Welt> [<Spieler>]"));
 		return true;
 	}
 }

@@ -28,7 +28,7 @@ public class CommandKick implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.kick")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.kick"));
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.kick"));
 				return true;
 			}
 			
@@ -36,7 +36,7 @@ public class CommandKick implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.kick")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.kick"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.kick"));
 					return true;
 				}
 				
@@ -75,7 +75,7 @@ public class CommandKick implements CommandExecutor {
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/kick <Spieler> <Grund ...>"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/kick <Spieler> <Grund ...>"));
 		return true;
 	}
 	
@@ -84,7 +84,9 @@ public class CommandKick implements CommandExecutor {
 		
 		if(Bukkit.getOfflinePlayer(string).isOnline()) {
 			
-			Bukkit.getPlayer(string).kickPlayer(string2);
+			Bukkit.getPlayer(string).kickPlayer(
+					this.plugin.toColorcode("&", string2)
+			);
 			return;
 		}
 		
@@ -118,6 +120,6 @@ public class CommandKick implements CommandExecutor {
 		}
 		*/
 		
-		sender.sendMessage(ChatColor.GRAY + string + ChatColor.RED + " ist offline.");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + string + ChatColor.RED + " ist offline.");
 	}
 }

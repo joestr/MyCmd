@@ -51,93 +51,53 @@ public class CommandBan_ip implements CommandExecutor {
 		// From a player
 		if(commandSender instanceof Player) {
 			
-			//Player
+			// Cast command sender to a player
 			Player player = (Player) commandSender;
 			
-			if(!player.hasPermission("mycmd.command.ban-ip")) {
-				
-				this.plugin.noPermissionMessage(player, "mycmd.command.ban-ip");
-				return true;
-			}
-			
-			if(args.length >= 2) {
-				
-				if(!player.hasPermission("mycmd.command.ban-ip")) {
-					
-					this.plugin.noPermissionMessage(player, "mycmd.command.ban-ip");
-					return true;
-				}
-				
-				this.playerCommandBan_ip.process(player, args);
-			}
-			
-			if(player.hasPermission("mycmd.command.ban-ip")) {
-				
-				this.plugin.usageMessage(player, "/ban-ip <Adresse> <Grund ...>", "suggest_command", "/ban-ip ", "/ban-ip <IP-Adresse> <Grund ...>");
-				return true;
-			}
+			return this.playerCommandBan_ip.process(player, args);
 		}
 		
-		// From a Block
+		// From a block
 		if(commandSender instanceof BlockCommandSender) {
 			
+			// Cast command sender to a block command sender
 			BlockCommandSender blockCommandSender = (BlockCommandSender) commandSender;
 			
-			if(args.length >= 2) {
-				
-				this.blockCommandBan_ip.process(blockCommandSender, args);
-			}
-			
-			blockCommandSender.sendMessage(this.plugin.usageMessage("/ban-ip <IP-Adresse> <Grund ...>"));
-			return true;
+			return this.blockCommandBan_ip.process(blockCommandSender, args);
 		}
 		
-		// Console
+		// From a console
 		if(commandSender instanceof ConsoleCommandSender) {
 			
+			// Cast command sender to a console command sender
 			ConsoleCommandSender consoleCommandSender = (ConsoleCommandSender) commandSender;
-			if(args.length >= 2) {
-				
-				this.consoleCommandBan_ip.process(consoleCommandSender, args);
-			}
-			
-			consoleCommandSender.sendMessage(this.plugin.usageMessage("/ban-ip <IP-Adresse> <Grund ...>"));
-			return true;
+
+			return this.consoleCommandBan_ip.process(consoleCommandSender, args);
 		}
 		
-		// Proxied Command
+		// Proxied command
 		if(commandSender instanceof ProxiedCommandSender) {
 			
+			// Cast command sender to a proxied command sender
 			ProxiedCommandSender proxiedCommandSender = (ProxiedCommandSender) commandSender;
 			
-			if(args.length >= 2) {
-				
-				this.proxiedCommandBan_ip.process(proxiedCommandSender, args);
-			}
-			
-			proxiedCommandSender.sendMessage(this.plugin.usageMessage("/ban-ip <IP-Adresse> <Grund ...>"));
-			return true;
-			
+			return this.proxiedCommandBan_ip.process(proxiedCommandSender, args);			
 		}
 		
 		// Remote console
 		if(commandSender instanceof RemoteConsoleCommandSender) {
 			
+			// Cast command sender to a remote console command sender
 			RemoteConsoleCommandSender remoteConsoleCommandSender = (RemoteConsoleCommandSender) commandSender;
 			
-			if(args.length >= 2) {
-				
-				this.remoteConsoleCommandBan_ip.process(remoteConsoleCommandSender, args);
-			}
-			
-			remoteConsoleCommandSender.sendMessage(this.plugin.usageMessage("/ban-ip <IP-Adresse> <Grund ...>"));
-			return true;	
+			return this.remoteConsoleCommandBan_ip.process(remoteConsoleCommandSender, args);
 		}
 		
 		// Hier sollte man eigentlich nicht hinkommen.
 		return true;
 	}
 	
+	// Für später (mit Zeitabfrage
 	public void _ban_ip_(CommandSender sender, String[] arg) {
 		
 		Pattern p = Pattern.compile("(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))");

@@ -52,7 +52,7 @@ public class CommandPing implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.ping") && !player.hasPermission("mycmd.command.ping.other")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 				return true;
 			}
 			
@@ -60,11 +60,11 @@ public class CommandPing implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.ping")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.ping"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.ping"));
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.GREEN + "Deine Ping-Zeit beträgt " + ChatColor.GRAY + getPing(player) + "ms" + ChatColor.GREEN + ".");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Deine Ping-Zeit beträgt " + ChatColor.GRAY + getPing(player) + "ms" + ChatColor.GREEN + ".");
 				return true;
 			}
 			
@@ -72,7 +72,7 @@ public class CommandPing implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.ping.other")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.ping.other"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.ping.other"));
 					return true;
 				}
 				
@@ -98,7 +98,7 @@ public class CommandPing implements CommandExecutor {
 				return true;
 			} else {
 				
-				player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.ping"));
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.ping"));
 				return true;
 			}
 		}
@@ -111,7 +111,7 @@ public class CommandPing implements CommandExecutor {
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/ping <Spieler>"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/ping <Spieler>"));
 		return true;
 		//End Console
 	}
@@ -121,11 +121,11 @@ public class CommandPing implements CommandExecutor {
 		
 		if(!Bukkit.getOfflinePlayer(string).isOnline()) {
 			
-			sender.sendMessage(ChatColor.RED + "Spieler " + ChatColor.GRAY + string + ChatColor.RED + " ist offline.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + string + ChatColor.RED + " ist offline.");
 			return;
 		}
 		
-		sender.sendMessage(ChatColor.GREEN + "Die Ping-Zeit vom Spieler " + Bukkit.getServer().getPlayer(string).getDisplayName() + ChatColor.GREEN + " beträgt " + ChatColor.GRAY + getPing(Bukkit.getPlayer(string)) + "ms" + ChatColor.GREEN + ".");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Die Ping-Zeit vom Spieler " + Bukkit.getServer().getPlayer(string).getDisplayName() + ChatColor.GREEN + " beträgt " + ChatColor.GRAY + getPing(Bukkit.getPlayer(string)) + "ms" + ChatColor.GREEN + ".");
 		return;
 	}
 }

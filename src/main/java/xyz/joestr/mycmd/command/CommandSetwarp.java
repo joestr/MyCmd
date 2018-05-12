@@ -29,7 +29,7 @@ public class CommandSetwarp implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.setworldspawn")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 				return true;
 			}
 			
@@ -37,12 +37,12 @@ public class CommandSetwarp implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.setworldspawn")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.setworldspawn"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.setworldspawn"));
 					return true;
 				}
 				
 				player.getLocation().getWorld().setSpawnLocation(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ());
-				player.sendMessage(ChatColor.GREEN + "Der Spawn-Punkt der Welt wurde auf deine aktuelle Position gesetzt.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Spawn-Punkt der Welt wurde auf deine aktuelle Position gesetzt.");
 				return true;
 			}
 			
@@ -64,7 +64,7 @@ public class CommandSetwarp implements CommandExecutor {
 				w = Bukkit.getWorld(arg[0]);
 			} catch(Exception e) {
 				
-				sender.sendMessage(ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
 				return true;
 			}
 			
@@ -75,19 +75,19 @@ public class CommandSetwarp implements CommandExecutor {
 				z = Integer.parseInt(arg[3]);
 			} catch(Exception e) {
 				
-				sender.sendMessage(ChatColor.RED + "Für X, Y und Z müssen Ganzzahlen angegeben werden.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für X, Y und Z müssen Ganzzahlen angegeben werden.");
 				return true;
 			}
 			
 			Location location = new Location(w, x, y, z);
 			
 			w.setSpawnLocation(x, y, z);
-			sender.sendMessage(ChatColor.GREEN + "Der Spawn-Punlt der Welt " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + " wurde auf die Position" +
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Spawn-Punlt der Welt " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + " wurde auf die Position" +
 					location.getWorld().toString() + "/" + location.getX() + "/" + location.getBlockY() + "/" + location.getZ() + ChatColor.GREEN + " gesetzt.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/setworldspawn <Welt> <X> <Y> <Z>"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/setworldspawn <Welt> <X> <Y> <Z>"));
 		return true;
 	}
 }

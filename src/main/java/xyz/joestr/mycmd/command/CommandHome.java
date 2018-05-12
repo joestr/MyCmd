@@ -28,7 +28,7 @@ public class CommandHome implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.home") && !player.hasPermission("mycmd.command.home.other")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 				return true;
 			}
 			
@@ -36,7 +36,7 @@ public class CommandHome implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.home")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.home"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.home"));
 					return true;
 				}
 				
@@ -46,11 +46,11 @@ public class CommandHome implements CommandExecutor {
 						
 						Location location = (Location)this.plugin.homes.getMap().get(player.getUniqueId().toString());
 						player.teleport(location);
-						player.sendMessage(ChatColor.GREEN + "Du wurdest zu deinem Home-Punkt teleportiert.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du wurdest zu deinem Home-Punkt teleportiert.");
 						return true;
 					}
 					
-					player.sendMessage(ChatColor.RED + "Du hast noch keinen Home-Punkt gesetzt.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast noch keinen Home-Punkt gesetzt.");
 					return true;
 				}
 				
@@ -58,11 +58,11 @@ public class CommandHome implements CommandExecutor {
 					
 					Location location = (Location)this.plugin.homes.getMap().get(player.getName());
 					player.teleport(location);
-					player.sendMessage(ChatColor.GREEN + "Du wurdest zu deinem Home-Punkt teleportiert.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du wurdest zu deinem Home-Punkt teleportiert.");
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.RED + "Du hast noch keinen Home-Punkt gesetzt.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast noch keinen Home-Punkt gesetzt.");
 				return true;
 			}
 			
@@ -70,7 +70,7 @@ public class CommandHome implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.home.other")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.home.other"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.home.other"));
 					return true;
 				}
 				
@@ -80,11 +80,11 @@ public class CommandHome implements CommandExecutor {
 						
 						Location location = (Location)this.plugin.homes.getMap().get(Bukkit.getOfflinePlayer(arg[0]).getUniqueId().toString());
 						player.teleport(location);
-						player.sendMessage(ChatColor.GREEN + "Du wurdest zu Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + " teleportiert.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du wurdest zu Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + " teleportiert.");
 						return true;
 					}
 					
-					player.sendMessage(ChatColor.RED + "Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " hat noch keinen Home-Punkt gesetzt.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " hat noch keinen Home-Punkt gesetzt.");
 					return true;
 				}
 				
@@ -92,11 +92,11 @@ public class CommandHome implements CommandExecutor {
 					
 					Location location = (Location)this.plugin.homes.getMap().get(arg[0]);
 					player.teleport(location);
-					player.sendMessage(ChatColor.GREEN + "Du wurdest zu Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + " teleportiert.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du wurdest zu Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + " teleportiert.");
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.RED + "Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " hat noch keinen Home-Punkt gesetzt.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " hat noch keinen Home-Punkt gesetzt.");
 				return true;
 			}
 			
@@ -128,28 +128,28 @@ public class CommandHome implements CommandExecutor {
 				if(this.plugin.homes.getMap().containsKey(Bukkit.getOfflinePlayer(string).getUniqueId().toString())) {
 					
 					Location location = (Location)this.plugin.homes.getMap().get(Bukkit.getOfflinePlayer(string).getUniqueId().toString());
-					sender.sendMessage(ChatColor.GREEN + "Der Home-Punkt von " + ChatColor.GRAY + string + ChatColor.GREEN + " befindet sich bei " +
+					sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Home-Punkt von " + ChatColor.GRAY + string + ChatColor.GREEN + " befindet sich bei " +
 							ChatColor.GRAY + location.getWorld().getName() + "/" + ChatColor.GRAY + location.getX() + "/" + location.getBlockY() + "/" + location.getBlockZ() + ChatColor.GREEN + ".");
 					return true;
 				}
 				
-				sender.sendMessage(ChatColor.GRAY + string + ChatColor.GREEN + " hat noch keinen Home-Punkt gesetzt.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + string + ChatColor.GREEN + " hat noch keinen Home-Punkt gesetzt.");
 				return true;
 			}
 			
 			if(this.plugin.homes.getMap().containsKey(string)) {
 				
 				Location location = (Location)this.plugin.homes.getMap().get(string);
-				sender.sendMessage(ChatColor.GREEN + "Der Home-Punkt vom Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " befindet sich bei " + 
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Home-Punkt vom Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " befindet sich bei " + 
 						ChatColor.GRAY + location.getWorld().getName() + "/" + ChatColor.GRAY + location.getX() + "/" + location.getBlockY() + "/" + location.getBlockZ() + ChatColor.GREEN + ".");
 				return true;
 			}
 			
-			sender.sendMessage(ChatColor.RED + "Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " hat noch keinen Home-Punkt gesetzt.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " hat noch keinen Home-Punkt gesetzt.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/home <Spieler>"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/home <Spieler>"));
 		return true;
 		//End Console
 	}

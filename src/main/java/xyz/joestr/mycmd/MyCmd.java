@@ -178,7 +178,7 @@ public class MyCmd extends JavaPlugin {
 	public Map<String, Date> pvpList = new HashMap<String, Date>();
 	
 	// Liste für gekickte Spieler
-	public ArrayList<String> KickEventList = new ArrayList<String>();
+	public ArrayList<String> kickEventList = new ArrayList<String>();
 	
 	// Kommandoliste
 	public ArrayList<Command> commandList = new ArrayList<Command>();
@@ -216,12 +216,8 @@ public class MyCmd extends JavaPlugin {
 				
 		// Überprüfung des Config-Delegates
 		// Es muss nur das Config-Delegate gepüft werden,
-		// da die anderen Delegates Variable EInträge haben.
-		if(!config.Check()) {
-			Bukkit.getLogger().log(Level.WARNING, "Error in the " + config.getFileName() + " file.");
-			Bukkit.getPluginManager().disablePlugin(this);
-			return;
-		}
+		// da die anderen Delegates Variable Einträge haben.
+		config.EntryCheck();
 		
 		Bukkit.getServer().getScheduler().runTask(
 				this,
@@ -237,7 +233,7 @@ public class MyCmd extends JavaPlugin {
 		this.scoreboard = Bukkit.getServer().getScoreboardManager().getMainScoreboard();
 		
 		// Plugin-Präfix setzen
-		this.pluginPrefix = this.toColorcode("§", (String) this.config.getMap().get("plugin-prefix"));
+		this.pluginPrefix = this.toColorcode("&", (String) this.config.getMap().get("plugin-prefix"));
 		
 		// Kommandos registrieren
 		this.getCommand("warps").setExecutor(new CommandWarps(this));
@@ -357,10 +353,24 @@ public class MyCmd extends JavaPlugin {
 			}
 			
 			// Dem Team Präfix, Suffix und Anzeigename-Präfix setzen.
-			this.scoreboard.getTeam(string).setPrefix(this.toColorcode("&", tStrings[0]));
-			this.scoreboard.getTeam(string).setSuffix(this.toColorcode("&", tStrings[1]));
+			try {
+				this.scoreboard.getTeam(string).setPrefix(this.toColorcode("&", tStrings[0]));
+			} catch(IllegalStateException | IllegalArgumentException e) {
+				Bukkit.getServer().getLogger().log(Level.SEVERE, "Fehler beim setzen des Präfixes vom Rang " + string + ".");
+			}
+			
+			try {
+				this.scoreboard.getTeam(string).setSuffix(this.toColorcode("&", tStrings[1]));
+			} catch(IllegalStateException | IllegalArgumentException e) {
+				Bukkit.getServer().getLogger().log(Level.SEVERE, "Fehler beim setzen des Suffixes vom Rang " + string + ".");
+			}
+			
 			// Anzeigename-Präfix hier faul über den Team-Anzeigename gesetzt ;D
-			this.scoreboard.getTeam(string).setDisplayName(this.toColorcode("&", tStrings[2]));
+			try {
+				this.scoreboard.getTeam(string).setDisplayName(this.toColorcode("&", tStrings[2]));
+			} catch(IllegalStateException | IllegalArgumentException e) {
+				Bukkit.getServer().getLogger().log(Level.SEVERE, "Fehler beim setzen des Anzeigenamen-Präfixes vom Rang " + string + ".");
+			}
 		}
 	}
 	
@@ -437,7 +447,7 @@ public class MyCmd extends JavaPlugin {
 	 * @return {@link String} Formatierte Zeichekette.
 	 */
 	public String usageMessage(String command) {
-		return ChatColor.RED + "Benutze: " + ChatColor.GRAY + command;
+		return this.pluginPrefix + ChatColor.RED + "Benutze: " + ChatColor.GRAY + command;
 	}
 	
 	/**
@@ -457,6 +467,9 @@ public class MyCmd extends JavaPlugin {
 		
 		return "tellraw " + pln + " " + 
 			"[\"\"," + 
+			"{" +
+			"\"text\":\"" + this.pluginPrefix + "\"" +
+			"}," +
 			"{" + 
 			"\"text\":\"Benutze: \",\"color\":\"red\"" + 
 			"}," + 
@@ -499,6 +512,9 @@ public class MyCmd extends JavaPlugin {
 		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), 
 		"tellraw " + player.getName() + " " +
 		"[\"\"," + 
+			"{" +
+			"\"text\":\"" + this.pluginPrefix + "\"" +
+			"}," +
 			"{" + 
 			"\"text\":\"Benutze: \",\"color\":\"red\"" + 
 			"}," + 
@@ -534,7 +550,7 @@ public class MyCmd extends JavaPlugin {
 	 */
 	public String noPermissionMessage() {
 		
-		return ChatColor.RED + "Berechtigung fehlt.";
+		return this.pluginPrefix + ChatColor.RED + "Berechtigung fehlt.";
 	}
 	
 	/**
@@ -544,7 +560,9 @@ public class MyCmd extends JavaPlugin {
 	 * @since 1
 	 * @param player Spieler
 	 */
-	public void noPermissionMessage(Player player) { player.sendMessage(ChatColor.RED + "Berechtigung fehlt."); }
+	public void noPermissionMessage(Player player) {
+		player.sendMessage(this.pluginPrefix + ChatColor.RED + "Berechtigung fehlt.");
+	}
 	
 	/**
 	 * Gibt eine Nachricht die auf fehlende Rechte hinweist zurück.
@@ -556,7 +574,7 @@ public class MyCmd extends JavaPlugin {
 	 * @return {@link String} Formatierte Zeichenkette mit Berechtigungszeichenkette
 	 */
 	public String noPermissionMessage(String perm) {
-		return ChatColor.RED + "Berechtigung " + ChatColor.GRAY + perm + ChatColor.RED + " fehlt.";
+		return this.pluginPrefix + ChatColor.RED + "Berechtigung " + ChatColor.GRAY + perm + ChatColor.RED + " fehlt.";
 	}
 	
 	/**
@@ -568,7 +586,7 @@ public class MyCmd extends JavaPlugin {
 	 * @param perm {@link String} Berechtigung als Zeichenkette
 	 */
 	public void noPermissionMessage(Player player, String perm) {
-		player.sendMessage(ChatColor.RED + "Berechtigung " + ChatColor.GRAY + perm + ChatColor.RED + " fehlt.");
+		player.sendMessage(this.pluginPrefix + ChatColor.RED + "Berechtigung " + ChatColor.GRAY + perm + ChatColor.RED + " fehlt.");
 	}
 	
 	/**

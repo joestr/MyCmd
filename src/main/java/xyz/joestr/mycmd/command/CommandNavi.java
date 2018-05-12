@@ -30,7 +30,7 @@ public class CommandNavi implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.navi")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 				return true;
 			}
 			
@@ -40,11 +40,11 @@ public class CommandNavi implements CommandExecutor {
 			
 			if(arg.length == 0) {
 				
-				player.sendMessage(ChatColor.RED + "Achtung: Dieser Befehl wird überarbeitet.");
-				player.sendMessage(ChatColor.GREEN + "Navi:");
-				player.sendMessage(ChatColor.GRAY + "/navi r - Zum Spawn deiner Welt");
-				player.sendMessage(ChatColor.GRAY + "/navi <Spieler> - Zu einem Spieler");
-				player.sendMessage(ChatColor.GRAY + "/navi <X> <Z> - Zu bestimmten Koordinaten");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Achtung: Dieser Befehl wird überarbeitet.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Navi:");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "/navi r - Zum Spawn deiner Welt");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "/navi <Spieler> - Zu einem Spieler");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "/navi <X> <Z> - Zu bestimmten Koordinaten");
 				
 				return true;
 			}
@@ -53,26 +53,26 @@ public class CommandNavi implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.navi")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.navi"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.navi"));
 					return true;
 				}
 				
 				if(!nw.contains(player.getWorld().getName())) {
 					
-					player.sendMessage(ChatColor.RED + "Für diese Welt ist der Kompass nicht verfügbar.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für diese Welt ist der Kompass nicht verfügbar.");
 					return true;
 				}
 				
 				if(arg[0].equalsIgnoreCase("r")) {
 					
 					player.setCompassTarget(player.getWorld().getSpawnLocation());
-					player.sendMessage(ChatColor.GREEN + "Dein Kompass zeigt nun zum " + ChatColor.GRAY + "Spawn deiner Welt" + ChatColor.GREEN + ".");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Dein Kompass zeigt nun zum " + ChatColor.GRAY + "Spawn deiner Welt" + ChatColor.GREEN + ".");
 					return true;
 				} else {
 					
 					if(player.getName().equals(arg[0])) {
 						
-						player.sendMessage(ChatColor.RED + "Du kannst nicht zu dir selbst navigieren. :(");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du kannst nicht zu dir selbst navigieren. :(");
 						return true;
 					}
 					
@@ -80,10 +80,10 @@ public class CommandNavi implements CommandExecutor {
 						
 						if(!player.getWorld().equals(Bukkit.getPlayer(arg[0]).getWorld())) {
 							
-							player.sendMessage(Bukkit.getPlayer(arg[0]).getDisplayName() + ChatColor.RED + " befindet sich auf einer anderen Welt.");
+							player.sendMessage(this.plugin.pluginPrefix + Bukkit.getPlayer(arg[0]).getDisplayName() + ChatColor.RED + " befindet sich auf einer anderen Welt.");
 						}
 						
-						player.sendMessage(ChatColor.GREEN + "Dein Kompass zeigt nun auf " + Bukkit.getPlayer(arg[0]).getDisplayName() + ".");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Dein Kompass zeigt nun auf " + Bukkit.getPlayer(arg[0]).getDisplayName() + ".");
 						
 						Bukkit.getScheduler().scheduleSyncRepeatingTask(this.plugin, new Runnable() {
 							
@@ -102,7 +102,7 @@ public class CommandNavi implements CommandExecutor {
 						return true;
 					} else {
 						
-						player.sendMessage(ChatColor.RED + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
 						return true;
 					}
 				}
@@ -112,13 +112,13 @@ public class CommandNavi implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.navi")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.navi"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.navi"));
 					return true;
 				}
 				
 				if(!nw.contains(player.getWorld().getName())) {
 					
-					player.sendMessage(ChatColor.RED + "Für diese Welt ist der Kompass nicht verfügbar.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für diese Welt ist der Kompass nicht verfügbar.");
 					return true;
 				}
 				
@@ -131,14 +131,14 @@ public class CommandNavi implements CommandExecutor {
 					z = Integer.parseInt(arg[1]);
 				} catch(Exception e) {
 					
-					player.sendMessage(ChatColor.RED + "Für X und Z müssen Ganzzahlen angegeben werden.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für X und Z müssen Ganzzahlen angegeben werden.");
 				}
 				
 				Location location = new Location(player.getWorld(), x < 0 ? -0.5D : 0.5D, 127, z < 0 ? -0.5D : 0.5D);
 				
 				player.setCompassTarget(location);
 				
-				player.sendMessage(ChatColor.GREEN + "Dein Kompass zeigt nun auf " + ChatColor.GRAY + x + "/127/" + z + ChatColor.GREEN + ".");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Dein Kompass zeigt nun auf " + ChatColor.GRAY + x + "/127/" + z + ChatColor.GREEN + ".");
 				return true;
 			}
 			
@@ -153,11 +153,11 @@ public class CommandNavi implements CommandExecutor {
 		//Console
 		if(arg.length == 0) {
 			
-			sender.sendMessage(ChatColor.RED + "Befehl " + ChatColor.GRAY + "/navi" + ChatColor.RED + " ist in der Konsole nicht verfügbar.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Befehl " + ChatColor.GRAY + "/navi" + ChatColor.RED + " ist in der Konsole nicht verfügbar.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/navi"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/navi"));
 		return true;
 		//End Console
 	}

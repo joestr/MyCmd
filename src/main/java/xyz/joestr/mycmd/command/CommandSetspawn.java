@@ -29,7 +29,7 @@ public class CommandSetspawn implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.setspawn")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 				return true;
 			}
 			
@@ -37,7 +37,7 @@ public class CommandSetspawn implements CommandExecutor {
 				
 				this.plugin.config.getMap().put("spawn", player.getLocation());
 				this.plugin.config.Save();
-				player.sendMessage(ChatColor.GREEN + "Der Spawn-Punkt wurde auf deine aktuelle Position gesetzt.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Spawn-Punkt wurde auf deine aktuelle Position gesetzt.");
 				return true;
 			}
 			
@@ -57,7 +57,7 @@ public class CommandSetspawn implements CommandExecutor {
 				w = Bukkit.getWorld(arg[0]);
 			} catch(Exception e) {
 				
-				sender.sendMessage(ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
 				return true;
 			}
 			
@@ -68,17 +68,17 @@ public class CommandSetspawn implements CommandExecutor {
 				z = Integer.parseInt(arg[3]);
 			} catch(Exception e) {
 				
-				sender.sendMessage(ChatColor.RED + "Für X, Y und Z müssen Ganzzahlen angegeben werden.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für X, Y und Z müssen Ganzzahlen angegeben werden.");
 				return true;
 			}
 			
 			Location location = new Location(w, x, y, z);
 			
-			sender.sendMessage(ChatColor.GREEN + "Der Spawn wurde auf die Position " + ChatColor.GRAY + 
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Spawn wurde auf die Position " + ChatColor.GRAY + 
 					location.getWorld().toString() + "/" + location.getX() + "/" + location.getBlockY() + "/" + location.getZ() + ChatColor.GREEN + " gesetzt.");
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/setspawn <Welt> <X> <Y> <Z>"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/setspawn <Welt> <X> <Y> <Z>"));
 		return true;
 	}
 }

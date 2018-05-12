@@ -28,7 +28,7 @@ public class CommandWarp implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.warp")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 				return true;
 			}
 			
@@ -36,18 +36,18 @@ public class CommandWarp implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.warp")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.warp"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.warp"));
 					return true;
 				}
 				
 				if (this.plugin.warps.getMap().containsKey(arg[0])) {
 					
 					player.teleport((Location)this.plugin.warps.getMap().get(arg[0]));
-					player.sendMessage(ChatColor.GREEN + "Du wurdest zum Warp-Punkt " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + " teleportiert.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du wurdest zum Warp-Punkt " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + " teleportiert.");
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.RED + "Der Warp-Punkt " + ChatColor.GRAY + arg[0] + ChatColor.RED + " wurde noch nicht gesetzt.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Warp-Punkt " + ChatColor.GRAY + arg[0] + ChatColor.RED + " wurde noch nicht gesetzt.");
 				return true;
 			}
 			
@@ -64,16 +64,16 @@ public class CommandWarp implements CommandExecutor {
 			if (this.plugin.warps.getMap().containsKey(arg[0])) {
 				
 				Location location = (Location)this.plugin.warps.getMap().get(arg[0]);
-				sender.sendMessage(ChatColor.GREEN + "Der Warp-Punkt " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + " befindet sich bei " + 
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Warp-Punkt " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + " befindet sich bei " + 
 						ChatColor.GRAY + location.getWorld().getName() + "/" + ChatColor.GRAY + location.getX() + "/" + location.getBlockY() + "/" + location.getBlockZ() + ChatColor.GREEN + ".");
 				return true;
 			}
 			
-			sender.sendMessage(ChatColor.RED + "Der Warp-Punkt " + ChatColor.GRAY + arg[0] + ChatColor.RED + " wurde noch nicht gesetzt.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Warp-Punkt " + ChatColor.GRAY + arg[0] + ChatColor.RED + " wurde noch nicht gesetzt.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/warp <Warp-Punkt>"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/warp <Warp-Punkt>"));
 		return true;
 	}
 }

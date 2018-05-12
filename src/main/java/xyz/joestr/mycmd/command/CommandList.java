@@ -24,7 +24,7 @@ public class CommandList implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.list")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 				return true;
 			}
 			
@@ -32,7 +32,7 @@ public class CommandList implements CommandExecutor {
 				
 				if (!player.hasPermission("mycmd.command.list")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.list"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.list"));
 					return true;
 				}
 				
@@ -53,7 +53,7 @@ public class CommandList implements CommandExecutor {
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/list"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/list"));
 		return true;
 	}
 	
@@ -77,19 +77,19 @@ public class CommandList implements CommandExecutor {
 		
 		if(a.toArray().length == 0) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es sind zurzeit " + ChatColor.GRAY + "keine" + ChatColor.GREEN + " Spieler online.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es sind zurzeit " + ChatColor.GRAY + "keine" + ChatColor.GREEN + " Spieler online.");
 		}
 		
 		if(a.toArray().length == 1) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es ist zurzeit " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler online:");
-			sender.sendMessage(str);
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es ist zurzeit " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler online:");
+			sender.sendMessage(this.plugin.pluginPrefix + str);
 		}
 		
 		if(a.toArray().length >= 2) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es sind zurzeit " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler online:");
-			sender.sendMessage(str);
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es sind zurzeit " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler online:");
+			sender.sendMessage(this.plugin.pluginPrefix + str);
 		}
 	}
 }

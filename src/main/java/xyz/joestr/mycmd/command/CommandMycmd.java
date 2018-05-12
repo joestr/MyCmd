@@ -30,7 +30,7 @@ public class CommandMycmd implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.mycmd")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 				return true;
 			}
 			
@@ -38,7 +38,7 @@ public class CommandMycmd implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.mycmd")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.mycmd"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.mycmd"));
 					return true;
 				}
 				
@@ -61,7 +61,7 @@ public class CommandMycmd implements CommandExecutor {
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/mycmd"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/mycmd"));
 		return true;
 		//End Console
 	}
@@ -80,13 +80,15 @@ public class CommandMycmd implements CommandExecutor {
 		
 		if(!this.plugin.config.Check()) {
 			
-			sender.sendMessage(ChatColor.RED + "Fehler in der Datei " + ChatColor.GRAY + this.plugin.config.getFileName() + ChatColor.RED + " von" + ChatColor.GRAY + " MyCmd " + ChatColor.RED + ". MyCmd deaktiviert.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Fehler in der Datei " + ChatColor.GRAY + this.plugin.config.getFileName() + ChatColor.RED + " von" + ChatColor.GRAY + " MyCmd " + ChatColor.RED + ". MyCmd deaktiviert.");
 			Bukkit.getLogger().log(Level.WARNING, "Error in the " + this.plugin.config.getFileName() + " file of MyCmd. MyCmd deactivated.");
 			Bukkit.getPluginManager().disablePlugin(this.plugin);
 			return;
 		}
 		
-		sender.sendMessage(ChatColor.GREEN + "Die Dateien von " + ChatColor.GRAY + "MyCmd" + ChatColor.GREEN + " wurden neu geladen.");
+		this.plugin.pluginPrefix = this.plugin.toColorcode("&", (String) this.plugin.config.getMap().get("plugin-prefix"));
+		
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Die Dateien von " + ChatColor.GRAY + "MyCmd" + ChatColor.GREEN + " wurden neu geladen.");
 		return;
 	}
 }

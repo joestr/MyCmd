@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bukkit.BanEntry;
 import org.bukkit.BanList.Type;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -56,12 +57,33 @@ public class CommandBan implements CommandExecutor {
 				}
 				
 				Bukkit.getServer().getBanList(Type.NAME).addBan(arg[0], message, null, player.getName());
-				if(Bukkit.getServer().getOfflinePlayer(arg[0]).isOnline()) { Bukkit.getServer().getPlayer(arg[0]).kickPlayer(message); }
+				
+				BanEntry banEntry = Bukkit.getServer().getBanList(Type.NAME).getBanEntry(arg[0]);
+				
+				String kickMessage = 
+						this.plugin.config.getMap().get("ban-screen").toString()
+						.replace("%type%", Type.NAME.toString())
+						.replace("%target%", banEntry.getTarget())
+						.replace("%reason%", banEntry.getReason())
+						.replace("%source%", banEntry.getSource())
+						.replace("%created%", banEntry.getCreated().toInstant().toString())
+						.replace("%expires%", banEntry.getExpiration() == null ? "-" : banEntry.getExpiration().toInstant().toString());
+				
+				if(Bukkit.getServer().getOfflinePlayer(arg[0]).isOnline()) {
+					Bukkit.getServer().getPlayer(arg[0]).kickPlayer(
+							this.plugin.toColorcode("&", kickMessage)
+					);
+				}
+				
 				Bukkit.getServer().broadcastMessage(
-						this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("ban")))
-						.replace("%player%", arg[0])
-						.replace("%reason%", message)
+						this.plugin.toColorcode(
+								"&",
+								((String)this.plugin.config.getMap().get("ban"))
+								.replace("%player%", arg[0])
+								.replace("%reason%", message)
+						)
 				);
+				
 				return true;
 			}
 			
@@ -83,17 +105,37 @@ public class CommandBan implements CommandExecutor {
 				message += arg[i] + " ";
 			}
 			
-			Bukkit.getServer().getBanList(Type.NAME).addBan(arg[0], message, null, "KONSOLE");
-			if(Bukkit.getServer().getOfflinePlayer(arg[0]).isOnline()) { Bukkit.getServer().getPlayer(arg[0]).kickPlayer(message); }
+			Bukkit.getServer().getBanList(Type.NAME).addBan(arg[0], message, null, "KONSOLE/BLOCK/PROXY/REMOTECONSOLE");
+			BanEntry banEntry = Bukkit.getServer().getBanList(Type.NAME).getBanEntry(arg[0]);
+			
+			String kickMessage = 
+					this.plugin.config.getMap().get("ban-screen").toString()
+					.replace("%type%", Type.NAME.toString())
+					.replace("%target%", banEntry.getTarget())
+					.replace("%reason%", banEntry.getReason())
+					.replace("%source%", banEntry.getSource())
+					.replace("%created%", banEntry.getCreated().toInstant().toString())
+					.replace("%expires%", banEntry.getExpiration() == null ? "-" : banEntry.getExpiration().toInstant().toString());
+			
+			if(Bukkit.getServer().getOfflinePlayer(arg[0]).isOnline()) {
+				Bukkit.getServer().getPlayer(arg[0]).kickPlayer(
+						this.plugin.toColorcode("&", kickMessage)
+				);
+			}
+			
 			Bukkit.getServer().broadcastMessage(
-					this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("ban")))
-					.replace("%player%", arg[0])
-					.replace("%reason%", message)
+					this.plugin.toColorcode(
+							"&",
+							((String)this.plugin.config.getMap().get("ban"))
+							.replace("%player%", arg[0])
+							.replace("%reason%", message)
+					)
 			);
+			
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/ban <Spieler> <Grund ...>"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/ban <Spieler> <Grund ...>"));
 		return true;
 	}
 	
@@ -108,7 +150,7 @@ public class CommandBan implements CommandExecutor {
 		}
 		
 		Pattern pattern = Pattern.compile("(([0-9]*)d)*(([0-9]|0[0-9]|1[0-9]|2[0-3])h)*(([0-5][0-9])m)*([0-5][0-9])s");
-		if(!arg[2].matches(pattern.toString())) { sender.sendMessage(ChatColor.RED + "Für Zeit muss folgender String angegeben werden: [<Int>d<Int>h<Int>m]<Int>s"); return; }
+		if(!arg[2].matches(pattern.toString())) { sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Zeit muss folgender String angegeben werden: [<Int>d<Int>h<Int>m]<Int>s"); return; }
 		
 		ArrayList<Integer> al = new ArrayList<Integer>();
 		Pattern pattern2 = Pattern.compile("-?\\d+");
@@ -127,7 +169,6 @@ public class CommandBan implements CommandExecutor {
 		
 		Bukkit.getServer().broadcastMessage(
 				this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("ban-temp")))
-				.replace("%player_displayname%", Bukkit.getServer().getPlayer(arg[0]).getDisplayName())
 				.replace("%player%", Bukkit.getServer().getPlayer(arg[0]).getName())
 				.replace("%reason%", message)
 		);

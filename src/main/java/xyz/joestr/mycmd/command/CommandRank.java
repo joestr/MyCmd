@@ -30,7 +30,7 @@ public class CommandRank implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.rank")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.rank"));
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.rank"));
 				return true;
 			}
 			
@@ -92,7 +92,7 @@ public class CommandRank implements CommandExecutor {
 					
 					_rank_add_(
 							sender,
-							this.plugin.replaceSpecialWhitespaceChar(arg[1]),
+							arg[1],
 							this.plugin.replaceSpecialWhitespaceChar(arg[2]),
 							this.plugin.replaceSpecialWhitespaceChar(arg[3]),
 							this.plugin.replaceSpecialWhitespaceChar(arg[4])
@@ -153,7 +153,7 @@ public class CommandRank implements CommandExecutor {
 				
 				_rank_add_(
 						sender,
-						this.plugin.replaceSpecialWhitespaceChar(arg[1]),
+						arg[1],
 						this.plugin.replaceSpecialWhitespaceChar(arg[2]),
 						this.plugin.replaceSpecialWhitespaceChar(arg[3]),
 						this.plugin.replaceSpecialWhitespaceChar(arg[4])
@@ -162,22 +162,36 @@ public class CommandRank implements CommandExecutor {
 			}
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/rank <on|off|reload|list|add|remove> [Rang] [Präfix] [Suffix] [Anzeigename-Präfix]"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/rank <on|off|reload|list|add|remove> [Rang] [Präfix] [Suffix] [Anzeigename-Präfix]"));
 		return true;
 	}
 	
 	private void _rank_add_(CommandSender sender, String string, String string2, String string3, String string4) {
 		
+		if(string2.length() > 16) {
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Präfix ist zu lang.");
+			return;
+		}
+		
+		if(string2.length() > 16) {
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Suffix ist zu lang.");
+			return;
+		}
+		
+		if(string2.length() > 16) {
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Anzeigename-Präfix ist zu lang.");
+			return;
+		}
+		
 		if(!this.plugin.ranks.getMap().containsKey(string)) {
 			
-			// Hier sind hardcodierte Leerzeichen
 			this.plugin.ranks.getMap().put(string, string2 + ";" + string3 + ";" + string4);
 			this.plugin.ranks.Save();
-			sender.sendMessage(ChatColor.GREEN + "Rang " + ChatColor.GRAY + string + ChatColor.GREEN + " hinzugefügt.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Rang " + ChatColor.GRAY + string + ChatColor.GREEN + " hinzugefügt.");
 			_rank_reload_(sender);
 		} else {
 			
-			sender.sendMessage(ChatColor.RED + "Rang " + ChatColor.GRAY + string + ChatColor.RED + " existiert bereits.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Rang " + ChatColor.GRAY + string + ChatColor.RED + " existiert bereits.");
 		}
 	}
 
@@ -188,21 +202,21 @@ public class CommandRank implements CommandExecutor {
 			this.plugin.ranks.getMap().remove(string);
 			this.plugin.ranks.Save();
 			this.plugin.scoreboard.getTeam(string).unregister();
-			sender.sendMessage(ChatColor.GREEN + "Rang " + ChatColor.GRAY + string + ChatColor.GREEN + " entfernt.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Rang " + ChatColor.GRAY + string + ChatColor.GREEN + " entfernt.");
 			_rank_reload_(sender);
 		} else {
 			
-			sender.sendMessage(ChatColor.RED + "Rang " + ChatColor.GRAY + string + ChatColor.RED + " existiert nicht.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Rang " + ChatColor.GRAY + string + ChatColor.RED + " existiert nicht.");
 		}
 	}
 
 	private void _rank_list_(CommandSender sender) {
 		
-		sender.sendMessage(ChatColor.GREEN + "Ränge:");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Ränge:");
 		
 		for(Team t : this.plugin.scoreboard.getTeams()) {
 			
-			sender.sendMessage(ChatColor.GRAY + t.getName() + ChatColor.GREEN + ": '"
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + t.getName() + ChatColor.GREEN + ": '"
 					+ ChatColor.GRAY + this.plugin.toAlternativeColorcode("§", t.getPrefix()) + ChatColor.GREEN + "', '"
 					+ ChatColor.GRAY + this.plugin.toAlternativeColorcode("§", t.getSuffix()) + ChatColor.GREEN + "', '"
 					+ ChatColor.GRAY + this.plugin.toAlternativeColorcode("§", t.getDisplayName()) + ChatColor.GREEN + "'"
@@ -213,12 +227,12 @@ public class CommandRank implements CommandExecutor {
 
 	private void _rank_off_(CommandSender sender) {
 		
-		sender.sendMessage(ChatColor.RED + "Noch nicht implementiert.");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Noch nicht implementiert.");
 	}
 
 	private void _rank_on_(CommandSender sender) {
 		
-		sender.sendMessage(ChatColor.RED + "Noch nicht implementiert.");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Noch nicht implementiert.");
 	}
 	
 	public void _rank_reload_(CommandSender sender) {
@@ -240,10 +254,24 @@ public class CommandRank implements CommandExecutor {
 				
 				this.plugin.scoreboard.registerNewTeam(string);
 			}
-				
-			this.plugin.scoreboard.getTeam(string).setPrefix(this.plugin.toColorcode("&", tStrings[0]));
-			this.plugin.scoreboard.getTeam(string).setSuffix(this.plugin.toColorcode("&", tStrings[1]));
-			this.plugin.scoreboard.getTeam(string).setDisplayName(this.plugin.toColorcode("&", tStrings[2]));
+			
+			try {
+				this.plugin.scoreboard.getTeam(string).setPrefix(this.plugin.toColorcode("&", tStrings[0]));
+			} catch(IllegalStateException | IllegalArgumentException e) {
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Fehler beim setzen des Präfixes vom Rang " + ChatColor.GRAY + string + ChatColor.RED + ".");
+			}
+			
+			try {
+				this.plugin.scoreboard.getTeam(string).setSuffix(this.plugin.toColorcode("&", tStrings[1]));
+			} catch(IllegalStateException | IllegalArgumentException e) {
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Fehler beim setzen des Suffixes vom Rang " + ChatColor.GRAY + string + ChatColor.RED + ".");
+			}
+			
+			try {
+				this.plugin.scoreboard.getTeam(string).setDisplayName(this.plugin.toColorcode("&", tStrings[2]));
+			} catch(IllegalStateException | IllegalArgumentException e) {
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Fehler beim setzen des Anzeigenamen-Präfixes vom Rang " + ChatColor.GRAY + string + ChatColor.RED + ".");
+			}
 		}
 		
 		for(Player p : Bukkit.getServer().getOnlinePlayers()) {
@@ -274,7 +302,7 @@ public class CommandRank implements CommandExecutor {
 			}
 		}
 		
-		sender.sendMessage(ChatColor.GREEN + "Die Ränge wurden neu gesetzt.");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Die Ränge wurden neu gesetzt.");
 		return;
 	}
 }

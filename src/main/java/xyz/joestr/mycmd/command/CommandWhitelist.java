@@ -32,7 +32,7 @@ public class CommandWhitelist implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.whitelist")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.whitelist"));
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.whitelist"));
 				return true;
 			}
 			
@@ -183,7 +183,7 @@ public class CommandWhitelist implements CommandExecutor {
 			}
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/whitelist <on|off|list|reload|status|add|remove|message> [<Spieler>|<Nachricht ...>]"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/whitelist <on|off|list|reload|status|add|remove|message> [<Spieler>|<Nachricht ...>]"));
 		return true;
 	}
 	
@@ -191,12 +191,12 @@ public class CommandWhitelist implements CommandExecutor {
 		
 		if(Bukkit.getServer().hasWhitelist()) {
 			
-			sender.sendMessage(ChatColor.RED + "Die Whitelist ist bereits aktiviert.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Die Whitelist ist bereits aktiviert.");
 			return;
 		}
 			
 		Bukkit.getServer().setWhitelist(true);
-		sender.sendMessage(ChatColor.GREEN + "Die Whitelist wurde aktiviert.");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Die Whitelist wurde aktiviert.");
 		
 		for(Player player : Bukkit.getServer().getOnlinePlayers()) {
 			
@@ -210,19 +210,19 @@ public class CommandWhitelist implements CommandExecutor {
 		
 		if(!Bukkit.getServer().hasWhitelist()) {
 			
-			sender.sendMessage(ChatColor.RED + "Die Whitelist ist bereits deaktiviert.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Die Whitelist ist bereits deaktiviert.");
 			return;
 		}
 		
 		Bukkit.getServer().setWhitelist(false);
-		sender.sendMessage(ChatColor.GREEN + "Die Whitelist wurde deaktiviert.");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Die Whitelist wurde deaktiviert.");
 		return;
 	}
 	
 	public void _whitelist_reload_(CommandSender sender) {
 		
 		Bukkit.getServer().reloadWhitelist();
-		sender.sendMessage(ChatColor.GREEN + "Die Whitelist wurde neu geladen.");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Die Whitelist wurde neu geladen.");
 		return;
 	}
 	
@@ -230,14 +230,14 @@ public class CommandWhitelist implements CommandExecutor {
 		
 		String onoff = "";
 		if(Bukkit.getServer().hasWhitelist()) { onoff = "aktiviert"; } else { onoff = "deaktiviert"; }
-		sender.sendMessage(ChatColor.GREEN + "Die Whitelist ist " + ChatColor.GRAY + onoff + ChatColor.GREEN + ".");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Die Whitelist ist " + ChatColor.GRAY + onoff + ChatColor.GREEN + ".");
 		return;
 	}
 	
 	
 	public void _whitelist_message_(CommandSender sender) {
 		
-		sender.sendMessage(ChatColor.GREEN + "Die Whitelist-Message lautet: " + ChatColor.RESET + this.plugin.toColorcode("&", (String)this.plugin.config.getMap().get("whitelist-message")));
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Die Whitelist-Message lautet: " + ChatColor.RESET + this.plugin.toColorcode("&", (String)this.plugin.config.getMap().get("whitelist-message")));
 		return;
 	}
 	
@@ -253,7 +253,7 @@ public class CommandWhitelist implements CommandExecutor {
 		
 		this.plugin.config.getMap().put("whitelist-message", message);
 		this.plugin.config.Save();
-		sender.sendMessage(ChatColor.GREEN + "Die Whitelist-Message wurde aktualisiert.");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Die Whitelist-Message wurde aktualisiert.");
 		return;
 	}
 	
@@ -277,29 +277,29 @@ public class CommandWhitelist implements CommandExecutor {
 		
 		if(a.toArray().length == 0) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es sind " + ChatColor.GRAY + "keine" + ChatColor.GREEN + " Spieler auf der Whitelist.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es sind " + ChatColor.GRAY + "keine" + ChatColor.GREEN + " Spieler auf der Whitelist.");
 		}
 		
 		if(a.toArray().length == 1) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es ist " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler auf der Whitelist:");
-			sender.sendMessage(str);
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es ist " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler auf der Whitelist:");
+			sender.sendMessage(this.plugin.pluginPrefix + str);
 		}
 		
 		if(a.toArray().length >= 2) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es sind " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler auf der Whitelist:");
-			sender.sendMessage(str);
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es sind " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler auf der Whitelist:");
+			sender.sendMessage(this.plugin.pluginPrefix + str);
 		}
 	}
 	
 	@SuppressWarnings({ "deprecation", "unlikely-arg-type" })
 	public void _whitelist_add_(CommandSender sender, String[] arg) {
 				
-		if(Bukkit.getServer().getWhitelistedPlayers().contains(arg[1])) { sender.sendMessage(ChatColor.RED + "Spieler " + ChatColor.GRAY + arg[1] + ChatColor.RED + " ist bereits auf der Whitelist."); return; }
+		if(Bukkit.getServer().getWhitelistedPlayers().contains(arg[1])) { sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + arg[1] + ChatColor.RED + " ist bereits auf der Whitelist."); return; }
 		
 		Bukkit.getServer().getOfflinePlayer(arg[1]).setWhitelisted(true);
-		sender.sendMessage(ChatColor.GREEN + "Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " wurde auf die Whitelist gesetzt.");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " wurde auf die Whitelist gesetzt.");
 		return;
 		
 	}
@@ -307,10 +307,10 @@ public class CommandWhitelist implements CommandExecutor {
 	@SuppressWarnings("deprecation")
 	public void _whitelist_remove_(CommandSender sender, String[] arg) {
 				
-		if(!Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getServer().getOfflinePlayer(arg[1]))) { sender.sendMessage(ChatColor.RED + "Spieler " + ChatColor.GRAY + arg[1] + ChatColor.RED + " befindet sich nicht auf der Whitelist."); return; }
+		if(!Bukkit.getServer().getWhitelistedPlayers().contains(Bukkit.getServer().getOfflinePlayer(arg[1]))) { sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + arg[1] + ChatColor.RED + " befindet sich nicht auf der Whitelist."); return; }
 		
 		Bukkit.getServer().getOfflinePlayer(arg[1]).setWhitelisted(true);
-		sender.sendMessage(ChatColor.GREEN + "Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " wurde von der Whitelist entfernt.");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " wurde von der Whitelist entfernt.");
 		return;
 		
 	}

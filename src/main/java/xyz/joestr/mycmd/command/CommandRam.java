@@ -27,7 +27,7 @@ public class CommandRam implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.ram")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 				return true;
 			}
 			
@@ -35,7 +35,7 @@ public class CommandRam implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.ram")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.ram"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.ram"));
 					return true;
 				}
 				
@@ -58,7 +58,7 @@ public class CommandRam implements CommandExecutor {
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/ram"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/ram"));
 		return true;
 		//End Console
 	}
@@ -66,9 +66,9 @@ public class CommandRam implements CommandExecutor {
 	private void _ram_(CommandSender sender) {
 		
 		Runtime runtime = Runtime.getRuntime();
-		sender.sendMessage(ChatColor.GREEN + "Maximaler RAM: " + ChatColor.GRAY + (int)(runtime.maxMemory() / 1000000L) + "MB");
-		sender.sendMessage(ChatColor.GREEN + "Reservierter RAM: " + ChatColor.GRAY + (int)(runtime.totalMemory() / 1000000L) + "MB");
-		sender.sendMessage(ChatColor.GREEN + "Freier RAM: " + ChatColor.GRAY + (int)(runtime.freeMemory() / 1000000L) + "MB");
-		sender.sendMessage(ChatColor.GREEN + "Belegter RAM: " + ChatColor.GRAY + ((int)(runtime.totalMemory() / 1000000L) - (int)(runtime.freeMemory() / 1000000L)) + "MB");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Maximaler RAM: " + ChatColor.GRAY + (int)(runtime.maxMemory() / 1000000L) + "MB");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Reservierter RAM: " + ChatColor.GRAY + (int)(runtime.totalMemory() / 1000000L) + "MB");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Freier RAM: " + ChatColor.GRAY + (int)(runtime.freeMemory() / 1000000L) + "MB");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Belegter RAM: " + ChatColor.GRAY + ((int)(runtime.totalMemory() / 1000000L) - (int)(runtime.freeMemory() / 1000000L)) + "MB");
 	}
 }

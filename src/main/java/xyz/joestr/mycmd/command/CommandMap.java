@@ -29,7 +29,7 @@ public class CommandMap implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.map")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 				return true;
 			}
 			
@@ -37,7 +37,7 @@ public class CommandMap implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.map")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.map"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.map"));
 					return true;
 				}
 				
@@ -47,7 +47,7 @@ public class CommandMap implements CommandExecutor {
 				if(mw.contains(player.getWorld().getName())) {
 					
 					//http://zeus.gstd.eu/?worldname=world&mapname=flat&zoom=3&x=469&y=64&z=-12173
-					player.sendMessage(ChatColor.GREEN + "Map:");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Map:");
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), 
 						"tellraw " + player.getName() + " " + 
 						"[\"\"," + 
@@ -75,7 +75,7 @@ public class CommandMap implements CommandExecutor {
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.RED + "Für diese Welt gibt es keine Karte.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für diese Welt gibt es keine Karte.");
 				return true;
 			}
 			
@@ -90,10 +90,10 @@ public class CommandMap implements CommandExecutor {
 		//Console
 		if(arg.length == 0) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Map: " + ChatColor.GRAY + (String)this.plugin.config.getMap().get("map"));
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Map: " + ChatColor.GRAY + (String)this.plugin.config.getMap().get("map"));
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/map"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/map"));
 		return true;
 		//End Console
 	}

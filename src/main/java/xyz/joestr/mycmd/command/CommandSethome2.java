@@ -30,7 +30,7 @@ public class CommandSethome2
 			
 			if(!player.hasPermission("mycmd.command.sethome2") && !player.hasPermission("mycmd.command.sethome2")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 				return true;
 			}
 			
@@ -38,7 +38,7 @@ public class CommandSethome2
 				
 				if(!player.hasPermission("mycmd.command.sethome2")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.sethome2"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.sethome2"));
 					return true;
 				}
 				
@@ -46,13 +46,13 @@ public class CommandSethome2
 					
 					this.plugin.homes2.getMap().put(player.getUniqueId().toString(), player.getLocation());
 					this.plugin.homes2.Save();
-					player.sendMessage(ChatColor.GREEN + "Dein zweiter Home-Punkt wurde auf die aktuelle Position gesetzt.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Dein zweiter Home-Punkt wurde auf die aktuelle Position gesetzt.");
 					return true;
 				}
 				
 				this.plugin.homes2.getMap().put(player.getName(), player.getLocation());
 				this.plugin.homes2.Save();
-				player.sendMessage(ChatColor.GREEN + "Dein zweiter Home-Punkt wurde auf die aktuelle Position gesetzt.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Dein zweiter Home-Punkt wurde auf die aktuelle Position gesetzt.");
 				return true;
 			}
 			
@@ -60,7 +60,7 @@ public class CommandSethome2
 				
 				if(!player.hasPermission("mycmd.command.sethome2.other")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.sethome2.other"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.sethome2.other"));
 					return true;
 				}
 				
@@ -68,13 +68,13 @@ public class CommandSethome2
 					
 					this.plugin.homes2.getMap().put(Bukkit.getOfflinePlayer(arg[0]).getUniqueId().toString(), player.getLocation());
 					this.plugin.homes2.Save();
-					player.sendMessage(ChatColor.GREEN + "Der zweite Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde auf deine aktuelle Position gesetzt.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der zweite Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde auf deine aktuelle Position gesetzt.");
 					return true;
 				}
 				
 				this.plugin.homes2.getMap().put(arg[0], player.getLocation());
 				this.plugin.homes2.Save();
-				player.sendMessage(ChatColor.GREEN + "Der zweite Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde auf deine aktuelle Position gesetzt.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der zweite Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde auf deine aktuelle Position gesetzt.");
 				return true;
 			}
 			
@@ -109,7 +109,7 @@ public class CommandSethome2
 				w = Bukkit.getWorld(arg[1]);
 			} catch(Exception e) {
 				
-				sender.sendMessage(ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
 				return true;
 			}
 			
@@ -120,7 +120,7 @@ public class CommandSethome2
 				z = Integer.parseInt(arg[4]);
 			} catch(Exception e) {
 				
-				sender.sendMessage(ChatColor.RED + "Für X, Y und Z müssen Ganzzahlen angegeben werden.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für X, Y und Z müssen Ganzzahlen angegeben werden.");
 				return true;
 			}
 			
@@ -130,19 +130,19 @@ public class CommandSethome2
 				
 				this.plugin.homes2.getMap().put(Bukkit.getOfflinePlayer(arg[0]).getUniqueId().toString(), location);
 				this.plugin.homes2.Save();
-				sender.sendMessage(ChatColor.GREEN + "Der zweite Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde auf die Position " + ChatColor.GRAY + 
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der zweite Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde auf die Position " + ChatColor.GRAY + 
 						location.getWorld().toString() + "/" + location.getX() + "/" + location.getBlockY() + "/" + location.getZ() + ChatColor.GREEN + " gesetzt.");
 				return true;
 			}
 			
 			this.plugin.homes2.getMap().put(arg[0], location);
 			this.plugin.homes2.Save();
-			sender.sendMessage(ChatColor.GREEN + "Der zweite Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde auf die Position " + ChatColor.GRAY + 
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der zweite Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde auf die Position " + ChatColor.GRAY + 
 					location.getWorld().toString() + "/" + location.getX() + "/" + location.getBlockY() + "/" + location.getZ() + ChatColor.GREEN + " gesetzt.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/sethome2 <Spieler> <Welt> <X> <Y> <Z>"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/sethome2 <Spieler> <Welt> <X> <Y> <Z>"));
 		return true;
 	}
 }

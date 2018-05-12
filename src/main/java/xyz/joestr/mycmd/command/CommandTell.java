@@ -27,7 +27,7 @@ public class CommandTell implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.tell")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.tell"));
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.tell"));
 				return true;
 			}
 			
@@ -35,7 +35,7 @@ public class CommandTell implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.tell")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage());
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 					return true;
 				}
 				
@@ -52,8 +52,26 @@ public class CommandTell implements CommandExecutor {
 						
 						this.plugin.whisper.put(player.getName(), "KONSOLE");
 						this.plugin.whisper.put("KONSOLE", player.getName());
-						player.sendMessage(this.plugin.toColorcode("&", this.plugin.config.getMap().get("whisper_sender").toString().replace("%target_player_displayname%", ChatColor.WHITE + "KONSOLE").replace("%message%", msg)));
-						Bukkit.getConsoleSender().sendMessage(this.plugin.toColorcode("&", this.plugin.config.getMap().get("whisper_target").toString().replace("%sender_player_displayname%", player.getDisplayName()).replace("%message%", msg)));
+						player.sendMessage(
+								this.plugin.pluginPrefix +
+								this.plugin.toColorcode(
+										"&",
+										this.plugin.config.getMap().get("whisper_sender").toString()
+										.replace("%target_player_displayname%", ChatColor.WHITE + "KONSOLE")
+										.replace("%target_player%", ChatColor.WHITE + "KONSOLE")
+										.replace("%message%", msg)
+								)
+						);
+						Bukkit.getConsoleSender().sendMessage(
+								this.plugin.pluginPrefix +
+								this.plugin.toColorcode(
+										"&",
+										this.plugin.config.getMap().get("whisper_target").toString()
+										.replace("%sender_player_displayname%", player.getDisplayName())
+										.replace("%sender_player%", player.getName())
+										.replace("%message%", msg)
+								)
+						);
 						return true;
 					}
 					
@@ -68,16 +86,34 @@ public class CommandTell implements CommandExecutor {
 						
 						this.plugin.whisper.put(player.getName(), arg[0]);
 						this.plugin.whisper.put(arg[0], player.getName());
-						player.sendMessage(this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("whisper_sender")).toString().replace("%target_player_displayname%", Bukkit.getPlayer(arg[0]).getDisplayName()).replace("%message%", msg)));
-						Bukkit.getPlayer(arg[0]).sendMessage(this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("whisper_target")).toString().replace("%sender_player_displayname%", player.getDisplayName()).replace("%message%", msg)));
+						player.sendMessage(
+								this.plugin.pluginPrefix +
+								this.plugin.toColorcode(
+										"&",
+										((String)this.plugin.config.getMap().get("whisper_sender")).toString()
+										.replace("%target_player_displayname%", Bukkit.getPlayer(arg[0]).getDisplayName())
+										.replace("%target_player%", Bukkit.getPlayer(arg[0]).getName())
+										.replace("%message%", msg)
+								)
+						);
+						Bukkit.getPlayer(arg[0]).sendMessage(
+								this.plugin.pluginPrefix +
+								this.plugin.toColorcode(
+										"&",
+										((String)this.plugin.config.getMap().get("whisper_target")).toString()
+										.replace("%sender_player_displayname%", player.getDisplayName())
+										.replace("%sender_player%", player.getName())
+										.replace("%message%", msg)
+								)
+						);
 						return true;
 					}
 					
-					player.sendMessage(ChatColor.RED + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.RED + "Du kannst nicht mit dir selbst schreiben. :(");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du kannst nicht mit dir selbst schreiben. :(");
 				return true;
 			}
 			
@@ -91,7 +127,7 @@ public class CommandTell implements CommandExecutor {
 		//Console
 		if(arg.length > 1) {
 			
-			if(!arg[0].equals("Server")) {
+			if(!arg[0].equals("KONSOLE")) {
 				
 				if(Bukkit.getOfflinePlayer(arg[0]).isOnline()) {
 					
@@ -102,22 +138,40 @@ public class CommandTell implements CommandExecutor {
 						msg = msg + arg[i] + " ";
 					}
 					
-					this.plugin.whisper.put("Server", arg[0]);
-					this.plugin.whisper.put(arg[0], "Server");
-					Bukkit.getConsoleSender().sendMessage(this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("whisper_sender")).toString().replace("%target_player_displayname%", Bukkit.getPlayer(arg[0]).getDisplayName()).replace("%message%", msg)));
-					Bukkit.getPlayer(arg[0]).sendMessage(this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("whisper_target")).toString().replace("%sender_player_displayname%", ChatColor.WHITE + "Server").replace("%message%", msg)));
+					this.plugin.whisper.put("KONSOLE", arg[0]);
+					this.plugin.whisper.put(arg[0], "KONSOLE");
+					Bukkit.getConsoleSender().sendMessage(
+							this.plugin.pluginPrefix +
+							this.plugin.toColorcode(
+									"&",
+									((String)this.plugin.config.getMap().get("whisper_sender")).toString()
+									.replace("%target_player_displayname%", Bukkit.getPlayer(arg[0]).getDisplayName())
+									.replace("%target_player%", Bukkit.getPlayer(arg[0]).getName())
+									.replace("%message%", msg)
+							)
+					);
+					Bukkit.getPlayer(arg[0]).sendMessage(
+							this.plugin.pluginPrefix +
+							this.plugin.toColorcode(
+									"&",
+									((String)this.plugin.config.getMap().get("whisper_target")).toString()
+									.replace("%sender_player_displayname%", ChatColor.WHITE + "KONSOLE")
+									.replace("%sender_player%", ChatColor.WHITE + "KONSOLE")
+									.replace("%message%", msg)
+							)
+					);
 					return true;
 				}
 				
-				sender.sendMessage(ChatColor.RED + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
 				return true;
 			}
 			
-			sender.sendMessage(ChatColor.RED + "Du kannst nicht mit dir selbst schreiben. :(");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du kannst nicht mit dir selbst schreiben. :(");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/<tell|t|whisper|w|msg> <Spieler> <Nachricht ...>"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/<tell|t|whisper|w|msg> <Spieler> <Nachricht ...>"));
 		return true;
 	}
 }

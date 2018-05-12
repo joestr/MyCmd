@@ -19,11 +19,19 @@ public class EventAsyncChat implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void OnAsyncChat(AsyncPlayerChatEvent event)
 	{
-		if(event.getPlayer().hasPermission("mycmd.chatcolor")) { event.setMessage(this.plugin.toColorcode("&", event.getMessage())); }
+		if(event.getPlayer().hasPermission("mycmd.chatcolor")) {
+			event.setMessage(
+					this.plugin.toColorcode("&", event.getMessage())
+			);
+		}
 		
 		event.setFormat(
-			this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("chat")))
-			.replace("%player_displayname%", event.getPlayer().getDisplayName()).replace("%player%", event.getPlayer().getName())
+			this.plugin.toColorcode(
+					"&",
+					((String)this.plugin.config.getMap().get("chat"))
+					.replace("%player_displayname%", event.getPlayer().getDisplayName())
+					.replace("%player%", event.getPlayer().getName())
+			)
 			+ event.getMessage()
 		);
 	}

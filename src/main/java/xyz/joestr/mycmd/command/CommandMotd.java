@@ -27,19 +27,19 @@ public class CommandMotd implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.motd")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.motd"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.motd"));
 					return true;
 				}
 				
 				if(arg[0].equalsIgnoreCase("1")) {
 					
-					player.sendMessage(ChatColor.GRAY + "Zeile 1" + ChatColor.GREEN + " der " + ChatColor.GRAY + "MOTD" + ChatColor.GREEN + " lautet: " + ChatColor.RESET + this.plugin.toColorcode("&", (String)this.plugin.config.getMap().get("motd1")));
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "Zeile 1" + ChatColor.GREEN + " der " + ChatColor.GRAY + "MOTD" + ChatColor.GREEN + " lautet: " + ChatColor.RESET + this.plugin.toColorcode("&", (String)this.plugin.config.getMap().get("motd1")));
 					return true;
 				}
 				
 				if(arg[0].equalsIgnoreCase("2")) {
 					
-					player.sendMessage(ChatColor.GRAY + "Zeile 2" + ChatColor.GREEN + " der " + ChatColor.GRAY + "MOTD" + ChatColor.GREEN + " lautet: " + ChatColor.RESET + this.plugin.toColorcode("&", (String)this.plugin.config.getMap().get("motd2")));
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "Zeile 2" + ChatColor.GREEN + " der " + ChatColor.GRAY + "MOTD" + ChatColor.GREEN + " lautet: " + ChatColor.RESET + this.plugin.toColorcode("&", (String)this.plugin.config.getMap().get("motd2")));
 					return true;
 				}
 			}
@@ -48,7 +48,7 @@ public class CommandMotd implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.motd.edit")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.motd.edit"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.motd.edit"));
 					return true;
 				}
 				
@@ -62,21 +62,21 @@ public class CommandMotd implements CommandExecutor {
 				
 				if(arg[0].equalsIgnoreCase("1")) {
 					
-					if(cIC(message)) { player.sendMessage(ChatColor.RED + "Folgende Zeichen sind nicht erlaubt: \" \\"); return true; }
+					if(cIC(message)) { player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Folgende Zeichen sind nicht erlaubt: \" \\"); return true; }
 					this.plugin.config.getMap().put("motd1", this.plugin.toAlternativeColorcode("§", message));
 					this.plugin.config.Save();
 					_refreshtab_();
-					player.sendMessage(ChatColor.GRAY + "Zeile 1" + ChatColor.GREEN + " der " + ChatColor.GRAY + "MOTD" + ChatColor.GREEN + " wurde aktualisiert.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "Zeile 1" + ChatColor.GREEN + " der " + ChatColor.GRAY + "MOTD" + ChatColor.GREEN + " wurde aktualisiert.");
 					return true;
 				}
 				
 				if(arg[0].equalsIgnoreCase("2")) {
 					
-					if(cIC(message)) { player.sendMessage(ChatColor.RED + "Folgende Zeichen sind nicht erlaubt: \" \\"); return true; }
+					if(cIC(message)) { player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Folgende Zeichen sind nicht erlaubt: \" \\"); return true; }
 					this.plugin.config.getMap().put("motd2", this.plugin.toAlternativeColorcode("§", message));
 					this.plugin.config.Save();
 					_refreshtab_();
-					player.sendMessage(ChatColor.GRAY + "Zeile 2" + ChatColor.GREEN + " der " + ChatColor.GRAY + "MOTD" + ChatColor.GREEN + " wurde aktualisiert.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "Zeile 2" + ChatColor.GREEN + " der " + ChatColor.GRAY + "MOTD" + ChatColor.GREEN + " wurde aktualisiert.");
 					return true;
 				}
 			}
@@ -104,13 +104,13 @@ public class CommandMotd implements CommandExecutor {
 			
 			if(arg[0].equalsIgnoreCase("1")) {
 				
-				sender.sendMessage(ChatColor.GRAY + "Zeile 1" + ChatColor.GREEN + " der " + ChatColor.GRAY + "MOTD" + ChatColor.GREEN + " lautet: " + ChatColor.RESET + this.plugin.toColorcode("&", (String)this.plugin.config.getMap().get("motd1")));
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "Zeile 1" + ChatColor.GREEN + " der " + ChatColor.GRAY + "MOTD" + ChatColor.GREEN + " lautet: " + ChatColor.RESET + this.plugin.toColorcode("&", (String)this.plugin.config.getMap().get("motd1")));
 				return true;
 			}
 			
 			if(arg[0].equalsIgnoreCase("2")) {
 				
-				sender.sendMessage(ChatColor.GRAY + "Zeile 1" + ChatColor.GREEN + " der " + ChatColor.GRAY + "MOTD" + ChatColor.GREEN + " lautet: " + ChatColor.RESET + this.plugin.toColorcode("&", (String)this.plugin.config.getMap().get("motd1")));
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "Zeile 1" + ChatColor.GREEN + " der " + ChatColor.GRAY + "MOTD" + ChatColor.GREEN + " lautet: " + ChatColor.RESET + this.plugin.toColorcode("&", (String)this.plugin.config.getMap().get("motd1")));
 				return true;
 			}
 		}
@@ -127,26 +127,26 @@ public class CommandMotd implements CommandExecutor {
 			
 			if(arg[0].equalsIgnoreCase("1")) {
 				
-				if(cIC(message)) { sender.sendMessage(ChatColor.RED + "Folgende Zeichen sind nicht erlaubt: \" \\"); return true; }
+				if(cIC(message)) { sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Folgende Zeichen sind nicht erlaubt: \" \\"); return true; }
 				this.plugin.config.getMap().put("motd1", this.plugin.toAlternativeColorcode("§", message));
 				this.plugin.config.Save();
 				_refreshtab_();
-				sender.sendMessage(ChatColor.GRAY + "Zeile 1" + ChatColor.GREEN + " der " + ChatColor.GRAY + "MOTD" + ChatColor.GREEN + " wurde aktualisiert.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "Zeile 1" + ChatColor.GREEN + " der " + ChatColor.GRAY + "MOTD" + ChatColor.GREEN + " wurde aktualisiert.");
 				return true;
 			}
 			
 			if(arg[0].equalsIgnoreCase("2")) {
 				
-				if(cIC(message)) { sender.sendMessage(ChatColor.RED + "Folgende Zeichen sind nicht erlaubt: \" \\"); return true; }
+				if(cIC(message)) { sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Folgende Zeichen sind nicht erlaubt: \" \\"); return true; }
 				this.plugin.config.getMap().put("motd2", this.plugin.toAlternativeColorcode("§", message));
 				this.plugin.config.Save();
 				_refreshtab_();
-				sender.sendMessage(ChatColor.GRAY + "Zeile 2" + ChatColor.GREEN + " der " + ChatColor.GRAY + "MOTD" + ChatColor.GREEN + " wurde aktualisiert.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "Zeile 2" + ChatColor.GREEN + " der " + ChatColor.GRAY + "MOTD" + ChatColor.GREEN + " wurde aktualisiert.");
 				return true;
 			}
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/motd <1|2> [<Text ...>]"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/motd <1|2> [<Text ...>]"));
 		return true;
 	}
 	

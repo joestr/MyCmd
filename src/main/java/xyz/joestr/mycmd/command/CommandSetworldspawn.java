@@ -41,7 +41,7 @@ public class CommandSetworldspawn implements CommandExecutor {
 				
 				this.plugin.warps.getMap().put(arg[0], player.getLocation());
 				this.plugin.warps.Save();
-				player.sendMessage(ChatColor.GREEN + "Der Spawnpunkt deiner Welt wurde auf deine aktuelle Position gesetzt.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Spawnpunkt deiner Welt wurde auf deine aktuelle Position gesetzt.");
 				return true;
 			}
 			
@@ -63,7 +63,7 @@ public class CommandSetworldspawn implements CommandExecutor {
 				w = Bukkit.getWorld(arg[0]);
 			} catch(Exception e) {
 				
-				sender.sendMessage(ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
 				return true;
 			}
 			
@@ -74,17 +74,17 @@ public class CommandSetworldspawn implements CommandExecutor {
 				z = Integer.parseInt(arg[3]);
 			} catch(Exception e) {
 				
-				sender.sendMessage(ChatColor.RED + "Für X, Y und Z müssen Ganzzahlen angegeben werden.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für X, Y und Z müssen Ganzzahlen angegeben werden.");
 				return true;
 			}
 			
 			w.setSpawnLocation(x, y, z);
-			sender.sendMessage(ChatColor.GREEN + "Der Spawnpunkt der Welt " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + " wurde auf die Position" +
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Spawnpunkt der Welt " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + " wurde auf die Position" +
 					x + "/" + x + "/" + z + ChatColor.GREEN + " gesetzt.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/setworldspawn <Welt> <X> <Y> <Z>"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/setworldspawn <Welt> <X> <Y> <Z>"));
 		return true;
 	}
 }

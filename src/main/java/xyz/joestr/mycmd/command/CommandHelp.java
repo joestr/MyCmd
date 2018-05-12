@@ -30,7 +30,7 @@ public class CommandHelp implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.help")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.help"));
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.help"));
 				return true;
 			}
 			
@@ -67,7 +67,7 @@ public class CommandHelp implements CommandExecutor {
 					this.plugin.usageMessage(player, "/help [<Seite>]", "suggest_command", "/help ", "/help [<Seite>]"); return true;
 				}
 				
-				if(page < 1 || page > Math.ceil(al.size() / 7)) { player.sendMessage("Verfügbare Seiten: 1 bis " + Math.ceil(al.size() / 7)); }
+				if(page < 1 || page > Math.ceil(al.size() / 7)) { player.sendMessage(this.plugin.pluginPrefix + "Verfügbare Seiten: 1 bis " + Math.ceil(al.size() / 7)); }
 				
 				for(int i = ((page - 1) * 7); i < (page * 7) ; i++) {
 					
@@ -93,12 +93,12 @@ public class CommandHelp implements CommandExecutor {
 		//Console
 		if(arg.length == 0) {
 			
-			sender.sendMessage(ChatColor.GRAY + "--- " + ChatColor.GREEN + "Hilfe" + ChatColor.GRAY + " --- " + ChatColor.GREEN + "(Seite " + ChatColor.GRAY + "1" + ChatColor.GREEN + " von " + ChatColor.GRAY + Math.ceil(this.plugin.commandList.size() / 7) + ChatColor.GREEN + ")");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "--- " + ChatColor.GREEN + "Hilfe" + ChatColor.GRAY + " --- " + ChatColor.GREEN + "(Seite " + ChatColor.GRAY + "1" + ChatColor.GREEN + " von " + ChatColor.GRAY + Math.ceil(this.plugin.commandList.size() / 7) + ChatColor.GREEN + ")");
 			
 			for(int i = 0; i < 7; i++) {
 				
 				if(this.plugin.commandList.isEmpty() || i >= this.plugin.commandList.size()) { break; }
-				sender.sendMessage(ChatColor.GRAY + this.plugin.commandList.get(i).getName() + " (?)");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + this.plugin.commandList.get(i).getName() + " (?)");
 			}
 			
 			return true;
@@ -110,23 +110,23 @@ public class CommandHelp implements CommandExecutor {
 			
 			try { page = Integer.parseInt(arg[0]); } catch(Exception exception) {
 				
-				sender.sendMessage(this.plugin.usageMessage("/help [<Seite>]")); return true;
+				sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/help [<Seite>]")); return true;
 			}
 			
-			if(page < 1 || page > Math.ceil(this.plugin.commandList.size() / 7)) { sender.sendMessage("Verfügbare Seiten: 1 bis " + Math.ceil(this.plugin.commandList.size() / 7)); return true; }
+			if(page < 1 || page > Math.ceil(this.plugin.commandList.size() / 7)) { sender.sendMessage(this.plugin.pluginPrefix + "Verfügbare Seiten: 1 bis " + Math.ceil(this.plugin.commandList.size() / 7)); return true; }
 			
-			sender.sendMessage(ChatColor.GRAY + "--- " + ChatColor.GREEN + "Hilfe" + ChatColor.GRAY + " --- " + ChatColor.GREEN + "(Seite " + ChatColor.GRAY + page + ChatColor.GREEN + " von " + ChatColor.GRAY + Math.ceil(this.plugin.commandList.size() / 7) + ChatColor.GREEN + ")");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "--- " + ChatColor.GREEN + "Hilfe" + ChatColor.GRAY + " --- " + ChatColor.GREEN + "(Seite " + ChatColor.GRAY + page + ChatColor.GREEN + " von " + ChatColor.GRAY + Math.ceil(this.plugin.commandList.size() / 7) + ChatColor.GREEN + ")");
 			
 			for(int i = ((page - 1) * 7); i < (page * 7) ; i++) {
 				
 				if(this.plugin.commandList.isEmpty() || i >= this.plugin.commandList.size()) { break; }
-				sender.sendMessage(ChatColor.GRAY + this.plugin.commandList.get(i).getName() + " (?)");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + this.plugin.commandList.get(i).getName() + " (?)");
 			}
 			
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/help [<Seite>]"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/help [<Seite>]"));
 		return true;
 	}
 

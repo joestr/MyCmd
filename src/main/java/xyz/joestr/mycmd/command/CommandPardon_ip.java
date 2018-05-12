@@ -30,7 +30,7 @@ public class CommandPardon_ip implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.pardon")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.pardon"));
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.pardon"));
 				return true;
 			}
 			
@@ -38,7 +38,7 @@ public class CommandPardon_ip implements CommandExecutor {
 				
 				if(!Bukkit.getServer().getBanList(Type.IP).isBanned(arg[0])) {
 					
-					player.sendMessage(ChatColor.RED + "IP " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist nicht gebannt.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "IP-Adresse " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist nicht gebannt.");
 					return true;
 				}
 				
@@ -51,13 +51,20 @@ public class CommandPardon_ip implements CommandExecutor {
 				}
 				
 				Bukkit.getServer().getBanList(Type.IP).pardon(arg[0]);
-				Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "IP " + ChatColor.GRAY + arg[0] + ChatColor.YELLOW +" wurde entbannt. (" + ChatColor.GRAY + message + ChatColor.YELLOW + ")");
+				Bukkit.getServer().broadcastMessage(
+						this.plugin.toColorcode(
+								"&", 
+								((String)this.plugin.config.getMap().get("pardon-ip"))
+								.replace("%ip%", arg[0])
+								.replace("%reason%", message)
+						)
+				);
 				return true;
 			}
 			
 			if(player.hasPermission("mycmd.command.pardon")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/pardon-ip <IP> <Grund ...>", "suggest_command", "/pardon-ip ", "/pardon-ip <IP> <Grund ...>"));
+				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/pardon-ip <IP-Adresse> <Grund ...>", "suggest_command", "/pardon-ip ", "/pardon-ip <IP> <Grund ...>"));
 			}
 			
 			return true;
@@ -68,7 +75,7 @@ public class CommandPardon_ip implements CommandExecutor {
 			
 			if(!Bukkit.getServer().getBanList(Type.IP).isBanned(arg[0])) {
 				
-				sender.sendMessage(ChatColor.RED + "IP " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist nicht gebannt.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "IP-Adresse " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist nicht gebannt.");
 				return true;
 			}
 			
@@ -80,12 +87,19 @@ public class CommandPardon_ip implements CommandExecutor {
 				message += arg[i] + " ";
 			}
 			
-			Bukkit.getServer().getBanList(Type.NAME).pardon(arg[0]);
-			Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "IP " + ChatColor.GRAY + arg[0] + ChatColor.YELLOW +" wurde entbannt. (" + ChatColor.GRAY + message + ChatColor.YELLOW + ")");
+			Bukkit.getServer().getBanList(Type.IP).pardon(arg[0]);
+			Bukkit.getServer().broadcastMessage(
+					this.plugin.toColorcode(
+							"&", 
+							((String)this.plugin.config.getMap().get("pardon-ip"))
+							.replace("%ip%", arg[0])
+							.replace("%reason%", message)
+					)
+			);
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/pardon-ip <IP> <Grund ...>"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/pardon-ip <IP-Adresse> <Grund ...>"));
 		return true;
 	}
 }

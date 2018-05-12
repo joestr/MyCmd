@@ -56,7 +56,7 @@ public class CommandDelwarp implements CommandExecutor {
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/delwarp <Warp-Punkt>"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/delwarp <Warp-Punkt>"));
 		return true;
 		//End Console
 	}
@@ -74,15 +74,15 @@ public class CommandDelwarp implements CommandExecutor {
 				
 				this.plugin.warps.getMap().remove(string);
 				this.plugin.warps.Save();
-				sender.sendMessage(ChatColor.GREEN + "Der Warp-Punkt " + ChatColor.GRAY + string + ChatColor.GREEN + " wurde gelöscht.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Warp-Punkt " + ChatColor.GRAY + string + ChatColor.GREEN + " wurde gelöscht.");
 				return;
 			}
 				
-			sender.sendMessage(ChatColor.RED + "Der Warp-Punkt " + ChatColor.GRAY + string + ChatColor.RED + " existiert nicht.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Warp-Punkt " + ChatColor.GRAY + string + ChatColor.RED + " existiert nicht.");
 			return;
 		}
 		
-		sender.sendMessage(ChatColor.RED + "Der Warp-Punkt " + ChatColor.GRAY + string + ChatColor.RED + " existiert nicht.");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Warp-Punkt " + ChatColor.GRAY + string + ChatColor.RED + " existiert nicht.");
 		return;
 	}
 }

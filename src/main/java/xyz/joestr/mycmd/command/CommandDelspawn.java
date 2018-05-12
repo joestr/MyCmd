@@ -56,7 +56,7 @@ public class CommandDelspawn implements CommandExecutor {
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/delspawn"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/delspawn"));
 		return true;
 		//End Console
 	}
@@ -69,13 +69,13 @@ public class CommandDelspawn implements CommandExecutor {
 		
 		if(this.plugin.config.getMap().get("spawn") == null) {
 			
-			sender.sendMessage(ChatColor.RED + "Der Spawn-Punkt wurde noch nicht gesetzt.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Spawn-Punkt wurde noch nicht gesetzt.");
 			return;
 		}
 		
 		this.plugin.config.Reset();
 		this.plugin.config.Save();
-		sender.sendMessage(ChatColor.GREEN + "Der Spawn-Punkt wurde gelöscht.");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Spawn-Punkt wurde gelöscht.");
 		return;
 	}
 }

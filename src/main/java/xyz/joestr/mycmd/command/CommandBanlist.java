@@ -74,7 +74,7 @@ public class CommandBanlist implements CommandExecutor {
 			}
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/banlist <ip|player>"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/banlist <ip|player>"));
 		return true;
 	}
 	
@@ -98,19 +98,19 @@ public class CommandBanlist implements CommandExecutor {
 		
 		if(a.toArray().length == 0) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es sind " + ChatColor.GRAY + "keine" + ChatColor.GREEN + " IP-Adressen gebannt.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es sind " + ChatColor.GRAY + "keine" + ChatColor.GREEN + " IP-Adressen gebannt.");
 		}
 		
 		if(a.toArray().length == 1) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es ist " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " IP-Adresse gebannt:");
-			sender.sendMessage(str);
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es ist " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " IP-Adresse gebannt:");
+			sender.sendMessage(this.plugin.pluginPrefix + str);
 		}
 		
 		if(a.toArray().length >= 2) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es sind " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " IP-Adressen gebannt:");
-			sender.sendMessage(str);
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es sind " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " IP-Adressen gebannt:");
+			sender.sendMessage(this.plugin.pluginPrefix + str);
 		}
 	}
 	
@@ -134,19 +134,19 @@ public class CommandBanlist implements CommandExecutor {
 		
 		if(a.toArray().length == 0) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es sind " + ChatColor.GRAY + "keine" + ChatColor.GREEN + " Spieler gebannt.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es sind " + ChatColor.GRAY + "keine" + ChatColor.GREEN + " Spieler gebannt.");
 		}
 		
 		if(a.toArray().length == 1) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es ist " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler gebannt:");
-			sender.sendMessage(str);
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es ist " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler gebannt:");
+			sender.sendMessage(this.plugin.pluginPrefix + str);
 		}
 		
 		if(a.toArray().length >= 2) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es sind " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler gebannt:");
-			sender.sendMessage(str);
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es sind " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler gebannt:");
+			sender.sendMessage(this.plugin.pluginPrefix + str);
 		}
 	}
 }

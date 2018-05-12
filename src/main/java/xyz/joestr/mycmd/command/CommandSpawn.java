@@ -25,7 +25,7 @@ public class CommandSpawn implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.spawn")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 				return true;
 			}
 			
@@ -33,19 +33,19 @@ public class CommandSpawn implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.spawn")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.spawn"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.spawn"));
 					return true;
 				}
 				
 				if (this.plugin.config.getMap().get("spawn") == null) {
 					
-					player.sendMessage(ChatColor.RED + "Der Spawn-Punkt wurde noch nicht gesetzt.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Spawn-Punkt wurde noch nicht gesetzt.");
 					return true;
 				}
 				
 				Location location = (Location) this.plugin.config.getMap().get("spawn");
 				if(player.teleport(location)) {
-					player.sendMessage(ChatColor.GREEN + "Du wurdest zum Spawn-Punkt teleportiert.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du wurdest zum Spawn-Punkt teleportiert.");
 				}
 				return true;
 			}
@@ -62,17 +62,17 @@ public class CommandSpawn implements CommandExecutor {
 			
 			if (this.plugin.config.getMap().get("spawn") == null) {
 				
-				sender.sendMessage(ChatColor.RED + "Der Spawn-Punkt wurde noch nicht gesetzt.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Spawn-Punkt wurde noch nicht gesetzt.");
 				return true;
 			}
 			
 			Location location = (Location) this.plugin.config.getMap().get("spawn");
-			sender.sendMessage(ChatColor.GREEN + "Der Spawn-Punkt befindet sich bei " +
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Spawn-Punkt befindet sich bei " +
 					ChatColor.GRAY + location.getWorld().getName() + "/" + location.getX() + "/" + location.getBlockY() + "/" + location.getZ() + ChatColor.GREEN + ".");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/spawn"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/spawn"));
 		return true;
 	}
 }

@@ -39,14 +39,14 @@ public class CommandTpdeny implements CommandExecutor {
 						
 						if(Bukkit.getOfflinePlayer((String)this.plugin.tpaSwitched.get(player.getName())).isOnline()) {
 							
-							player.sendMessage(ChatColor.RED + "Du hast die TP-Anfrage von " + Bukkit.getPlayer((String)this.plugin.tpaSwitched.get(player.getName())).getDisplayName() + ChatColor.RED + " abgelehnt.");
-							Bukkit.getPlayer((String)this.plugin.tpaSwitched.get(player.getName())).sendMessage(player.getDisplayName() + ChatColor.RED + " hat deine TP-Anfrage abgelehnt.");
+							player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast die TP-Anfrage von " + Bukkit.getPlayer((String)this.plugin.tpaSwitched.get(player.getName())).getDisplayName() + ChatColor.RED + " abgelehnt.");
+							Bukkit.getPlayer((String)this.plugin.tpaSwitched.get(player.getName())).sendMessage(this.plugin.pluginPrefix + player.getDisplayName() + ChatColor.RED + " hat deine TP-Anfrage abgelehnt.");
 							this.plugin.tpa.remove(this.plugin.tpaSwitched.get(player.getName()));
 							this.plugin.tpaSwitched.remove(player.getName());
 							return true;
 						}
 						
-						player.sendMessage(ChatColor.RED + "Du hast die TP-Anfrage von " + ChatColor.GRAY + (String)this.plugin.tpaSwitched.get(player.getName()) + ChatColor.RED + " abgelehnt.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast die TP-Anfrage von " + ChatColor.GRAY + (String)this.plugin.tpaSwitched.get(player.getName()) + ChatColor.RED + " abgelehnt.");
 						return true;
 					}
 					
@@ -54,23 +54,23 @@ public class CommandTpdeny implements CommandExecutor {
 						
 						if(Bukkit.getOfflinePlayer((String)this.plugin.tpahereSwitched.get(player.getName())).isOnline()) {
 							
-							player.sendMessage(ChatColor.RED + "Du hast die TP-Anfrage von " + Bukkit.getPlayer((String)this.plugin.tpahereSwitched.get(player.getName())).getDisplayName() + ChatColor.RED + " abgelehnt.");
-							Bukkit.getPlayer((String)this.plugin.tpahereSwitched.get(player.getName())).sendMessage(player.getDisplayName() + ChatColor.RED + " hat deine TP-Anfrage abgelehnt.");
+							player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast die TP-Anfrage von " + Bukkit.getPlayer((String)this.plugin.tpahereSwitched.get(player.getName())).getDisplayName() + ChatColor.RED + " abgelehnt.");
+							Bukkit.getPlayer((String)this.plugin.tpahereSwitched.get(player.getName())).sendMessage(this.plugin.pluginPrefix + player.getDisplayName() + ChatColor.RED + " hat deine TP-Anfrage abgelehnt.");
 							this.plugin.tpahere.remove(this.plugin.tpahereSwitched.get(player.getName()));
 							this.plugin.tpahereSwitched.remove(player.getName());
 							return true;
 						}
 						
-						player.sendMessage(ChatColor.RED + "Du hast die TP-Anfrage von " + ChatColor.GRAY + (String)this.plugin.tpahereSwitched.get(player.getName()) + ChatColor.RED + " abgelehnt.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast die TP-Anfrage von " + ChatColor.GRAY + (String)this.plugin.tpahereSwitched.get(player.getName()) + ChatColor.RED + " abgelehnt.");
 						return true;
 					}
 					
-					player.sendMessage(ChatColor.RED + "Du hast eine TP-Anfrage erhalten, aber niemand hat dir eine gesendet!?");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast eine TP-Anfrage erhalten, aber niemand hat dir eine gesendet!?");
 					this.plugin.tpaSwitched.remove(player.getName());
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.RED + "Du hast keine TP-Anfrage erhalten.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast keine TP-Anfrage erhalten.");
 				return true;
 			}
 			
@@ -85,11 +85,11 @@ public class CommandTpdeny implements CommandExecutor {
 		
 		if(arg.length == 0) {
 			
-			sender.sendMessage(ChatColor.RED + "Der Befehl /tpdeny ist in der Konsole nicht verfügbar.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Befehl /tpdeny ist in der Konsole nicht verfügbar.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/tpdeny"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/tpdeny"));
 		return true;
 	}
 }

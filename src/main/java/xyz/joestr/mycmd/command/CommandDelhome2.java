@@ -44,11 +44,11 @@ public class CommandDelhome2 implements CommandExecutor {
 						
 						this.plugin.homes2.getMap().remove(player.getUniqueId().toString());
 						this.plugin.homes2.Save();
-						player.sendMessage(ChatColor.GREEN + "Du hast deinen zweiten Home-Punkt gelöscht.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast deinen zweiten Home-Punkt gelöscht.");
 						return true;
 					}
 					
-					player.sendMessage(ChatColor.RED + "Du hast noch keinen zweiten Home-Punkt gesetzt.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast noch keinen zweiten Home-Punkt gesetzt.");
 					return true;
 				}
 				
@@ -56,11 +56,11 @@ public class CommandDelhome2 implements CommandExecutor {
 					
 					this.plugin.homes2.getMap().remove(player.getName());
 					this.plugin.homes2.Save();
-					player.sendMessage(ChatColor.GREEN + "Du hast deinen zweiten Home-Punkt gelöscht.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast deinen zweiten Home-Punkt gelöscht.");
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.RED + "Du hast noch keinen zweiten Home-Punkt gesetzt.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast noch keinen zweiten Home-Punkt gesetzt.");
 				return true;
 			}
 			
@@ -103,7 +103,7 @@ public class CommandDelhome2 implements CommandExecutor {
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/delhome2 <Spieler>"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/delhome2 <Spieler>"));
 		return true;
 		//End Console
 	}
@@ -122,11 +122,11 @@ public class CommandDelhome2 implements CommandExecutor {
 				
 				this.plugin.homes2.getMap().remove(Bukkit.getOfflinePlayer(string).getUniqueId().toString());
 				this.plugin.homes2.Save();
-				sender.sendMessage(ChatColor.GREEN + "Du hast den zweiten Home-Punkt vom Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " gelöscht.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast den zweiten Home-Punkt vom Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " gelöscht.");
 				return;
 			}
 			
-			sender.sendMessage(ChatColor.RED + "Spieler " + ChatColor.GRAY + string + ChatColor.RED + " hat noch keinen zweiten Home-Punkt gesetzt.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + string + ChatColor.RED + " hat noch keinen zweiten Home-Punkt gesetzt.");
 			return;
 		}
 		
@@ -134,11 +134,11 @@ public class CommandDelhome2 implements CommandExecutor {
 			
 			this.plugin.homes2.getMap().remove(string);
 			this.plugin.homes2.Save();
-			sender.sendMessage(ChatColor.GREEN + "Du hast den zweiten Home-Punkt vom Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " gelöscht.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast den zweiten Home-Punkt vom Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " gelöscht.");
 			return;
 		}
 		
-		sender.sendMessage(ChatColor.RED + "Spieler " + ChatColor.GRAY + string + ChatColor.RED + " hat noch keinen Home-Punkt gesetzt.");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + string + ChatColor.RED + " hat noch keinen Home-Punkt gesetzt.");
 		return;
 	}
 }

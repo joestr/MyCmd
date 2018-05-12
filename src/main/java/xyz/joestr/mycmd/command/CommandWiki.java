@@ -27,7 +27,7 @@ public class CommandWiki implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.wiki")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 				return true;
 			}
 			
@@ -35,11 +35,11 @@ public class CommandWiki implements CommandExecutor {
 			{
 				if(!player.hasPermission("mycmd.command.wiki")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.wiki"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.wiki"));
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.GREEN + "Wiki:");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Wiki:");
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), 
 					"tellraw " + player.getName() + " " + 
 					"[\"\"," + 
@@ -78,11 +78,11 @@ public class CommandWiki implements CommandExecutor {
 		//Console
 		if(arg.length == 0) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Wiki: " + ChatColor.GRAY + (String)this.plugin.config.getMap().get("wiki"));
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Wiki: " + ChatColor.GRAY + (String)this.plugin.config.getMap().get("wiki"));
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/wiki"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/wiki"));
 		return true;
 	}
 }

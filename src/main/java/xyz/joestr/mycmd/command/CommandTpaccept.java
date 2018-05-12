@@ -49,7 +49,7 @@ public class CommandTpaccept implements CommandExecutor {
 									(String) this.plugin.tpaSwitched.get(player.getName())
 							).teleport(player);
 							
-							player.sendMessage(
+							player.sendMessage(this.plugin.pluginPrefix + 
 									Bukkit.getPlayer(
 											(String)this.plugin.tpaSwitched.get(
 													player.getName()
@@ -63,7 +63,7 @@ public class CommandTpaccept implements CommandExecutor {
 									(String) this.plugin.tpaSwitched.get(
 											player.getName()
 									)
-							).sendMessage(
+							).sendMessage(this.plugin.pluginPrefix + 
 									ChatColor.GREEN + "Du wurdest zu " +
 									player.getDisplayName() +
 									ChatColor.GREEN +
@@ -75,11 +75,11 @@ public class CommandTpaccept implements CommandExecutor {
 							return true;
 						}
 						
-						player.sendMessage(ChatColor.RED + "Spieler " + ChatColor.GRAY + (String)this.plugin.tpaSwitched.get(player.getName()) + ChatColor.GRAY + " ist gerade nicht online.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + (String)this.plugin.tpaSwitched.get(player.getName()) + ChatColor.GRAY + " ist gerade nicht online.");
 						return true;
 					}
 					
-					player.sendMessage(ChatColor.RED + "Du hast eine TP-Anfrage erhalten, aber niemand hat dir eine gesendet!?");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast eine TP-Anfrage erhalten, aber niemand hat dir eine gesendet!?");
 					this.plugin.tpaSwitched.remove(player.getName());
 					return true;
 				}
@@ -98,7 +98,7 @@ public class CommandTpaccept implements CommandExecutor {
 									)
 							);
 							
-							player.sendMessage(
+							player.sendMessage(this.plugin.pluginPrefix + 
 									ChatColor.GREEN +
 									"Du wurdest zu " +
 									Bukkit.getPlayer(
@@ -114,7 +114,7 @@ public class CommandTpaccept implements CommandExecutor {
 									(String) this.plugin.tpahereSwitched.get(
 											player.getName()
 									)
-							).sendMessage(
+							).sendMessage(this.plugin.pluginPrefix + 
 									player.getDisplayName() + 
 									ChatColor.GREEN + 
 									" wurde zu dir teleportiert."
@@ -125,16 +125,16 @@ public class CommandTpaccept implements CommandExecutor {
 							return true;
 						}
 						
-						player.sendMessage(ChatColor.GRAY + (String)this.plugin.tpahereSwitched.get(player.getName()) + ChatColor.GRAY + " ist gerade nicht online.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + (String)this.plugin.tpahereSwitched.get(player.getName()) + ChatColor.GRAY + " ist gerade nicht online.");
 						return true;
 					}
 					
-					player.sendMessage(ChatColor.RED + "Du hast eine TP-Anfrage erhalten, aber niemand hat dir eine gesendet!?");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast eine TP-Anfrage erhalten, aber niemand hat dir eine gesendet!?");
 					this.plugin.tpahereSwitched.remove(player.getName());
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.RED + "Du hast keine TP-Anfrage erhalten.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast keine TP-Anfrage erhalten.");
 				return true;
 			}
 			
@@ -148,11 +148,11 @@ public class CommandTpaccept implements CommandExecutor {
 		//Console
 		if(arg.length == 0) {
 			
-			sender.sendMessage(ChatColor.RED + "Der Befehl /tpaccept ist in der Konsole nicht verfügbar.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Befehl /tpaccept ist in der Konsole nicht verfügbar.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/tpaccept"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/tpaccept"));
 		return true;
 	}
 }

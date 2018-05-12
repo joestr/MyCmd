@@ -27,7 +27,7 @@ public class CommandTpa implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.tpa")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.tpa"));
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.tpa"));
 				return true;
 			}
 			
@@ -35,13 +35,13 @@ public class CommandTpa implements CommandExecutor {
 				
 				if(this.plugin.tpa.containsKey(player.getName())) {
 					
-					player.sendMessage(ChatColor.RED + "Du kannst nur alle 60 Sekunden eine TP-Anfrage versenden.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du kannst nur alle 60 Sekunden eine TP-Anfrage versenden.");
 					return true;
 				}
 				
 				if(player.getName().equals(arg[0])) {
 					
-					player.sendMessage(ChatColor.RED + "Du kannst dir selbst keine TP-Anfrage schicken.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du kannst dir selbst keine TP-Anfrage schicken.");
 					return true;
 				}
 				
@@ -51,7 +51,7 @@ public class CommandTpa implements CommandExecutor {
 						
 						if(this.plugin.tpaSwitched.containsKey(arg[0])) {
 							
-							player.sendMessage(Bukkit.getServer().getPlayer(arg[0]).getDisplayName() + ChatColor.RED + " hat bereits eine TP-Anfrage erhalten.");
+							player.sendMessage(this.plugin.pluginPrefix + Bukkit.getServer().getPlayer(arg[0]).getDisplayName() + ChatColor.RED + " hat bereits eine TP-Anfrage erhalten.");
 							return true;
 						}
 						
@@ -129,15 +129,15 @@ public class CommandTpa implements CommandExecutor {
 							"]"
 						);
 						
-						player.sendMessage(ChatColor.GREEN + "Du hast eine TP-Anfrage an " + Bukkit.getPlayer(arg[0]).getDisplayName() + ChatColor.GREEN + " gesendet.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast eine TP-Anfrage an " + Bukkit.getPlayer(arg[0]).getDisplayName() + ChatColor.GREEN + " gesendet.");
 						return true;
 					}
 					
-					player.sendMessage(Bukkit.getPlayer(arg[0]).getDisplayName() + ChatColor.RED + " hat keine Berechtigung.");
+					player.sendMessage(this.plugin.pluginPrefix + Bukkit.getPlayer(arg[0]).getDisplayName() + ChatColor.RED + " hat keine Berechtigung.");
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.GRAY + arg[0] + ChatColor.RED +" ist nicht online.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + arg[0] + ChatColor.RED +" ist nicht online.");
 				return true;
 			}
 			
@@ -151,11 +151,11 @@ public class CommandTpa implements CommandExecutor {
 		//Console
 		if(arg.length == 0) {
 			
-			sender.sendMessage(ChatColor.RED + "Der Befehl /tpa ist in der Konsole nicht verfügbar.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Befehl /tpa ist in der Konsole nicht verfügbar.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/tpa"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/tpa"));
 		return true;
 	}
 }

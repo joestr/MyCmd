@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -29,7 +28,7 @@ public class TabCompleteKick implements TabCompleter {
 				
 				if(player.hasPermission("mycmd.command.kick")) {
 					
-					for(OfflinePlayer pl : Bukkit.getOnlinePlayers()) { list.add(pl.getName()); }
+					for(Player pl : Bukkit.getOnlinePlayers()) { list.add(pl.getName()); }
 					
 					if(arg.length == 1) {
 						
@@ -52,7 +51,7 @@ public class TabCompleteKick implements TabCompleter {
 		
 		if(arg.length <= 1) {
 			
-			for(OfflinePlayer pl : Bukkit.getOnlinePlayers()) { list.add(pl.getName()); }
+			for(Player pl : Bukkit.getOnlinePlayers()) { list.add(pl.getName()); }
 				
 			if(arg.length == 1) {
 				

@@ -27,7 +27,7 @@ public class CommandReply implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.reply")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.reply"));
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.reply"));
 				return true;
 			}
 			
@@ -35,7 +35,7 @@ public class CommandReply implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.reply")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.reply"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.reply"));
 					return true;
 				}
 				
@@ -52,8 +52,28 @@ public class CommandReply implements CommandExecutor {
 						
 						this.plugin.whisper.put(player.getName(), "KONSOLE");
 						this.plugin.whisper.put("Server", player.getName());
-						player.sendMessage(this.plugin.toColorcode("&", this.plugin.config.getMap().get("whisper_sender").toString().replace("%target_player_displayname%", ChatColor.WHITE + "KONSOLE").replace("%message%", msg)));
-						Bukkit.getConsoleSender().sendMessage(this.plugin.toColorcode("&", this.plugin.config.getMap().get("whisper_target").toString().replace("%sender_player_displayname%", player.getDisplayName()).replace("%message%", msg)));
+						player.sendMessage(
+								this.plugin.pluginPrefix +
+								this.plugin.toColorcode(
+										"&",
+										this.plugin.config.getMap().get("whisper_sender").toString()
+										.replace("%target_player_listname%", ChatColor.WHITE + "KONSOLE")
+										.replace("%target_player_displayname%", ChatColor.WHITE + "KONSOLE")
+										.replace("%target_player%", ChatColor.WHITE + "KONSOLE")
+										.replace("%message%", msg)
+								)
+						);
+						Bukkit.getConsoleSender().sendMessage(
+								this.plugin.pluginPrefix +
+								this.plugin.toColorcode(
+										"&",
+										this.plugin.config.getMap().get("whisper_target").toString()
+										.replace("%sender_player_listname%", player.getPlayerListName())
+										.replace("%sender_player_displayname%", player.getDisplayName())
+										.replace("%sender_player%", player.getName())
+										.replace("%message%", msg)
+								)
+						);
 						return true;
 					}
 					
@@ -68,16 +88,36 @@ public class CommandReply implements CommandExecutor {
 						
 						this.plugin.whisper.put(player.getName(), (String)this.plugin.whisper.get(player.getName()));
 						this.plugin.whisper.put((String)this.plugin.whisper.get(player.getName()), player.getName());
-						player.sendMessage(this.plugin.toColorcode("&", this.plugin.config.getMap().get("whisper_sender").toString().replace("%target_player_displayname%", Bukkit.getPlayer((String)this.plugin.whisper.get(player.getName())).getDisplayName()).replace("%message%", msg)));
-						Bukkit.getPlayer((String)this.plugin.whisper.get(player.getName())).sendMessage(this.plugin.toColorcode("&", this.plugin.config.getMap().get("whisper_target").toString().replace("%sender_player_displayname%", player.getDisplayName()).replace("%message%", msg)));
+						player.sendMessage(
+								this.plugin.pluginPrefix +
+								this.plugin.toColorcode(
+										"&",
+										this.plugin.config.getMap().get("whisper_sender").toString()
+										.replace("%target_player_listname%", Bukkit.getPlayer((String)this.plugin.whisper.get(player.getName())).getPlayerListName())
+										.replace("%target_player_displayname%", Bukkit.getPlayer((String)this.plugin.whisper.get(player.getName())).getDisplayName())
+										.replace("%target_player%", Bukkit.getPlayer((String)this.plugin.whisper.get(player.getName())).getName())
+										.replace("%message%", msg)
+								)
+						);
+						Bukkit.getPlayer((String)this.plugin.whisper.get(player.getName())).sendMessage(
+								this.plugin.pluginPrefix +
+								this.plugin.toColorcode(
+										"&",
+										this.plugin.config.getMap().get("whisper_target").toString()
+										.replace("%sender_player_listname%", player.getPlayerListName())
+										.replace("%sender_player_displayname%", player.getDisplayName())
+										.replace("%sender_player%", player.getName())
+										.replace("%message%", msg)
+								)
+						);
 						return true;
 					}
 					
-					player.sendMessage(ChatColor.RED + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.RED + "Du hast noch keinem gewhispert oder niemand hat dir gewhispert.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast noch keinem gewhispert oder niemand hat dir gewhispert.");
 				return true;
 			}
 			
@@ -105,20 +145,40 @@ public class CommandReply implements CommandExecutor {
 					
 					this.plugin.whisper.put("Server", (String)this.plugin.whisper.get("Server"));
 					this.plugin.whisper.put((String)this.plugin.whisper.get("Server"), "Server");
-					sender.sendMessage(this.plugin.toColorcode("&", this.plugin.config.getMap().get("whisper_sender").toString().replace("%target_player_displayname%", Bukkit.getPlayer((String)this.plugin.whisper.get("Server")).getDisplayName()).replace("%message%", msg)));
-					Bukkit.getPlayer((String)this.plugin.whisper.get("Server")).sendMessage(this.plugin.toColorcode("&", this.plugin.config.getMap().get("whisper_target").toString().replace("%sender_player_displayname%", ChatColor.WHITE + "Server").replace("%message%", msg)));
+					sender.sendMessage(
+							this.plugin.pluginPrefix +
+							this.plugin.toColorcode(
+									"&",
+									this.plugin.config.getMap().get("whisper_sender").toString()
+									.replace("%target_player_listname%", Bukkit.getPlayer((String)this.plugin.whisper.get("KONSOLE")).getPlayerListName())
+									.replace("%target_player_displayname%", Bukkit.getPlayer((String)this.plugin.whisper.get("KONSOLE")).getDisplayName())
+									.replace("%target_player%", Bukkit.getPlayer((String)this.plugin.whisper.get("KONSOLE")).getName())
+									.replace("%message%", msg)
+							)
+					);
+					Bukkit.getPlayer((String)this.plugin.whisper.get("Server")).sendMessage(
+							this.plugin.pluginPrefix +
+							this.plugin.toColorcode(
+									"&",
+									this.plugin.config.getMap().get("whisper_target").toString()
+									.replace("%sender_player_listname%", ChatColor.WHITE + "KONSOLE")
+									.replace("%sender_player_displayname%", ChatColor.WHITE + "KONSOLE")
+									.replace("%sender_player%", ChatColor.WHITE + "KONSOLE")
+									.replace("%message%", msg)
+							)
+					);
 					return true;
 				}
 				
-				sender.sendMessage(ChatColor.RED + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
 				return true;
 			}
 			
-			sender.sendMessage(ChatColor.RED + "Du hast noch keinem gewhispert oder niemand hat dir gewhispert.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast noch keinem gewhispert oder niemand hat dir gewhispert.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/<reply|r|ans> <Nachricht ...>"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/<reply|r|ans> <Nachricht ...>"));
 		return true;
 	}
 }

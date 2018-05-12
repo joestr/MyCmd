@@ -33,7 +33,7 @@ public class CommandPvp implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.pvp") && !player.hasPermission("mycmd.command.pvp.other")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 				return true;
 			}
 			
@@ -77,7 +77,7 @@ public class CommandPvp implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.pvp")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.pvp"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.pvp"));
 					return true;
 				}
 				
@@ -88,26 +88,26 @@ public class CommandPvp implements CommandExecutor {
 						if(this.plugin.pvp.getMap().containsKey(player.getUniqueId().toString())) {
 							
 							String onoff = "";
-							if((Boolean)this.plugin.pvp.getMap().get(player.getUniqueId().toString())) { onoff = "aktiviert"; } else { onoff = "deaktiviert."; }
-							player.sendMessage(ChatColor.GREEN + "Dein PvP ist zurzeit " + ChatColor.GRAY + onoff + ChatColor.GREEN + ".");
+							if((Boolean)this.plugin.pvp.getMap().get(player.getUniqueId().toString())) { onoff = "aktiviert"; } else { onoff = "deaktiviert"; }
+							player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Dein PvP ist zurzeit " + ChatColor.GRAY + onoff + ChatColor.GREEN + ".");
 							return true;
 						}
 						
 						this.plugin.pvp.getMap().put(player.getUniqueId().toString(), false);
-						player.sendMessage(ChatColor.GREEN + "Dein PvP ist zurzeit " + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Dein PvP ist zurzeit " + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
 						return true;
 					}
 					
 					if(this.plugin.pvp.getMap().containsKey(player.getName())) {
 						
 						String onoff = "";
-						if((Boolean)this.plugin.pvp.getMap().get(player.getName())) { onoff = "aktiviert"; } else { onoff = "deaktiviert."; }
-						player.sendMessage(ChatColor.GREEN + "Dein PvP ist zurzeit " + ChatColor.GRAY + onoff + ChatColor.GREEN + ".");
+						if((Boolean)this.plugin.pvp.getMap().get(player.getName())) { onoff = "aktiviert"; } else { onoff = "deaktiviert"; }
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Dein PvP ist zurzeit " + ChatColor.GRAY + onoff + ChatColor.GREEN + ".");
 						return true;
 					}
 						
 					this.plugin.pvp.getMap().put(player.getName(), false);
-					player.sendMessage(ChatColor.GREEN + "Dein PvP ist zurzeit " + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Dein PvP ist zurzeit " + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
 					return true;
 				}
 				
@@ -127,18 +127,18 @@ public class CommandPvp implements CommandExecutor {
 								
 								this.plugin.pvp.getMap().put(player.getUniqueId().toString(), true);
 								this.plugin.pvp.Save();
-								sender.sendMessage(ChatColor.GREEN + "Du hast dein PvP "  + ChatColor.GRAY + "aktiviert" + ChatColor.GREEN + ".");
+								sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast dein PvP "  + ChatColor.GRAY + "aktiviert" + ChatColor.GREEN + ".");
 								return true;
 							} else {
 								
-								sender.sendMessage(ChatColor.RED + "Dein PvP ist bereits "  + ChatColor.GRAY + "aktiviert" + ChatColor.RED + ".");
+								sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Dein PvP ist bereits "  + ChatColor.GRAY + "aktiviert" + ChatColor.RED + ".");
 								return true;
 							}
 						}
 						
 						this.plugin.pvp.getMap().put(player.getUniqueId().toString(), true);
 						this.plugin.pvp.Save();
-						sender.sendMessage(ChatColor.GREEN + "Du hast dein PvP "  + ChatColor.GRAY + "aktiviert" + ChatColor.GREEN + ".");
+						sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast dein PvP "  + ChatColor.GRAY + "aktiviert" + ChatColor.GREEN + ".");
 						return true;
 					}
 					
@@ -148,24 +148,24 @@ public class CommandPvp implements CommandExecutor {
 							
 							this.plugin.pvp.getMap().put(player.getName(), true);
 							this.plugin.pvp.Save();
-							sender.sendMessage(ChatColor.GREEN + "Du hast dein PvP "  + ChatColor.GRAY + "aktiviert" + ChatColor.GREEN + ".");
+							sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast dein PvP "  + ChatColor.GRAY + "aktiviert" + ChatColor.GREEN + ".");
 							return true;
 						} else {
 							
-							sender.sendMessage(ChatColor.RED + "Dein PvP ist bereits "  + ChatColor.GRAY + "aktiviert" + ChatColor.RED + ".");
+							sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Dein PvP ist bereits "  + ChatColor.GRAY + "aktiviert" + ChatColor.RED + ".");
 							return true;
 						}
 					}
 					
 					this.plugin.pvp.getMap().put(player.getName(), true);
 					this.plugin.pvp.Save();
-					sender.sendMessage(ChatColor.GREEN + "Du hast dein PvP "  + ChatColor.GRAY + "aktiviert" + ChatColor.GREEN + ".");
+					sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast dein PvP "  + ChatColor.GRAY + "aktiviert" + ChatColor.GREEN + ".");
 					return true;
 				}
 				
 				if(arg[0].equalsIgnoreCase("off")) {
 					
-					if(this.plugin.pvpList.containsKey(player.getName())) { player.sendMessage(ChatColor.RED + "PvP-Schutz ist noch aktiv."); return true; }
+					if(this.plugin.pvpList.containsKey(player.getName())) { player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "PvP-Schutz ist noch aktiv."); return true; }
 					
 					if(Bukkit.getOnlineMode()) {
 						
@@ -175,18 +175,18 @@ public class CommandPvp implements CommandExecutor {
 								
 								this.plugin.pvp.getMap().put(player.getUniqueId().toString(), false);
 								this.plugin.pvp.Save();
-								sender.sendMessage(ChatColor.GREEN + "Du hast dein PvP "  + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
+								sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast dein PvP "  + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
 								return true;
 							} else {
 								
-								sender.sendMessage(ChatColor.RED + "Dein PvP ist bereits "  + ChatColor.GRAY + "deaktiviert" + ChatColor.RED + ".");
+								sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Dein PvP ist bereits "  + ChatColor.GRAY + "deaktiviert" + ChatColor.RED + ".");
 								return true;
 							}
 						}
 						
 						this.plugin.pvp.getMap().put(player.getUniqueId().toString(), false);
 						this.plugin.pvp.Save();
-						sender.sendMessage(ChatColor.GREEN + "Du hast dein PvP "  + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
+						sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast dein PvP "  + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
 						return true;
 					}
 					
@@ -196,18 +196,18 @@ public class CommandPvp implements CommandExecutor {
 							
 							this.plugin.pvp.getMap().put(player.getName(), false);
 							this.plugin.pvp.Save();
-							sender.sendMessage(ChatColor.GREEN + "Du hast dein PvP "  + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
+							sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast dein PvP "  + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
 							return true;
 						} else {
 							
-							sender.sendMessage(ChatColor.RED + "Dein PvP ist bereits "  + ChatColor.GRAY + "deaktiviert" + ChatColor.RED + ".");
+							sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Dein PvP ist bereits "  + ChatColor.GRAY + "deaktiviert" + ChatColor.RED + ".");
 							return true;
 						}
 					}
 					
 					this.plugin.pvp.getMap().put(player.getName(), false);
 					this.plugin.pvp.Save();
-					sender.sendMessage(ChatColor.GREEN + "Du hast dein PvP "  + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
+					sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast dein PvP "  + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
 					return true;
 				}
 			}
@@ -216,7 +216,7 @@ public class CommandPvp implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.pvp.other")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.pvp.other"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.pvp.other"));
 					return true;
 				}
 				
@@ -289,7 +289,7 @@ public class CommandPvp implements CommandExecutor {
 			}
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/pvp <list|status|on|off> [<Spieler>]"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/pvp <list|status|on|off> [<Spieler>]"));
 		return true;
 	}
 	
@@ -321,19 +321,19 @@ public class CommandPvp implements CommandExecutor {
 		
 		if(a.toArray().length == 0) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es haben zurzeit " + ChatColor.GRAY + "keine" + ChatColor.GREEN + " Spieler ihr PvP aktiviert.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es haben zurzeit " + ChatColor.GRAY + "keine" + ChatColor.GREEN + " Spieler ihr PvP aktiviert.");
 		}
 		
 		if(a.toArray().length == 1) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es hat zurzeit " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler sein PvP aktiviert:");
-			sender.sendMessage(str);
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es hat zurzeit " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler sein PvP aktiviert:");
+			sender.sendMessage(this.plugin.pluginPrefix + str);
 		}
 		
 		if(a.toArray().length >= 2) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es haben zurzeit " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler ihr PvP aktiviert:");
-			sender.sendMessage(str);
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es haben zurzeit " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler ihr PvP aktiviert:");
+			sender.sendMessage(this.plugin.pluginPrefix + str);
 		}
 	}
 	
@@ -346,12 +346,12 @@ public class CommandPvp implements CommandExecutor {
 				
 				String onoff = "";
 				if((Boolean)this.plugin.pvp.getMap().get(Bukkit.getServer().getOfflinePlayer(arg[1]).getUniqueId().toString())) { onoff = "aktiviert"; } else { onoff = "deaktiviert"; }
-				sender.sendMessage(ChatColor.GREEN + "Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " hat sein PvP zurzeit "  + ChatColor.GRAY + onoff + ChatColor.GREEN + ".");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " hat sein PvP zurzeit "  + ChatColor.GRAY + onoff + ChatColor.GREEN + ".");
 				return;
 			}
 			
 			this.plugin.pvp.getMap().put(Bukkit.getServer().getOfflinePlayer(arg[1]).getUniqueId().toString(), false);
-			sender.sendMessage(ChatColor.GREEN + "Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " hat sein PvP zurzeit "  + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " hat sein PvP zurzeit "  + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
 			return;
 		}
 		
@@ -359,12 +359,12 @@ public class CommandPvp implements CommandExecutor {
 			
 			String onoff = "";
 			if((Boolean)this.plugin.pvp.getMap().get(arg[1])) { onoff = "aktiviert"; } else { onoff = "deaktiviert"; }
-			sender.sendMessage(ChatColor.GREEN + "Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " hat sein PvP zurzeit "  + ChatColor.GRAY + onoff + ChatColor.GREEN + ".");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " hat sein PvP zurzeit "  + ChatColor.GRAY + onoff + ChatColor.GREEN + ".");
 			return;
 		}
 			
 		this.plugin.pvp.getMap().put(arg[1], false);
-		sender.sendMessage(ChatColor.GREEN + "Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " hat sein PvP zurzeit "  + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " hat sein PvP zurzeit "  + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
 		return;
 	}
 	
@@ -379,11 +379,11 @@ public class CommandPvp implements CommandExecutor {
 					
 					this.plugin.pvp.getMap().put(Bukkit.getServer().getOfflinePlayer(arg[1]).getUniqueId().toString(), true);
 					this.plugin.pvp.Save();
-					sender.sendMessage(ChatColor.GREEN + "PvP vom Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " wurde "  + ChatColor.GRAY + "aktiviert" + ChatColor.GREEN + ".");
+					sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "PvP vom Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " wurde "  + ChatColor.GRAY + "aktiviert" + ChatColor.GREEN + ".");
 					return;
 				} else {
 					
-					sender.sendMessage(ChatColor.RED + "PvP vom Spieler " + ChatColor.GRAY + arg[1] + ChatColor.RED + " ist bereits "  + ChatColor.GRAY + "aktiviert" + ChatColor.RED + ".");
+					sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "PvP vom Spieler " + ChatColor.GRAY + arg[1] + ChatColor.RED + " ist bereits "  + ChatColor.GRAY + "aktiviert" + ChatColor.RED + ".");
 					return;
 				}
 			}
@@ -395,11 +395,11 @@ public class CommandPvp implements CommandExecutor {
 				
 				this.plugin.pvp.getMap().put(arg[1], true);
 				this.plugin.pvp.Save();
-				sender.sendMessage(ChatColor.GREEN + "PvP vom Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " wurde "  + ChatColor.GRAY + "aktiviert" + ChatColor.GREEN + ".");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "PvP vom Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " wurde "  + ChatColor.GRAY + "aktiviert" + ChatColor.GREEN + ".");
 				return;
 			} else {
 				
-				sender.sendMessage(ChatColor.RED + "PvP vom Spieler " + ChatColor.GRAY + arg[1] + ChatColor.RED + " ist bereits "  + ChatColor.GRAY + "aktiviert" + ChatColor.RED + ".");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "PvP vom Spieler " + ChatColor.GRAY + arg[1] + ChatColor.RED + " ist bereits "  + ChatColor.GRAY + "aktiviert" + ChatColor.RED + ".");
 				return;
 			}
 		}
@@ -416,11 +416,11 @@ public class CommandPvp implements CommandExecutor {
 					
 					this.plugin.pvp.getMap().put(Bukkit.getServer().getOfflinePlayer(arg[1]).getUniqueId().toString(), false);
 					this.plugin.pvp.Save();
-					sender.sendMessage(ChatColor.GREEN + "PvP vom Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " wurde "  + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
+					sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "PvP vom Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " wurde "  + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
 					return;
 				} else {
 					
-					sender.sendMessage(ChatColor.RED + "PvP vom Spieler " + ChatColor.GRAY + arg[1] + ChatColor.RED + " ist bereits "  + ChatColor.GRAY + "deaktiviert" + ChatColor.RED + ".");
+					sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "PvP vom Spieler " + ChatColor.GRAY + arg[1] + ChatColor.RED + " ist bereits "  + ChatColor.GRAY + "deaktiviert" + ChatColor.RED + ".");
 					return;
 				}
 			}
@@ -432,11 +432,11 @@ public class CommandPvp implements CommandExecutor {
 				
 				this.plugin.pvp.getMap().put(arg[1], false);
 				this.plugin.pvp.Save();
-				sender.sendMessage(ChatColor.GREEN + "PvP vom Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " wurde "  + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "PvP vom Spieler " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " wurde "  + ChatColor.GRAY + "deaktiviert" + ChatColor.GREEN + ".");
 				return;
 			} else {
 				
-				sender.sendMessage(ChatColor.RED + "PvP vom Spieler " + ChatColor.GRAY + arg[1] + ChatColor.RED + " ist bereits "  + ChatColor.GRAY + "deaktiviert" + ChatColor.RED + ".");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "PvP vom Spieler " + ChatColor.GRAY + arg[1] + ChatColor.RED + " ist bereits "  + ChatColor.GRAY + "deaktiviert" + ChatColor.RED + ".");
 				return;
 			}
 		}

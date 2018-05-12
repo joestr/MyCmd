@@ -27,7 +27,7 @@ public class CommandWarps implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.warps")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
 				return true;
 			}
 			
@@ -35,11 +35,11 @@ public class CommandWarps implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.warps")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.warps"));
+					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.warps"));
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.GREEN + "Warp-Punkte:");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Warp-Punkte:");
 				
 				if(!this.plugin.warps.getMap().isEmpty()) {
 					
@@ -85,20 +85,20 @@ public class CommandWarps implements CommandExecutor {
 		//Console
 		if(arg.length == 0) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Warp-Punkte:");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Warp-Punkte:");
 			
 			if(!this.plugin.warps.getMap().isEmpty()) {
 				
 				for (String str : this.plugin.warps.getMap().keySet()) {
 					
-					sender.sendMessage(ChatColor.GRAY + str);
+					sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + str);
 				}
 			}
 			
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/warps"));
+		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/warps"));
 		return true;
 	}
 }
