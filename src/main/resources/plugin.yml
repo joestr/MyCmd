@@ -212,6 +212,11 @@ commands:
   #  #permission: mycmd.command.help
   #  #permission-messsage: Berechtigung mycmd.command.help fehlt.
   #  usage: /help [<Seite>]
+  room:
+    description: Raum-System
+    #permission: mycmd.command.pvp
+    #permission-message: Berechtigung mycmd.command.pvp fehlt.
+    usage: /room <...> [<...> ...]
     
 permissions:
   mycmd.preset.admin:

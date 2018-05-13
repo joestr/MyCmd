@@ -15,6 +15,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.command.Command;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -47,6 +48,7 @@ import xyz.joestr.mycmd.command.CommandPing;
 import xyz.joestr.mycmd.command.CommandPvp;
 import xyz.joestr.mycmd.command.CommandRank;
 import xyz.joestr.mycmd.command.CommandReply;
+import xyz.joestr.mycmd.command.CommandRoom;
 import xyz.joestr.mycmd.command.CommandSeen;
 import xyz.joestr.mycmd.command.CommandSethome;
 import xyz.joestr.mycmd.command.CommandSethome2;
@@ -96,6 +98,7 @@ import xyz.joestr.mycmd.tabcomplete.TabCompletePing;
 import xyz.joestr.mycmd.tabcomplete.TabCompletePvp;
 import xyz.joestr.mycmd.tabcomplete.TabCompleteRank;
 import xyz.joestr.mycmd.tabcomplete.TabCompleteReply;
+import xyz.joestr.mycmd.tabcomplete.TabCompleteRoom;
 import xyz.joestr.mycmd.tabcomplete.TabCompleteSeen;
 import xyz.joestr.mycmd.tabcomplete.TabCompleteSethome;
 import xyz.joestr.mycmd.tabcomplete.TabCompleteSethome2;
@@ -114,6 +117,7 @@ import xyz.joestr.mycmd.tabcomplete.TabCompleteWhitelist;
 import xyz.joestr.mycmd.tabcomplete.TabCompleteWiki;
 import xyz.joestr.mycmd.tabcomplete.TabCompleteWorldspawn;
 import xyz.joestr.mycmd.util.Reflection;
+import xyz.joestr.mycmd.util.Room;
 
 /**
  * MyCmd-Klasse
@@ -156,6 +160,9 @@ public class MyCmd extends JavaPlugin {
 	// Beeinhaltet die PvP-Einstellungen aus der pvp.yml
 	public YMLDelegate pvp = new YMLDelegate(this, "pvp", "pvp.yml");
 	
+	// Beeinhaltet die Räume
+	public YMLDelegate rooms = new YMLDelegate(this, "rooms", "rooms.yml");
+	
 	// Alle oben definierten YMLDelegates werden in dieser Liste gespeichert
 	public ArrayList<YMLDelegate> delegates = new ArrayList<YMLDelegate>();
 	
@@ -197,6 +204,8 @@ public class MyCmd extends JavaPlugin {
 	 */
 	public void onEnable() {
 		
+		ConfigurationSerialization.registerClass(Room.class);
+		
 		// Die Delegates zur Liste hinzufügen
 		this.delegates.add(this.config);
 		this.delegates.add(this.warps);
@@ -204,6 +213,7 @@ public class MyCmd extends JavaPlugin {
 		this.delegates.add(this.ranks);
 		this.delegates.add(this.homes2);
 		this.delegates.add(this.pvp);
+		this.delegates.add(this.rooms);
 		
 		// Delegates prüfen
 		for(YMLDelegate delegate : delegates) {
@@ -316,6 +326,8 @@ public class MyCmd extends JavaPlugin {
 		this.getCommand("pvp").setTabCompleter(new TabCompletePvp(this));
 		//this.getCommand("help").setExecutor(new CommandHelp(this));
 		//this.getCommand("help").setTabCompleter(new TabCompleteHelp(this));
+		this.getCommand("room").setExecutor(new CommandRoom(this));
+		this.getCommand("room").setTabCompleter(new TabCompleteRoom(this));
 		
 		Bukkit.getServer().getPluginManager().registerEvents(new EventEntityDamageByEntity(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new EventTeleport(this), this);
