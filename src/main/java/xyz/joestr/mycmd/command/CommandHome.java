@@ -19,24 +19,24 @@ public class CommandHome implements CommandExecutor {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
 		//Player
-		if (sender instanceof Player) {
+		if (commandSender instanceof Player) {
 			
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.home") && !player.hasPermission("mycmd.command.home.other")) {
 				
-				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
+				this.plugin.noPermissionMessage(player);
 				return true;
 			}
 			
-			if(arg.length == 0) {
+			if(args.length == 0) {
 				
 				if(!player.hasPermission("mycmd.command.home")) {
 					
-					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.home"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.home");
 					return true;
 				}
 				
@@ -46,7 +46,7 @@ public class CommandHome implements CommandExecutor {
 						
 						Location location = (Location)this.plugin.homes.getMap().get(player.getUniqueId().toString());
 						player.teleport(location);
-						player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du wurdest zu deinem Home-Punkt teleportiert.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.BLUE + "Du wurdest zu deinem Home-Punkt teleportiert.");
 						return true;
 					}
 					
@@ -58,7 +58,7 @@ public class CommandHome implements CommandExecutor {
 					
 					Location location = (Location)this.plugin.homes.getMap().get(player.getName());
 					player.teleport(location);
-					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du wurdest zu deinem Home-Punkt teleportiert.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.BLUE + "Du wurdest zu deinem Home-Punkt teleportiert.");
 					return true;
 				}
 				
@@ -66,90 +66,102 @@ public class CommandHome implements CommandExecutor {
 				return true;
 			}
 			
-			if(arg.length == 1) {
+			if(args.length == 1) {
 				
 				if(!player.hasPermission("mycmd.command.home.other")) {
 					
-					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.home.other"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.home.other");
 					return true;
 				}
 				
 				if(Bukkit.getOnlineMode()) {
 					
-					if(this.plugin.homes.getMap().containsKey(Bukkit.getOfflinePlayer(arg[0]).getUniqueId().toString())) {
+					if(this.plugin.homes.getMap().containsKey(Bukkit.getOfflinePlayer(args[0]).getUniqueId().toString())) {
 						
-						Location location = (Location)this.plugin.homes.getMap().get(Bukkit.getOfflinePlayer(arg[0]).getUniqueId().toString());
+						Location location = (Location)this.plugin.homes.getMap().get(Bukkit.getOfflinePlayer(args[0]).getUniqueId().toString());
 						player.teleport(location);
-						player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du wurdest zu Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + " teleportiert.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.BLUE + "Du wurdest zu Home-Punkt von " + ChatColor.GRAY + args[0] + ChatColor.BLUE + " teleportiert.");
 						return true;
 					}
 					
-					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " hat noch keinen Home-Punkt gesetzt.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + args[0] + ChatColor.RED + " hat noch keinen Home-Punkt gesetzt.");
 					return true;
 				}
 				
-				if(this.plugin.homes.getMap().containsKey(arg[0])) {
+				if(this.plugin.homes.getMap().containsKey(args[0])) {
 					
-					Location location = (Location)this.plugin.homes.getMap().get(arg[0]);
+					Location location = (Location)this.plugin.homes.getMap().get(args[0]);
 					player.teleport(location);
-					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du wurdest zu Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + " teleportiert.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.BLUE + "Du wurdest zu Home-Punkt von " + ChatColor.GRAY + args[0] + ChatColor.BLUE + " teleportiert.");
 					return true;
 				}
 				
-				player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " hat noch keinen Home-Punkt gesetzt.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + args[0] + ChatColor.RED + " hat noch keinen Home-Punkt gesetzt.");
 				return true;
 			}
 			
 			if(player.hasPermission("mycmd.command.home.other") && player.hasPermission("mycmd.command.home")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/home [<Spieler>]", "suggest_command", "/home ", "/home [<Spieler>]"));
+				this.plugin.usageMessage(player, "/home [<Spieler>]", "suggest_command", "/home ", "/home [<Spieler>]");
 				return true;
 			}
 			
 			if(player.hasPermission("mycmd.command.home.other")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/home <Spieler>", "suggest_command", "/home ", "/home <Spieler>"));
+				this.plugin.usageMessage(player, "/home <Spieler>", "suggest_command", "/home ", "/home <Spieler>");
 				return true;
 			}
 			
 			if(player.hasPermission("mycmd.command.home")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/home", "run_command", "/home", "/home"));
+				this.plugin.usageMessage(player, "/home", "run_command", "/home", "/home");
 				return true;
 			}
 		}
 		//End Player
 		
 		//Console
-		if(arg.length == 1) {
+		if(args.length == 1) {
 			
 			if(Bukkit.getOnlineMode()) {
 				
-				if(this.plugin.homes.getMap().containsKey(Bukkit.getOfflinePlayer(string).getUniqueId().toString())) {
+				if(this.plugin.homes.getMap().containsKey(Bukkit.getOfflinePlayer(label).getUniqueId().toString())) {
 					
-					Location location = (Location)this.plugin.homes.getMap().get(Bukkit.getOfflinePlayer(string).getUniqueId().toString());
-					sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Home-Punkt von " + ChatColor.GRAY + string + ChatColor.GREEN + " befindet sich bei " +
-							ChatColor.GRAY + location.getWorld().getName() + "/" + ChatColor.GRAY + location.getX() + "/" + location.getBlockY() + "/" + location.getBlockZ() + ChatColor.GREEN + ".");
+					Location location = (Location)this.plugin.homes.getMap().get(Bukkit.getOfflinePlayer(label).getUniqueId().toString());
+					commandSender.sendMessage(
+							this.plugin.pluginPrefix +
+							ChatColor.BLUE + "Der Home-Punkt von " +
+							ChatColor.GRAY + label +
+							ChatColor.BLUE + " befindet sich bei " +
+							ChatColor.GRAY + location.getWorld().getName() + "/" + location.getX() + "/" + location.getBlockY() + "/" + location.getBlockZ() +
+							ChatColor.BLUE + "."
+					);
 					return true;
 				}
 				
-				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + string + ChatColor.GREEN + " hat noch keinen Home-Punkt gesetzt.");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + label + ChatColor.RED + " hat noch keinen Home-Punkt gesetzt.");
 				return true;
 			}
 			
-			if(this.plugin.homes.getMap().containsKey(string)) {
+			if(this.plugin.homes.getMap().containsKey(label)) {
 				
-				Location location = (Location)this.plugin.homes.getMap().get(string);
-				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Home-Punkt vom Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " befindet sich bei " + 
-						ChatColor.GRAY + location.getWorld().getName() + "/" + ChatColor.GRAY + location.getX() + "/" + location.getBlockY() + "/" + location.getBlockZ() + ChatColor.GREEN + ".");
+				Location location = (Location)this.plugin.homes.getMap().get(label);
+				commandSender.sendMessage(
+						this.plugin.pluginPrefix +
+						ChatColor.BLUE + "Der Home-Punkt von " +
+						ChatColor.GRAY + label +
+						ChatColor.BLUE + " befindet sich bei " + 
+						ChatColor.GRAY + location.getWorld().getName() + "/" + location.getX() + "/" + location.getBlockY() + "/" + location.getBlockZ() +
+						ChatColor.BLUE + "."
+				);
 				return true;
 			}
 			
-			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " hat noch keinen Home-Punkt gesetzt.");
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + label + ChatColor.RED + " hat noch keinen Home-Punkt gesetzt.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/home <Spieler>"));
+		this.plugin.usageMessage(commandSender, "/home <Spieler>");
 		return true;
 		//End Console
 	}

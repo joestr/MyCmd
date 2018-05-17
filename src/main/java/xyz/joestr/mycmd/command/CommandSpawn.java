@@ -1,6 +1,5 @@
 package xyz.joestr.mycmd.command;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -15,25 +14,24 @@ public class CommandSpawn implements CommandExecutor {
 	
 	public CommandSpawn(MyCmd mycmd) { this.plugin = mycmd; }
 	
-	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.spawn")) {
 				
-				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
+				this.plugin.noPermissionMessage(player);
 				return true;
 			}
 			
-			if(arg.length == 0) {
+			if(args.length == 0) {
 				
 				if(!player.hasPermission("mycmd.command.spawn")) {
 					
-					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.spawn"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.spawn");
 					return true;
 				}
 				
@@ -52,27 +50,27 @@ public class CommandSpawn implements CommandExecutor {
 			
 			if (player.hasPermission("mycmd.command.spawn")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/spawn", "run_command", "/spawn", "/spawn"));
+				this.plugin.usageMessage(player, "/spawn", "run_command", "/spawn", "/spawn");
 				return true;
 			}
 		}
 		
 		//Console
-		if(arg.length == 0) {
+		if(args.length == 0) {
 			
 			if (this.plugin.config.getMap().get("spawn") == null) {
 				
-				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Spawn-Punkt wurde noch nicht gesetzt.");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Spawn-Punkt wurde noch nicht gesetzt.");
 				return true;
 			}
 			
 			Location location = (Location) this.plugin.config.getMap().get("spawn");
-			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Spawn-Punkt befindet sich bei " +
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Spawn-Punkt befindet sich bei " +
 					ChatColor.GRAY + location.getWorld().getName() + "/" + location.getX() + "/" + location.getBlockY() + "/" + location.getZ() + ChatColor.GREEN + ".");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/spawn"));
+		this.plugin.usageMessage(commandSender, "/spawn");
 		return true;
 	}
 }

@@ -17,12 +17,12 @@ public class CommandDelhome2 implements CommandExecutor {
 		this.plugin = mycmd;
 	}
 	
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
 		//Player
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.delhome2") && !player.hasPermission("mycmd.command.delhome2.other")) {
 				
@@ -30,7 +30,7 @@ public class CommandDelhome2 implements CommandExecutor {
 				return true;
 			}
 			
-			if(arg.length == 0) {
+			if(args.length == 0) {
 				
 				if(!player.hasPermission("mycmd.command.delhome2")) {
 					
@@ -64,7 +64,7 @@ public class CommandDelhome2 implements CommandExecutor {
 				return true;
 			}
 			
-			if(arg.length == 1) {
+			if(args.length == 1) {
 				
 				if(!player.hasPermission("mycmd.command.delhome2.other")) {
 					
@@ -72,7 +72,7 @@ public class CommandDelhome2 implements CommandExecutor {
 					return true;
 				}
 				
-				_delhome2_other_(sender, arg[0]);
+				_delhome2_other_(commandSender, args[0]);
 				return true;
 			}
 			
@@ -97,13 +97,13 @@ public class CommandDelhome2 implements CommandExecutor {
 		//End Player
 		
 		//Console
-		if(arg.length == 1) {
+		if(args.length == 1) {
 			
-			_delhome2_other_(sender, arg[0]);
+			_delhome2_other_(commandSender, args[0]);
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/delhome2 <Spieler>"));
+		this.plugin.usageMessage(commandSender, "/delhome2 <Spieler>");
 		return true;
 		//End Console
 	}
@@ -122,7 +122,7 @@ public class CommandDelhome2 implements CommandExecutor {
 				
 				this.plugin.homes2.getMap().remove(Bukkit.getOfflinePlayer(string).getUniqueId().toString());
 				this.plugin.homes2.Save();
-				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast den zweiten Home-Punkt vom Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " gelöscht.");
+				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast den zweiten Home-Punkt von " + ChatColor.GRAY + string + ChatColor.GREEN + " gelöscht.");
 				return;
 			}
 			
@@ -134,7 +134,7 @@ public class CommandDelhome2 implements CommandExecutor {
 			
 			this.plugin.homes2.getMap().remove(string);
 			this.plugin.homes2.Save();
-			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast den zweiten Home-Punkt vom Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " gelöscht.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast den zweiten Home-Punkt von " + ChatColor.GRAY + string + ChatColor.GREEN + " gelöscht.");
 			return;
 		}
 		

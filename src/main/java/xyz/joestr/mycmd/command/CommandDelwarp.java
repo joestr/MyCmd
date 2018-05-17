@@ -16,12 +16,12 @@ public class CommandDelwarp implements CommandExecutor {
 		this.plugin = mycmd;
 	}
 	
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
 		//Player
-		if (sender instanceof Player) {
+		if (commandSender instanceof Player) {
 			
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.delwarp")) {
 				
@@ -29,7 +29,7 @@ public class CommandDelwarp implements CommandExecutor {
 				return true;
 			}
 			
-			if(arg.length == 1) {
+			if(args.length == 1) {
 				
 				if(!player.hasPermission("mycmd.command.delwarp")) {
 					
@@ -37,7 +37,7 @@ public class CommandDelwarp implements CommandExecutor {
 					return true;
 				}
 				
-				_delwarp_(sender, arg[0]);
+				_delwarp_(commandSender, args[0]);
 				return true;
 			}
 			
@@ -50,13 +50,13 @@ public class CommandDelwarp implements CommandExecutor {
 		//End Player
 		
 		//Console
-		if(arg.length == 1) {
+		if(args.length == 1) {
 			
-			_delwarp_(sender, arg[0]);
+			_delwarp_(commandSender, args[0]);
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/delwarp <Warp-Punkt>"));
+		this.plugin.usageMessage(commandSender, "/delwarp <Warp-Punkt>");
 		return true;
 		//End Console
 	}

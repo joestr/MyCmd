@@ -15,6 +15,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -66,7 +67,6 @@ import xyz.joestr.mycmd.command.CommandWarps;
 import xyz.joestr.mycmd.command.CommandWhitelist;
 import xyz.joestr.mycmd.command.CommandWiki;
 import xyz.joestr.mycmd.command.CommandWorldspawn;
-import xyz.joestr.mycmd.delegates.YMLDelegate;
 import xyz.joestr.mycmd.event.EventAsyncChat;
 import xyz.joestr.mycmd.event.EventEntityDamageByEntity;
 import xyz.joestr.mycmd.event.EventJoin;
@@ -118,6 +118,7 @@ import xyz.joestr.mycmd.tabcomplete.TabCompleteWiki;
 import xyz.joestr.mycmd.tabcomplete.TabCompleteWorldspawn;
 import xyz.joestr.mycmd.util.Reflection;
 import xyz.joestr.mycmd.util.Room;
+import xyz.joestr.mycmd.util.YMLDelegate;
 
 /**
  * MyCmd-Klasse
@@ -127,6 +128,12 @@ import xyz.joestr.mycmd.util.Room;
  */
 public class MyCmd extends JavaPlugin {
 	
+	/*
+	 * &9 ChatColor.BLUE - Statusmeldungen
+	 * &c ChatColor.RED - Fehlermeldungen
+	 * &a ChatColor.GREEN - Erfolgsmeldungen
+	 * &7 ChatColor.GRAY - Hervorheben von Werten in Status-, Fehler-, und Erfolgsmeldungen
+	 */
 	/* TODO
 	 *  /pvp [<status|list|on|off>] implementieren // Konsole: /pvp [<status|list|on|off>] [<Spieler>] -done
 	 *  EntityDamageEvent: PvP-Status implementieren -done
@@ -227,7 +234,9 @@ public class MyCmd extends JavaPlugin {
 		// Überprüfung des Config-Delegates
 		// Es muss nur das Config-Delegate gepüft werden,
 		// da die anderen Delegates Variable Einträge haben.
-		config.EntryCheck();
+		if(this.config.EntryCheck()) {
+			this.config.Save();
+		}
 		
 		Bukkit.getServer().getScheduler().runTask(
 				this,
@@ -451,61 +460,15 @@ public class MyCmd extends JavaPlugin {
 	}
 	
 	/**
-	 * Gibt einen String zur richtigen Benutzung eines Befehls zurück.
+	 * Sendet einem Befehlssender eine Nachricht zur richtigen Benutzung eines Befehls
 	 * @author joestr
 	 * @version 1
 	 * @since 1
+	 * @param commandSender {@linkplain CommandSender} Befehlssender
 	 * @param command {@link String} Befehl als Zeichenkette.
-	 * @return {@link String} Formatierte Zeichekette.
 	 */
-	public String usageMessage(String command) {
-		return this.pluginPrefix + ChatColor.RED + "Benutze: " + ChatColor.GRAY + command;
-	}
-	
-	/**
-	 * Gibt einen String zur richtigen Benutzung eines Befehls zurück.
-	 * @deprecated Vereinfacht. Benutzung von {@link MyCmd#usageMessage(Player, String, String, String, String)} empfohlen.
-	 * @author joestr
-	 * @version 1
-	 * @since 1
-	 * @param pln {@link String} Spielername
-	 * @param cmd {@link String} Befehl
-	 * @param act {@link String} Aktion
-	 * @param actv {@link String} Wert der Aktion
-	 * @param stv {@link String} Wert der Aktion "show_text"
-	 * @return {@link String} tellraw-Befehlszeichenkette
-	 */
-	public String usageMessage(String pln, String cmd, String act, String actv, String stv) {
-		
-		return "tellraw " + pln + " " + 
-			"[\"\"," + 
-			"{" +
-			"\"text\":\"" + this.pluginPrefix + "\"" +
-			"}," +
-			"{" + 
-			"\"text\":\"Benutze: \",\"color\":\"red\"" + 
-			"}," + 
-			"{" + 
-			"\"text\":\"" + cmd + "\",\"color\":\"gray\"," + 
-			"\"clickEvent\":" + 
-			"{" + 
-			"\"action\":\"" + act + "\",\"value\":\"" + actv + "\"" + 
-			"}," + 
-			"\"hoverEvent\":" + 
-			"{" + 
-			"\"action\":\"show_text\",\"value\":" + 
-			"{" + 
-			"\"text\":\"\",\"extra\":" + 
-			"[" + 
-			"{" + 
-			"\"text\":\"" + stv + "\",\"color\":\"gray\"" + 
-			"}" + 
-			"]" + 
-			"}" + 
-			"}" + 
-			"}" + 
-			"]"
-		;
+	public void usageMessage(CommandSender commandSender, String command) {
+		commandSender.sendMessage(this.pluginPrefix + ChatColor.RED + "Benutze: " + ChatColor.GRAY + command);
 	}
 	
 	/**
@@ -553,19 +516,6 @@ public class MyCmd extends JavaPlugin {
 	}
 	
 	/**
-	 * Gibt eine Nachricht die auf fehlende Rechte hinweist zurück.
-	 * @deprecated Vereinfacht. Benutzung von {@link MyCmd#noPermissionMessage(Player)} empfohlen.
-	 * @author joestr
-	 * @version 1
-	 * @since 1
-	 * @return {@link String} Formatierte Zeichenkette
-	 */
-	public String noPermissionMessage() {
-		
-		return this.pluginPrefix + ChatColor.RED + "Berechtigung fehlt.";
-	}
-	
-	/**
 	 * Sendet einem Spieler eine Nachricht die auf fehlende Rechte hinweist.
 	 * @author joestr
 	 * @version 1
@@ -574,19 +524,6 @@ public class MyCmd extends JavaPlugin {
 	 */
 	public void noPermissionMessage(Player player) {
 		player.sendMessage(this.pluginPrefix + ChatColor.RED + "Berechtigung fehlt.");
-	}
-	
-	/**
-	 * Gibt eine Nachricht die auf fehlende Rechte hinweist zurück.
-	 * @deprecated Vereinfacht. Benutzung von {@link MyCmd#noPermissionMessage(Player, String)} empfohlen.
-	 * @author joestr
-	 * @version 1
-	 * @since 1
-	 * @param perm {@link String} Berechtigung als Zeichenkette
-	 * @return {@link String} Formatierte Zeichenkette mit Berechtigungszeichenkette
-	 */
-	public String noPermissionMessage(String perm) {
-		return this.pluginPrefix + ChatColor.RED + "Berechtigung " + ChatColor.GRAY + perm + ChatColor.RED + " fehlt.";
 	}
 	
 	/**

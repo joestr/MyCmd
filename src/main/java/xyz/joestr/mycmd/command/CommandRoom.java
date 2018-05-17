@@ -21,20 +21,20 @@ public class CommandRoom implements CommandExecutor {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
-			if(!player.hasPermission("mycmd.command.pvp") && !player.hasPermission("mycmd.command.pvp.other")) {
+			if(!player.hasPermission("mycmd.command.room") && !player.hasPermission("mycmd.command.room.bypass")) {
 				
-				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
+				this.plugin.noPermissionMessage(player);
 				return true;
 			}
 			
-			if(arg.length == 0) {
+			if(args.length == 0) {
 				
 				if(player.hasPermission("mycmd.command.room")) {
 					
@@ -46,10 +46,10 @@ public class CommandRoom implements CommandExecutor {
 									"Einen Raum verlassen",
 									"Einen Raumoperator ernennen",
 									"Einen Raumoperator zurücksetzen",
-									"Ein Raummitglied entfernen",
+									"Ein Raumteilnehmer entfernen",
 									"Das Passwort für den Raum setzen",
 									"Einen Raum löschen",
-									"Räume auflisten",
+									"Alle Räume auflisten",
 									"Informationen über einen Raum"
 							},
 							new String[] {
@@ -89,7 +89,7 @@ public class CommandRoom implements CommandExecutor {
 									"/room password <Name> <Spieler>",
 									"/room delete <Name>",
 									"/room list",
-									"/pvp info <Name> [<Passwort>]"
+									"/pvp info <Name>"
 							}
 					);
 					
@@ -98,7 +98,7 @@ public class CommandRoom implements CommandExecutor {
 			}
 			
 			// /room [0]
-			if(arg.length == 1) {
+			if(args.length == 1) {
 				
 				if(!player.hasPermission("mycmd.command.room")) {
 					
@@ -107,9 +107,9 @@ public class CommandRoom implements CommandExecutor {
 				}
 				
 				// /room list
-				if(arg[0].equalsIgnoreCase("list")) {
+				if(args[0].equalsIgnoreCase("list")) {
 					
-					player.sendMessage(
+					player.sendMessage(this.plugin.pluginPrefix + 
 							ChatColor.GREEN +
 							"Räume: (" + ChatColor.DARK_RED + "Operator" + ChatColor.GREEN + ", " +
 							ChatColor.DARK_GREEN + "Mitglied" + ChatColor.GREEN + "):"
@@ -131,13 +131,14 @@ public class CommandRoom implements CommandExecutor {
 						
 						rooms += ChatColor.GREEN + ", ";
 					}
+					player.sendMessage(this.plugin.pluginPrefix + rooms);
 					
-					player.sendMessage(rooms);
 					return true;
 				}
 			}
 			
-			if(arg.length == 2) {
+			// /room [0] [1]
+			if(args.length == 2) {
 				
 				if(!player.hasPermission("mycmd.command.room")) {
 					
@@ -146,56 +147,60 @@ public class CommandRoom implements CommandExecutor {
 				}
 				
 				// /room create <Name>
-				if(arg[0].equalsIgnoreCase("create")) {
+				if(args[0].equalsIgnoreCase("create")) {
 					
-					if(this.plugin.rooms.getMap().keySet().contains(arg[1])) {
+					if(this.plugin.rooms.getMap().keySet().contains(args[1])) {
 						
-						player.sendMessage(ChatColor.RED + "Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " existiert bereits.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " existiert bereits.");
 						return true;
 					}
 					
-					Room r = new Room(arg[1]);
+					Room r = new Room(
+							args[1],
+							this.plugin.config.getMap().get("room-chat").toString(),
+							this.plugin.config.getMap().get("room-info").toString()
+					);
 					
 					r.getOperators().add(player);
 					
 					r.roomMessage(
 							ChatColor.GREEN +
-							"Raum " + ChatColor.GRAY + arg[1] + ChatColor.GREEN +
-							" wurde von " + ChatColor.GRAY + player.getName() + ChatColor.GREEN + 
-							" erfolgreich erstellt."
+							"Raum wurde von " +
+							ChatColor.GRAY + player.getName() + ChatColor.GREEN + 
+							" erstellt."
 					);
 					
-					this.plugin.rooms.getMap().put(arg[1], r);
+					this.plugin.rooms.getMap().put(args[1], r);
 					this.plugin.rooms.Save();
 					
 					return true;
 				}
 				
 				// /room join <Name>
-				if(arg[0].equalsIgnoreCase("join")) {
+				if(args[0].equalsIgnoreCase("join")) {
 					
-					if(!this.plugin.rooms.getMap().keySet().contains(arg[1])) {
+					if(!this.plugin.rooms.getMap().keySet().contains(args[1])) {
 						
-						player.sendMessage(ChatColor.RED + "Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " existiert nicht.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " existiert nicht.");
 						return true;
 					}
 					
-					Room r = (Room) this.plugin.rooms.getMap().get(arg[1]);
+					Room r = (Room) this.plugin.rooms.getMap().get(args[1]);
 					
 					if(r.getPassword() != "") {
-						player.sendMessage(ChatColor.RED + "Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " hat ein Passwort.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " hat ein Passwort.");
 						return true;
 					}
 					
 					if(r.getOperators().contains(player)) {
 						
-						player.sendMessage(ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " Operator.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " Operator.");
 						return true;
 					}
 					
 					if(r.getMembers().contains(player)) {
 						
-						player.sendMessage(ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " bereits Mitglied.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " bereits Mitglied.");
 						return true;
 					}
 					
@@ -212,25 +217,25 @@ public class CommandRoom implements CommandExecutor {
 				}
 				
 				// /room leave <Name>
-				if(arg[0].equalsIgnoreCase("leave")) {
+				if(args[0].equalsIgnoreCase("leave")) {
 					
-					if(!this.plugin.rooms.getMap().keySet().contains(arg[1])) {
+					if(!this.plugin.rooms.getMap().keySet().contains(args[1])) {
 						
-						player.sendMessage(ChatColor.RED + "Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " existiert nicht.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " existiert nicht.");
 						return true;
 					}
 					
-					Room r = (Room) this.plugin.rooms.getMap().get(arg[1]);
+					Room r = (Room) this.plugin.rooms.getMap().get(args[1]);
 					
 					if(r.getOperators().contains(player) && r.getOperators().size() < 2) {
 						
-						player.sendMessage(ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " einziger Operator.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " einziger Operator.");
 						return true;
 					}
 					
 					if(!r.getMembers().contains(player)) {
 						
-						player.sendMessage(ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " nicht Mitglied.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " nicht Mitglied.");
 						return true;
 					}
 					
@@ -248,50 +253,50 @@ public class CommandRoom implements CommandExecutor {
 				}
 				
 				// /room info <Name>
-				if(arg[0].equalsIgnoreCase("info")) {
+				if(args[0].equalsIgnoreCase("info")) {
 					
-					if(!this.plugin.rooms.getMap().keySet().contains(arg[1])) {
+					if(!this.plugin.rooms.getMap().keySet().contains(args[1])) {
 						
-						player.sendMessage(ChatColor.RED + "Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " existiert nicht.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " existiert nicht.");
 						return true;
 					}
 					
-					Room r = (Room) this.plugin.rooms.getMap().get(arg[1]);
+					Room r = (Room) this.plugin.rooms.getMap().get(args[1]);
 					
-					player.sendMessage(ChatColor.GREEN + "Raum: " + ChatColor.GRAY + arg[1]);
-					player.sendMessage(ChatColor.GREEN + "Passwort: " + (!r.getPassword().equals("") ? ChatColor.GREEN + "Ja" : ChatColor.RED + "Nein"));
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Raum: " + ChatColor.GRAY + args[1]);
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Passwort: " + (!r.getPassword().equals("") ? ChatColor.GREEN + "Ja" : ChatColor.RED + "Nein"));
 					
 					String operators = "";
 					for(OfflinePlayer p : r.getOperators()) {
 						
 						operators += ChatColor.DARK_RED + p.getName() + ChatColor.GREEN + ", ";
 					}
-					player.sendMessage(ChatColor.GREEN + "Operatoren: " + operators);
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Operatoren: " + operators);
 					
 					String members = "";
 					for(OfflinePlayer p : r.getMembers()) {
 						
 						members += ChatColor.DARK_GREEN + p.getName() + ChatColor.GREEN + ", ";
 					}
-					player.sendMessage(ChatColor.GREEN + "Mitglieder: " + members);
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Mitglieder: " + members);
 					
 					return true;
 				}
 				
 				// /room delete <Name>
-				if(arg[0].equalsIgnoreCase("delete")) {
+				if(args[0].equalsIgnoreCase("delete")) {
 					
-					if(!this.plugin.rooms.getMap().keySet().contains(arg[1])) {
+					if(!this.plugin.rooms.getMap().keySet().contains(args[1])) {
 						
-						player.sendMessage(ChatColor.RED + "Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " existiert nicht.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " existiert nicht.");
 						return true;
 					}
 					
-					Room r = (Room) this.plugin.rooms.getMap().get(arg[1]);
+					Room r = (Room) this.plugin.rooms.getMap().get(args[1]);
 					
 					if(!r.getOperators().contains(player)) {
 						
-						player.sendMessage(ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " nicht Operator.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " nicht Operator.");
 						return true;
 					}
 					
@@ -300,15 +305,15 @@ public class CommandRoom implements CommandExecutor {
 							" hat den Raum gelöscht."
 					);
 					
-					this.plugin.rooms.getMap().remove(arg[1]);
+					this.plugin.rooms.getMap().remove(args[1]);
 					this.plugin.rooms.Save();
 					
 					return true;
 				}
 			}
-			// /room 1 2
 			
-			if(arg.length == 3) {
+			// /room [0] [1] [2]
+			if(args.length == 3) {
 				
 				if(!player.hasPermission("mycmd.command.room")) {
 					
@@ -317,51 +322,56 @@ public class CommandRoom implements CommandExecutor {
 				}
 				
 				// /room create <Name> [<Password>]
-				if(arg[0].equalsIgnoreCase("create")) {
+				if(args[0].equalsIgnoreCase("create")) {
 					
-					if(this.plugin.rooms.getMap().keySet().contains(arg[1])) {
+					if(this.plugin.rooms.getMap().keySet().contains(args[1])) {
 						
-						player.sendMessage(ChatColor.RED + "Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " existiert bereits.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " existiert bereits.");
 						return true;
 					}
 					
-					Room r = new Room(arg[1], arg[2]);
+					Room r = new Room(
+							args[1],
+							args[2],
+							this.plugin.config.getMap().get("room-chat").toString(),
+							this.plugin.config.getMap().get("room-info").toString()
+					);
 					
 					r.getOperators().add(player);
 					
-					player.sendMessage(ChatColor.GREEN + "Raum " + ChatColor.GRAY + arg[1] + ChatColor.GREEN + " erfolgreich erstellt.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Raum " + ChatColor.GRAY + args[1] + ChatColor.GREEN + " erfolgreich erstellt.");
 					
-					this.plugin.rooms.getMap().put(arg[1], r);
+					this.plugin.rooms.getMap().put(args[1], r);
 					this.plugin.rooms.Save();
 					
 					return true;
 				}
 				
 				// /room join <Name> [<Password>]
-				if(arg[0].equalsIgnoreCase("join")) {
+				if(args[0].equalsIgnoreCase("join")) {
 					
-					if(!this.plugin.rooms.getMap().keySet().contains(arg[1])) {
+					if(!this.plugin.rooms.getMap().keySet().contains(args[1])) {
 						
-						player.sendMessage(ChatColor.RED + "Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " existiert nicht.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " existiert nicht.");
 						return true;
 					}
 					
-					Room r = (Room) this.plugin.rooms.getMap().get(arg[1]);
+					Room r = (Room) this.plugin.rooms.getMap().get(args[1]);
 					
-					if(!r.getPassword().equals(arg[2])) {
-						player.sendMessage(ChatColor.RED + "Passwort für den Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " falsch.");
+					if(!r.getPassword().equals(args[2])) {
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Passwort für den Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " falsch.");
 						return true;
 					}
 					
 					if(r.getOperators().contains(player)) {
 						
-						player.sendMessage(ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " Operator.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " Operator.");
 						return true;
 					}
 					
 					if(r.getMembers().contains(player)) {
 						
-						player.sendMessage(ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " bereits Mitglied.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " bereits Mitglied.");
 						return true;
 					}
 					
@@ -376,42 +386,30 @@ public class CommandRoom implements CommandExecutor {
 					
 					return true;
 				}
-			}
-				
-			
-			if(arg.length >= 3) {
-				
-				if(!player.hasPermission("mycmd.command.room")) {
-					
-					this.plugin.noPermissionMessage(player, "mycmd.command.room");
-					return true;
-				}
 				
 				// /room op <Name> <Spieler>
-				if(arg[0].equalsIgnoreCase("op")) {
+				if(args[0].equalsIgnoreCase("op")) {
 					
-					if(!this.plugin.rooms.getMap().keySet().contains(arg[1])) {
+					if(!this.plugin.rooms.getMap().keySet().contains(args[1])) {
 						
-						player.sendMessage(ChatColor.RED + "Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " existiert nicht.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " existiert nicht.");
 						return true;
 					}
 					
-					Room r = (Room) this.plugin.rooms.getMap().get(arg[1]);
+					Room r = (Room) this.plugin.rooms.getMap().get(args[1]);
 					
 					if(!r.getOperators().contains(player)) {
 						
-						player.sendMessage(ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " nicht Operator.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " nicht Operator.");
 						return true;
 					}
 					
-					r.getMembers().remove(Bukkit.getServer().getOfflinePlayer(arg[2]));
-					r.getOperators().add(Bukkit.getServer().getOfflinePlayer(arg[2]));
+					r.getMembers().remove(Bukkit.getServer().getOfflinePlayer(args[2]));
+					r.getOperators().add(Bukkit.getServer().getOfflinePlayer(args[2]));
 					
 					r.roomMessage(
-							ChatColor.GRAY + arg[2] + ChatColor.GREEN + 
-							" ist im Raum " +
-							ChatColor.GRAY + arg[1] + ChatColor.GREEN +
-							" nun Operator."
+							ChatColor.GRAY + args[2] + ChatColor.GREEN + 
+							" ist im Raum nun Operator."
 					);
 					
 					this.plugin.rooms.Save();
@@ -420,30 +418,28 @@ public class CommandRoom implements CommandExecutor {
 				}
 				
 				// /room deop <Name> <Spieler>
-				if(arg[0].equalsIgnoreCase("deop")) {
+				if(args[0].equalsIgnoreCase("deop")) {
 					
-					if(!this.plugin.rooms.getMap().keySet().contains(arg[1])) {
+					if(!this.plugin.rooms.getMap().keySet().contains(args[1])) {
 						
-						player.sendMessage(ChatColor.RED + "Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " existiert nicht.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " existiert nicht.");
 						return true;
 					}
 					
-					Room r = (Room) this.plugin.rooms.getMap().get(arg[1]);
+					Room r = (Room) this.plugin.rooms.getMap().get(args[1]);
 					
 					if(!r.getOperators().contains(player)) {
 						
-						player.sendMessage(ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " nicht Operator.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " nicht Operator.");
 						return true;
 					}
 					
-					r.getOperators().remove(Bukkit.getServer().getOfflinePlayer(arg[2]));
-					r.getMembers().add(Bukkit.getServer().getOfflinePlayer(arg[2]));
+					r.getOperators().remove(Bukkit.getServer().getOfflinePlayer(args[2]));
+					r.getMembers().add(Bukkit.getServer().getOfflinePlayer(args[2]));
 					
 					r.roomMessage(
-							ChatColor.GRAY + arg[2] + ChatColor.RED + 
-							" ist im Raum " +
-							ChatColor.GRAY + arg[1] + ChatColor.RED +
-							" kein Operator mehr."
+							ChatColor.GRAY + args[2] + ChatColor.RED + 
+							" ist im Raum kein Operator mehr."
 					);
 					
 					this.plugin.rooms.Save();
@@ -452,28 +448,40 @@ public class CommandRoom implements CommandExecutor {
 				}
 				
 				// /room kick <Name> <Spieler>
-				if(arg[0].equalsIgnoreCase("kick")) {
+				if(args[0].equalsIgnoreCase("kick")) {
 					
-					if(!this.plugin.rooms.getMap().keySet().contains(arg[1])) {
+					if(!this.plugin.rooms.getMap().keySet().contains(args[1])) {
 						
-						player.sendMessage(ChatColor.RED + "Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " existiert nicht.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " existiert nicht.");
 						return true;
 					}
 					
-					Room r = (Room) this.plugin.rooms.getMap().get(arg[1]);
+					Room r = (Room) this.plugin.rooms.getMap().get(args[1]);
 					
 					if(!r.getOperators().contains(player)) {
 						
-						player.sendMessage(ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " nicht Operator.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " nicht Operator.");
+						return true;
+					}
+					
+					if(!r.getOperators().contains(Bukkit.getServer().getOfflinePlayer(args[2])) && !r.getMembers().contains(Bukkit.getServer().getOfflinePlayer(args[2]))) {
+						
+						player.sendMessage(
+								this.plugin.pluginPrefix +
+								ChatColor.RED + "Im Raum " + ChatColor.GRAY + args[1] + ChatColor.RED +
+								" gibt es keinen Teilnehmer mit dem Namen " +
+								ChatColor.GRAY + args[2] + ChatColor.RED + "."
+						);
 						return true;
 					}
 					
 					r.roomMessage(
-							ChatColor.GRAY + arg[2] + ChatColor.RED + 
-							" wurde aus dem raum geworfen."
+							ChatColor.GRAY + args[2] + ChatColor.RED + 
+							" wurde aus dem Raum geworfen."
 					);
 					
-					r.getMembers().remove(Bukkit.getServer().getOfflinePlayer(arg[2]));
+					r.getOperators().remove(Bukkit.getServer().getOfflinePlayer(args[2]));
+					r.getMembers().remove(Bukkit.getServer().getOfflinePlayer(args[2]));
 					
 					this.plugin.rooms.Save();
 					
@@ -481,55 +489,58 @@ public class CommandRoom implements CommandExecutor {
 				}
 				
 				// /room password <Name> <Passwort>
-				if(arg[0].equalsIgnoreCase("password")) {
+				if(args[0].equalsIgnoreCase("password")) {
 					
-					if(!this.plugin.rooms.getMap().keySet().contains(arg[1])) {
+					if(!this.plugin.rooms.getMap().keySet().contains(args[1])) {
 						
-						player.sendMessage(ChatColor.RED + "Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " existiert nicht.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " existiert nicht.");
 						return true;
 					}
 					
-					Room r = (Room) this.plugin.rooms.getMap().get(arg[1]);
+					Room r = (Room) this.plugin.rooms.getMap().get(args[1]);
 					
 					if(!r.getOperators().contains(player)) {
 						
-						player.sendMessage(ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " nicht Operator.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du Bist im Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " nicht Operator.");
 						return true;
 					}
 					
-					r.setPassword(arg[2]);
+					r.setPassword(args[2]);
 					
 					r.roomMessage(
 							ChatColor.GREEN +
-							"Das Passwort vom Raum " +
-							ChatColor.GRAY + arg[1] + ChatColor.GREEN +
-							"wurde aktualisiert."
+							"Das Passwort vom Raum wurde gesetzt."
 					);
 					
 					this.plugin.rooms.Save();
 					
 					return true;
 				}
+			}
+				
+			
+			// /room [0] [1] [2] [...]
+			if(args.length >= 3) {
 				
 				// /room write <Name> <Nachricht ...>
-				if(arg[0].equalsIgnoreCase("write")) {
+				if(args[0].equalsIgnoreCase("write")) {
 					
-					if(!this.plugin.rooms.getMap().keySet().contains(arg[1])) {
+					if(!this.plugin.rooms.getMap().keySet().contains(args[1])) {
 						
-						player.sendMessage(ChatColor.RED + "Raum " + ChatColor.GRAY + arg[1] + ChatColor.RED + " existiert nicht.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Raum " + ChatColor.GRAY + args[1] + ChatColor.RED + " existiert nicht.");
 						return true;
 					}
 					
 					String message = "";
-					for(int i = 2; i < arg.length; i++) {
-						message += arg[i];
+					for(int i = 2; i < args.length; i++) {
+						message += args[i];
 					}
 					
-					Room r = (Room) this.plugin.rooms.getMap().get(arg[1]);
+					Room r = (Room) this.plugin.rooms.getMap().get(args[1]);
 					
 					r.writeMessage(player, message);
 					
-					this.plugin.rooms.getMap().put(arg[1], r);
+					this.plugin.rooms.getMap().put(args[1], r);
 					this.plugin.rooms.Save();
 					
 					return true;
@@ -538,21 +549,71 @@ public class CommandRoom implements CommandExecutor {
 			
 			if(player.hasPermission("mycmd.command.room")) {
 				
-				this.plugin.usageMessage(
-						player,
-						"/room [<create|join|write|leave|delete|list|info|op|deop|kick>] [<Name>] [<Passwort|Spieler|Nachricht ...>]",
-						"suggest_command",
-						"/room ",
-						"/room [<create|join|write|leave|delete|list|info|op|deop|kick>] [<Name>] [<Passwort|Spieler|Nachricht ...>]"
+				this.plugin.commandOverview(player, "Raum-System",
+						new String[] {
+								"Einen Raum erstellen",
+								"Einem Raum beitreten",
+								"In Einem Raum schreiben",
+								"Einen Raum verlassen",
+								"Einen Raumoperator ernennen",
+								"Einen Raumoperator zurücksetzen",
+								"Ein Raumteilnehmer entfernen",
+								"Das Passwort für den Raum setzen",
+								"Einen Raum löschen",
+								"Alle Räume auflisten",
+								"Informationen über einen Raum"
+						},
+						new String[] {
+								"suggest_command",
+								"suggest_command",
+								"suggest_command",
+								"suggest_command",
+								"suggest_command",
+								"suggest_command",
+								"suggest_command",
+								"suggest_command",
+								"suggest_command",
+								"run_command",
+								"suggest_command"
+						},
+						new String[] {
+								"/room create ",
+								"/room join ",
+								"/room write ",
+								"/room leave ",
+								"/room op ",
+								"/room deop ",
+								"/room kick ",
+								"/room password ",
+								"/room delete",
+								"/room list",
+								"/pvp info "
+						},
+						new String[] {
+								"/room create <Name> [<Passwort>]",
+								"/room join <Name> [<Passwort>]",
+								"/room write <Name> <Nachricht ...>",
+								"/room leave <Name>",
+								"/room op <Name> <Spieler>",
+								"/room deop <Name> <Spieler>",
+								"/room kick <Name> <Spieler>",
+								"/room password <Name> <Spieler>",
+								"/room delete <Name>",
+								"/room list",
+								"/pvp info <Name>"
+						}
 				);
+				
 				return true;
 			}
 		}
 		
 		//Console
-		sender.sendMessage("Nix da!");
+		if(args.length == 0) {
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Nur Spieler können das Raum-System nutzen.");
+		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/room"));
+		this.plugin.usageMessage(commandSender, "/room");
 		return true;
 	}
 }

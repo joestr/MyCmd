@@ -27,12 +27,12 @@ public class CommandBan implements CommandExecutor {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.ban")) {
 				
@@ -40,7 +40,7 @@ public class CommandBan implements CommandExecutor {
 				return true;
 			}
 			
-			if(arg.length >= 2) {
+			if(args.length >= 2) {
 				
 				if(!player.hasPermission("mycmd.command.ban")) {
 					
@@ -50,15 +50,15 @@ public class CommandBan implements CommandExecutor {
 				
 				String message = "";
 				
-				for(int i = 1; i < arg.length; i++) { 
+				for(int i = 1; i < args.length; i++) { 
 					
-					if(i + 1 == arg.length) { message += arg[i]; continue; }
-					message += arg[i] + " ";
+					if(i + 1 == args.length) { message += args[i]; continue; }
+					message += args[i] + " ";
 				}
 				
-				Bukkit.getServer().getBanList(Type.NAME).addBan(arg[0], message, null, player.getName());
+				Bukkit.getServer().getBanList(Type.NAME).addBan(args[0], message, null, player.getName());
 				
-				BanEntry banEntry = Bukkit.getServer().getBanList(Type.NAME).getBanEntry(arg[0]);
+				BanEntry banEntry = Bukkit.getServer().getBanList(Type.NAME).getBanEntry(args[0]);
 				
 				String kickMessage = 
 						this.plugin.config.getMap().get("ban-screen").toString()
@@ -69,8 +69,8 @@ public class CommandBan implements CommandExecutor {
 						.replace("%created%", banEntry.getCreated().toInstant().toString())
 						.replace("%expires%", banEntry.getExpiration() == null ? "-" : banEntry.getExpiration().toInstant().toString());
 				
-				if(Bukkit.getServer().getOfflinePlayer(arg[0]).isOnline()) {
-					Bukkit.getServer().getPlayer(arg[0]).kickPlayer(
+				if(Bukkit.getServer().getOfflinePlayer(args[0]).isOnline()) {
+					Bukkit.getServer().getPlayer(args[0]).kickPlayer(
 							this.plugin.toColorcode("&", kickMessage)
 					);
 				}
@@ -78,8 +78,8 @@ public class CommandBan implements CommandExecutor {
 				Bukkit.getServer().broadcastMessage(
 						this.plugin.toColorcode(
 								"&",
-								((String)this.plugin.config.getMap().get("ban"))
-								.replace("%player%", arg[0])
+								this.plugin.config.getMap().get("ban").toString()
+								.replace("%player%", args[0])
 								.replace("%reason%", message)
 						)
 				);
@@ -95,18 +95,18 @@ public class CommandBan implements CommandExecutor {
 		}
 		
 		//Console
-		if(arg.length >= 2) {
+		if(args.length >= 2) {
 			
 			String message = "";
 			
-			for(int i = 1; i < arg.length; i++) { 
+			for(int i = 1; i < args.length; i++) { 
 				
-				if(i + 1 == arg.length) { message += arg[i]; continue; }
-				message += arg[i] + " ";
+				if(i + 1 == args.length) { message += args[i]; continue; }
+				message += args[i] + " ";
 			}
 			
-			Bukkit.getServer().getBanList(Type.NAME).addBan(arg[0], message, null, "KONSOLE/BLOCK/PROXY/REMOTECONSOLE");
-			BanEntry banEntry = Bukkit.getServer().getBanList(Type.NAME).getBanEntry(arg[0]);
+			Bukkit.getServer().getBanList(Type.NAME).addBan(args[0], message, null, "KONSOLE/BLOCK/PROXY/REMOTECONSOLE");
+			BanEntry banEntry = Bukkit.getServer().getBanList(Type.NAME).getBanEntry(args[0]);
 			
 			String kickMessage = 
 					this.plugin.config.getMap().get("ban-screen").toString()
@@ -117,8 +117,8 @@ public class CommandBan implements CommandExecutor {
 					.replace("%created%", banEntry.getCreated().toInstant().toString())
 					.replace("%expires%", banEntry.getExpiration() == null ? "-" : banEntry.getExpiration().toInstant().toString());
 			
-			if(Bukkit.getServer().getOfflinePlayer(arg[0]).isOnline()) {
-				Bukkit.getServer().getPlayer(arg[0]).kickPlayer(
+			if(Bukkit.getServer().getOfflinePlayer(args[0]).isOnline()) {
+				Bukkit.getServer().getPlayer(args[0]).kickPlayer(
 						this.plugin.toColorcode("&", kickMessage)
 				);
 			}
@@ -126,8 +126,8 @@ public class CommandBan implements CommandExecutor {
 			Bukkit.getServer().broadcastMessage(
 					this.plugin.toColorcode(
 							"&",
-							((String)this.plugin.config.getMap().get("ban"))
-							.replace("%player%", arg[0])
+							this.plugin.config.getMap().get("ban").toString()
+							.replace("%player%", args[0])
 							.replace("%reason%", message)
 					)
 			);
@@ -135,10 +135,11 @@ public class CommandBan implements CommandExecutor {
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/ban <Spieler> <Grund ...>"));
+		this.plugin.usageMessage(commandSender, "/ban <Spieler> <Grund ...>");
 		return true;
 	}
 	
+	// Mit Zeitabfrage (für später)
 	public void _ban_(CommandSender sender, String[] arg) {
 		
 		String message = "";

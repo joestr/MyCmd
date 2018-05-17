@@ -16,12 +16,12 @@ public class CommandDelspawn implements CommandExecutor {
 		this.plugin = mycmd;
 	}
 	
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
 		//Player
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.delspawn")) {
 				
@@ -29,7 +29,7 @@ public class CommandDelspawn implements CommandExecutor {
 				return true;
 			}
 			
-			if(arg.length == 0) {
+			if(args.length == 0) {
 				
 				if(!player.hasPermission("mycmd.command.delspawn")) {
 					
@@ -37,7 +37,7 @@ public class CommandDelspawn implements CommandExecutor {
 					return true;
 				}
 				
-				_delspawn_(sender);
+				_delspawn_(commandSender);
 				return true;
 			}
 			
@@ -50,13 +50,13 @@ public class CommandDelspawn implements CommandExecutor {
 		//End Player
 		
 		//Console
-		if(arg.length == 0) {
+		if(args.length == 0) {
 			
-			_delspawn_(sender);
+			_delspawn_(commandSender);
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/delspawn"));
+		this.plugin.usageMessage(commandSender, "/delspawn");
 		return true;
 		//End Console
 	}

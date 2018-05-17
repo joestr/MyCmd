@@ -1,4 +1,4 @@
-package xyz.joestr.mycmd.command.blockcommand;
+package xyz.joestr.mycmd.command.noplayercommand;
 
 import java.util.regex.Pattern;
 
@@ -6,28 +6,28 @@ import org.bukkit.BanEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.BanList.Type;
-import org.bukkit.command.BlockCommandSender;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import xyz.joestr.mycmd.MyCmd;
 
-public class BlockCommandBan_ip {
+public class NoPlayerCommandBan_ip {
 	
 	MyCmd plugin = null;
 	
-	public BlockCommandBan_ip(MyCmd myCmd) {
+	public NoPlayerCommandBan_ip(MyCmd myCmd) {
 		
 		this.plugin = myCmd;
 	}
 	
-	public boolean process(BlockCommandSender blockCommandSender, String[] args) {
+	public boolean process(CommandSender commandSender, String[] args) {
 		
 		if(args.length >= 2) {
 			
 			Pattern p = Pattern.compile("(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))");
 			if(!args[0].matches(p.toString())) {
 				
-				blockCommandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Es muss eine gültige IP-Adresse angegeben werden.");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Es muss eine gültige IP-Adresse angegeben werden.");
 				return true;
 			}
 			
@@ -39,8 +39,8 @@ public class BlockCommandBan_ip {
 				message += args[i] + " ";
 			}
 			
-			Bukkit.getServer().getBanList(Type.IP).addBan(args[0], message, null, "BLOCK");
-			
+			Bukkit.getServer().getBanList(Type.IP).addBan(args[0], message, null, "KONSOLE/BLOCK/PROXY/REMOTECONSOLE");
+
 			BanEntry banEntry = Bukkit.getServer().getBanList(Type.IP).getBanEntry(args[0]);
 			
 			String kickString =
@@ -65,7 +65,7 @@ public class BlockCommandBan_ip {
 			Bukkit.getServer().broadcastMessage(
 					this.plugin.toColorcode(
 							"&",
-							((String)this.plugin.config.getMap().get("ban-ip"))
+							this.plugin.config.getMap().get("ban-ip").toString()
 							.replace("%ip%", args[0])
 							.replace("%reason%", message)
 					)
@@ -74,7 +74,7 @@ public class BlockCommandBan_ip {
 			return true;
 		}
 		
-		blockCommandSender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/ban-ip <IP-Adresse> <Grund ...>"));
+		this.plugin.usageMessage(commandSender, "/ban-ip <IP-Adresse> <Grund ...>");
 		return true;
 	}
 }

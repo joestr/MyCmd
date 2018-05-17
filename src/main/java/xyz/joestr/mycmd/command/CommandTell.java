@@ -18,36 +18,36 @@ public class CommandTell implements CommandExecutor {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.tell")) {
 				
-				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.tell"));
+				this.plugin.noPermissionMessage(player, "mycmd.command.tell");
 				return true;
 			}
 			
-			if(arg.length > 1) {
+			if(args.length > 1) {
 				
 				if(!player.hasPermission("mycmd.command.tell")) {
 					
-					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
+					this.plugin.noPermissionMessage(player);
 					return true;
 				}
 				
-				if(!player.getName().equals(arg[0])) {
+				if(!player.getName().equals(args[0])) {
 					
-					if(arg[0].equals("KONSOLE")) {
+					if(args[0].equals("KONSOLE")) {
 						
 						String msg = "";
 						
-						for(int i = 1; i < arg.length; i++) {
+						for(int i = 1; i < args.length; i++) {
 							
-							msg = msg + arg[i] + " ";
+							msg = msg + args[i] + " ";
 						}
 						
 						this.plugin.whisper.put(player.getName(), "KONSOLE");
@@ -75,28 +75,28 @@ public class CommandTell implements CommandExecutor {
 						return true;
 					}
 					
-					if(Bukkit.getOfflinePlayer(arg[0]).isOnline()) {
+					if(Bukkit.getOfflinePlayer(args[0]).isOnline()) {
 						
 						String msg = "";
 						
-						for (int i = 1; i < arg.length; i++) {
+						for (int i = 1; i < args.length; i++) {
 							
-							msg = msg + arg[i] + " ";
+							msg = msg + args[i] + " ";
 						}
 						
-						this.plugin.whisper.put(player.getName(), arg[0]);
-						this.plugin.whisper.put(arg[0], player.getName());
+						this.plugin.whisper.put(player.getName(), args[0]);
+						this.plugin.whisper.put(args[0], player.getName());
 						player.sendMessage(
 								this.plugin.pluginPrefix +
 								this.plugin.toColorcode(
 										"&",
 										((String)this.plugin.config.getMap().get("whisper_sender")).toString()
-										.replace("%target_player_displayname%", Bukkit.getPlayer(arg[0]).getDisplayName())
-										.replace("%target_player%", Bukkit.getPlayer(arg[0]).getName())
+										.replace("%target_player_displayname%", Bukkit.getPlayer(args[0]).getDisplayName())
+										.replace("%target_player%", Bukkit.getPlayer(args[0]).getName())
 										.replace("%message%", msg)
 								)
 						);
-						Bukkit.getPlayer(arg[0]).sendMessage(
+						Bukkit.getPlayer(args[0]).sendMessage(
 								this.plugin.pluginPrefix +
 								this.plugin.toColorcode(
 										"&",
@@ -109,7 +109,7 @@ public class CommandTell implements CommandExecutor {
 						return true;
 					}
 					
-					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Spieler " + ChatColor.GRAY + args[0] + ChatColor.RED + " ist offline.");
 					return true;
 				}
 				
@@ -119,38 +119,38 @@ public class CommandTell implements CommandExecutor {
 			
 			if (player.hasPermission("mycmd.command.rank")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/<tell|t|whisper|w|msg> <Spieler> <Nachricht ...>", "suggest_command", "/t ", "/<tell|t|whisper|w|msg> <Spieler> <Nachricht ...>"));
+				this.plugin.usageMessage(player, "/<tell|t|whisper|w|msg> <Spieler> <Nachricht ...>", "suggest_command", "/t ", "/<tell|t|whisper|w|msg> <Spieler> <Nachricht ...>");
 				return true;
 			}
 		}
 		
 		//Console
-		if(arg.length > 1) {
+		if(args.length > 1) {
 			
-			if(!arg[0].equals("KONSOLE")) {
+			if(!args[0].equals("KONSOLE")) {
 				
-				if(Bukkit.getOfflinePlayer(arg[0]).isOnline()) {
+				if(Bukkit.getOfflinePlayer(args[0]).isOnline()) {
 					
 					String msg = "";
 					
-					for (int i = 1; i < arg.length; i++) {
+					for (int i = 1; i < args.length; i++) {
 						
-						msg = msg + arg[i] + " ";
+						msg = msg + args[i] + " ";
 					}
 					
-					this.plugin.whisper.put("KONSOLE", arg[0]);
-					this.plugin.whisper.put(arg[0], "KONSOLE");
+					this.plugin.whisper.put("KONSOLE", args[0]);
+					this.plugin.whisper.put(args[0], "KONSOLE");
 					Bukkit.getConsoleSender().sendMessage(
 							this.plugin.pluginPrefix +
 							this.plugin.toColorcode(
 									"&",
 									((String)this.plugin.config.getMap().get("whisper_sender")).toString()
-									.replace("%target_player_displayname%", Bukkit.getPlayer(arg[0]).getDisplayName())
-									.replace("%target_player%", Bukkit.getPlayer(arg[0]).getName())
+									.replace("%target_player_displayname%", Bukkit.getPlayer(args[0]).getDisplayName())
+									.replace("%target_player%", Bukkit.getPlayer(args[0]).getName())
 									.replace("%message%", msg)
 							)
 					);
-					Bukkit.getPlayer(arg[0]).sendMessage(
+					Bukkit.getPlayer(args[0]).sendMessage(
 							this.plugin.pluginPrefix +
 							this.plugin.toColorcode(
 									"&",
@@ -163,15 +163,15 @@ public class CommandTell implements CommandExecutor {
 					return true;
 				}
 				
-				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + args[0] + ChatColor.RED + " ist offline.");
 				return true;
 			}
 			
-			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du kannst nicht mit dir selbst schreiben. :(");
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du kannst nicht mit dir selbst schreiben. :(");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/<tell|t|whisper|w|msg> <Spieler> <Nachricht ...>"));
+		this.plugin.usageMessage(commandSender, "/<tell|t|whisper|w|msg> <Spieler> <Nachricht ...>");
 		return true;
 	}
 }

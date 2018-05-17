@@ -18,12 +18,12 @@ public class CommandSetworldspawn implements CommandExecutor {
 		this.plugin = mycmd;
 	}
 	
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.setworldspawn")) {
 				
@@ -31,7 +31,7 @@ public class CommandSetworldspawn implements CommandExecutor {
 				return true;
 			}
 			
-			if(arg.length == 1) {
+			if(args.length == 1) {
 				
 				if(!player.hasPermission("mycmd.command.setworldspawn")) {
 					
@@ -39,7 +39,7 @@ public class CommandSetworldspawn implements CommandExecutor {
 					return true;
 				}
 				
-				this.plugin.warps.getMap().put(arg[0], player.getLocation());
+				this.plugin.warps.getMap().put(args[0], player.getLocation());
 				this.plugin.warps.Save();
 				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Spawnpunkt deiner Welt wurde auf deine aktuelle Position gesetzt.");
 				return true;
@@ -54,37 +54,37 @@ public class CommandSetworldspawn implements CommandExecutor {
 		}
 		
 		//Console
-		if(arg.length == 4) {
+		if(args.length == 4) {
 			
 			World w = null; int x; int y; int z;
 			
 			try {
 				
-				w = Bukkit.getWorld(arg[0]);
+				w = Bukkit.getWorld(args[0]);
 			} catch(Exception e) {
 				
-				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
 				return true;
 			}
 			
 			try {
 				
-				x = Integer.parseInt(arg[1]);
-				y = Integer.parseInt(arg[2]);
-				z = Integer.parseInt(arg[3]);
+				x = Integer.parseInt(args[1]);
+				y = Integer.parseInt(args[2]);
+				z = Integer.parseInt(args[3]);
 			} catch(Exception e) {
 				
-				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für X, Y und Z müssen Ganzzahlen angegeben werden.");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für X, Y und Z müssen Ganzzahlen angegeben werden.");
 				return true;
 			}
 			
 			w.setSpawnLocation(x, y, z);
-			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Spawnpunkt der Welt " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + " wurde auf die Position" +
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Spawnpunkt der Welt " + ChatColor.GRAY + args[0] + ChatColor.GREEN + " wurde auf die Position" +
 					x + "/" + x + "/" + z + ChatColor.GREEN + " gesetzt.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/setworldspawn <Welt> <X> <Y> <Z>"));
+		this.plugin.usageMessage(commandSender, "/setworldspawn <Welt> <X> <Y> <Z>");
 		return true;
 	}
 }

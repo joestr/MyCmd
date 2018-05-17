@@ -18,12 +18,12 @@ public class CommandTpdeny implements CommandExecutor {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.tpdeny")) {
 				
@@ -31,7 +31,7 @@ public class CommandTpdeny implements CommandExecutor {
 				return true;
 			}
 			
-			if(arg.length == 0) {
+			if(args.length == 0) {
 				
 				if (player.hasPermission("mycmd.command.tpdeny")) {
 					
@@ -83,13 +83,13 @@ public class CommandTpdeny implements CommandExecutor {
 		
 		//Console
 		
-		if(arg.length == 0) {
+		if(args.length == 0) {
 			
-			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Befehl /tpdeny ist in der Konsole nicht verfügbar.");
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Befehl /tpdeny ist in der Konsole nicht verfügbar.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/tpdeny"));
+		this.plugin.usageMessage(commandSender, "/tpdeny");
 		return true;
 	}
 }

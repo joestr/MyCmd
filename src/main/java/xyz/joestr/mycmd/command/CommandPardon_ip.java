@@ -20,42 +20,41 @@ public class CommandPardon_ip implements CommandExecutor {
 		this.plugin = mycmd;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.pardon")) {
 				
-				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.pardon"));
+				this.plugin.noPermissionMessage(player, "mycmd.command.pardon");
 				return true;
 			}
 			
-			if(arg.length >= 2) {
+			if(args.length >= 2) {
 				
-				if(!Bukkit.getServer().getBanList(Type.IP).isBanned(arg[0])) {
+				if(!Bukkit.getServer().getBanList(Type.IP).isBanned(args[0])) {
 					
-					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "IP-Adresse " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist nicht gebannt.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "IP-Adresse " + ChatColor.GRAY + args[0] + ChatColor.RED + " ist nicht gebannt.");
 					return true;
 				}
 				
 				String message = "";
 				
-				for(int i = 1; i < arg.length; i++) { 
+				for(int i = 1; i < args.length; i++) { 
 					
-					if(i + 1 == arg.length) { message += arg[i]; continue; }
-					message += arg[i] + " ";
+					if(i + 1 == args.length) { message += args[i]; continue; }
+					message += args[i] + " ";
 				}
 				
-				Bukkit.getServer().getBanList(Type.IP).pardon(arg[0]);
+				Bukkit.getServer().getBanList(Type.IP).pardon(args[0]);
 				Bukkit.getServer().broadcastMessage(
 						this.plugin.toColorcode(
 								"&", 
 								((String)this.plugin.config.getMap().get("pardon-ip"))
-								.replace("%ip%", arg[0])
+								.replace("%ip%", args[0])
 								.replace("%reason%", message)
 						)
 				);
@@ -64,42 +63,42 @@ public class CommandPardon_ip implements CommandExecutor {
 			
 			if(player.hasPermission("mycmd.command.pardon")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/pardon-ip <IP-Adresse> <Grund ...>", "suggest_command", "/pardon-ip ", "/pardon-ip <IP> <Grund ...>"));
+				this.plugin.usageMessage(player, "/pardon-ip <IP-Adresse> <Grund ...>", "suggest_command", "/pardon-ip ", "/pardon-ip <IP> <Grund ...>");
 			}
 			
 			return true;
 		}
 		
 		//Console
-		if(arg.length >= 2) {
+		if(args.length >= 2) {
 			
-			if(!Bukkit.getServer().getBanList(Type.IP).isBanned(arg[0])) {
+			if(!Bukkit.getServer().getBanList(Type.IP).isBanned(args[0])) {
 				
-				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "IP-Adresse " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist nicht gebannt.");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "IP-Adresse " + ChatColor.GRAY + args[0] + ChatColor.RED + " ist nicht gebannt.");
 				return true;
 			}
 			
 			String message = "";
 			
-			for(int i = 1; i < arg.length; i++) { 
+			for(int i = 1; i < args.length; i++) { 
 				
-				if(i + 1 == arg.length) { message += arg[i]; continue; }
-				message += arg[i] + " ";
+				if(i + 1 == args.length) { message += args[i]; continue; }
+				message += args[i] + " ";
 			}
 			
-			Bukkit.getServer().getBanList(Type.IP).pardon(arg[0]);
+			Bukkit.getServer().getBanList(Type.IP).pardon(args[0]);
 			Bukkit.getServer().broadcastMessage(
 					this.plugin.toColorcode(
 							"&", 
 							((String)this.plugin.config.getMap().get("pardon-ip"))
-							.replace("%ip%", arg[0])
+							.replace("%ip%", args[0])
 							.replace("%reason%", message)
 					)
 			);
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/pardon-ip <IP-Adresse> <Grund ...>"));
+		this.plugin.usageMessage(commandSender, "/pardon-ip <IP-Adresse> <Grund ...>");
 		return true;
 	}
 }

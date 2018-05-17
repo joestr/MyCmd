@@ -214,8 +214,8 @@ commands:
   #  usage: /help [<Seite>]
   room:
     description: Raum-System
-    #permission: mycmd.command.pvp
-    #permission-message: Berechtigung mycmd.command.pvp fehlt.
+    #permission: mycmd.command.room
+    #permission-message: Berechtigung mycmd.command.room fehlt.
     usage: /room <...> [<...> ...]
     
 permissions:
@@ -274,6 +274,7 @@ permissions:
       mycmd.command.pvp: true
       mycmd.command.pvp.other: true
       #mycmd.command.help: true
+      mycmd.command.room: true
   mycmd.preset.spieler:
     description: Berechtigung fuer die Spieler-Befehle von MyCmd.
     default: true
@@ -297,3 +298,4 @@ permissions:
       mycmd.command.worldspawn: true
       mycmd.command.pvp: true
       #mycmd.command.help: true
+      mycmd.command.room: true

@@ -18,64 +18,64 @@ public class CommandKick implements CommandExecutor {
 		this.plugin = mycmd;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.kick")) {
 				
-				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.kick"));
+				this.plugin.noPermissionMessage(player, "mycmd.command.kick");
 				return true;
 			}
 			
-			if(arg.length >= 2) {
+			if(args.length >= 2) {
 				
 				if(!player.hasPermission("mycmd.command.kick")) {
 					
-					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.kick"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.kick");
 					return true;
 				}
 				
 				String message = "";
 				
-				for(int i = 1; i < arg.length; i++) { 
+				for(int i = 1; i < args.length; i++) { 
 					
-					if(i + 1 == arg.length) { message += arg[i]; continue; }
-					message += arg[i] + " ";
+					if(i + 1 == args.length) { message += args[i]; continue; }
+					message += args[i] + " ";
 				}
 				
-				_kick_(sender, arg[0], message);
+				_kick_(commandSender, args[0], message);
 				return true;
 			}
 			
 			if(player.hasPermission("mycmd.command.kick")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/kick <Spieler> <Grund ...>", "suggest_command", "/kick ", "/kick <Spieler> <Grund ...>"));
+				this.plugin.usageMessage(player, "/kick <Spieler> <Grund ...>", "suggest_command", "/kick ", "/kick <Spieler> <Grund ...>");
+				return true;
 			}
 			
 			return true;
 		}
 		
 		//Console
-		if(arg.length >= 2) {
+		if(args.length >= 2) {
 			
 			String message = "";
 			
-			for(int i = 1; i < arg.length; i++) { 
+			for(int i = 1; i < args.length; i++) { 
 				
-				if(i + 1 == arg.length) { message += arg[i]; continue; }
-				message += arg[i] + " ";
+				if(i + 1 == args.length) { message += args[i]; continue; }
+				message += args[i] + " ";
 			}
 			
-			_kick_(sender, arg[0], message);
+			_kick_(commandSender, args[0], message);
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/kick <Spieler> <Grund ...>"));
+		this.plugin.usageMessage(commandSender, "/kick <Spieler> <Grund ...>");
 		return true;
 	}
 	

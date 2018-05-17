@@ -76,7 +76,7 @@ public class PlayerCommandBan_ip {
 			Bukkit.getServer().broadcastMessage(
 					this.plugin.toColorcode(
 							"&",
-							((String)this.plugin.config.getMap().get("ban-ip"))
+							this.plugin.config.getMap().get("ban-ip").toString()
 							.replace("%ip%", args[0])
 							.replace("%reason%", message)
 					)

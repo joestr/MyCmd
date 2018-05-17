@@ -19,25 +19,24 @@ public class CommandMap implements CommandExecutor {
 		this.plugin = mycmd;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
 		//Player
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.map")) {
 				
-				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
+				this.plugin.noPermissionMessage(player);
 				return true;
 			}
 			
-			if(arg.length == 0) {
+			if(args.length == 0) {
 				
 				if(!player.hasPermission("mycmd.command.map")) {
 					
-					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.map"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.map");
 					return true;
 				}
 				
@@ -81,19 +80,19 @@ public class CommandMap implements CommandExecutor {
 			
 			if(player.hasPermission("mycmd.comammd.map")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/map", "run_command", "/map", "/map"));
+				this.plugin.usageMessage(player, "/map", "run_command", "/map", "/map");
 				return true;
 			}
 		}
 		//End Player
 		
 		//Console
-		if(arg.length == 0) {
+		if(args.length == 0) {
 			
-			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Map: " + ChatColor.GRAY + (String)this.plugin.config.getMap().get("map"));
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Map: " + ChatColor.GRAY + (String)this.plugin.config.getMap().get("map"));
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/map"));
+		this.plugin.usageMessage(commandSender, "/map");
 		return true;
 		//End Console
 	}

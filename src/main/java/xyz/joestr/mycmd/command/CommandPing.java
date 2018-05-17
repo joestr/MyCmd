@@ -42,7 +42,6 @@ public class CommandPing implements CommandExecutor {
 	}
 	//End https://board.nitrado.net/community-area/programmierung/hilfe/67728/spieler-ping-herrausbekommen/
 	
-	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
 		
 		//Player
@@ -52,7 +51,7 @@ public class CommandPing implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.ping") && !player.hasPermission("mycmd.command.ping.other")) {
 				
-				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage());
+				 this.plugin.noPermissionMessage(player);
 				return true;
 			}
 			
@@ -60,11 +59,11 @@ public class CommandPing implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.ping")) {
 					
-					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.ping"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.ping");
 					return true;
 				}
 				
-				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Deine Ping-Zeit beträgt " + ChatColor.GRAY + getPing(player) + "ms" + ChatColor.GREEN + ".");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.BLUE + "Deine Ping-Zeit beträgt " + ChatColor.GRAY + getPing(player) + "ms" + ChatColor.BLUE + ".");
 				return true;
 			}
 			
@@ -72,7 +71,7 @@ public class CommandPing implements CommandExecutor {
 				
 				if(!player.hasPermission("mycmd.command.ping.other")) {
 					
-					player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.ping.other"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.ping.other");
 					return true;
 				}
 				
@@ -82,25 +81,24 @@ public class CommandPing implements CommandExecutor {
 			
 			if(player.hasPermission("mycmd.command.ping.other") && player.hasPermission("mycmd.command.ping")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/ping [<Spieler>]", "suggest_command", "/ping ", "/ping [<Spieler>]"));
+				this.plugin.usageMessage(player, "/ping [<Spieler>]", "suggest_command", "/ping ", "/ping [<Spieler>]");
 				return true;
 			}
 			
 			if(player.hasPermission("mycmd.command.ping.other")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/ping <Spieler>", "suggest_command", "/ping ", "/ping <Spieler>"));
+				this.plugin.usageMessage(player, "/ping <Spieler>", "suggest_command", "/ping ", "/ping <Spieler>");
 				return true;
 			}
 			
 			if(player.hasPermission("mycmd.command.ping")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/ping", "run_command", "/ping", "/ping"));
-				return true;
-			} else {
-				
-				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.ping"));
+				this.plugin.usageMessage(player, "/ping", "run_command", "/ping", "/ping");
 				return true;
 			}
+			
+			this.plugin.noPermissionMessage(player, "mycmd.command.ping");
+			return true;
 		}
 		//End Player
 		
@@ -111,7 +109,7 @@ public class CommandPing implements CommandExecutor {
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/ping <Spieler>"));
+		this.plugin.usageMessage(sender, "/ping <Spieler>");
 		return true;
 		//End Console
 	}
@@ -125,7 +123,7 @@ public class CommandPing implements CommandExecutor {
 			return;
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Die Ping-Zeit vom Spieler " + Bukkit.getServer().getPlayer(string).getDisplayName() + ChatColor.GREEN + " beträgt " + ChatColor.GRAY + getPing(Bukkit.getPlayer(string)) + "ms" + ChatColor.GREEN + ".");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.BLUE + "Die Ping-Zeit vom Spieler " + Bukkit.getServer().getPlayer(string).getDisplayName() + ChatColor.BLUE + " beträgt " + ChatColor.GRAY + getPing(Bukkit.getPlayer(string)) + "ms" + ChatColor.BLUE + ".");
 		return;
 	}
 }

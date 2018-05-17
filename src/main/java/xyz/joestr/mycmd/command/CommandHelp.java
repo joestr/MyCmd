@@ -19,22 +19,21 @@ public class CommandHelp implements CommandExecutor {
 		this.plugin = mycmd;
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.help")) {
 				
-				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.help"));
+				this.plugin.noPermissionMessage(player, "mycmd.command.help");
 				return true;
 			}
 			
-			if(arg.length == 0) {
+			if(args.length == 0) {
 				
 				ArrayList<String> al = new ArrayList<String>();
 				String[] texts = new String[7]; String[] actions = new String[7]; String[] commands = new String[7]; String[] hovers = new String[7];
@@ -53,7 +52,7 @@ public class CommandHelp implements CommandExecutor {
 				);
 			}
 			
-			if(arg.length == 1) {
+			if(args.length == 1) {
 				
 				ArrayList<String> al = new ArrayList<String>();
 				String[] texts = new String[7]; String[] actions = new String[7]; String[] commands = new String[7]; String[] hovers = new String[7];
@@ -62,7 +61,7 @@ public class CommandHelp implements CommandExecutor {
 				
 				int page = 0;
 				
-				try { page = Integer.parseInt(arg[0]); } catch(Exception exception) {
+				try { page = Integer.parseInt(args[0]); } catch(Exception exception) {
 					
 					this.plugin.usageMessage(player, "/help [<Seite>]", "suggest_command", "/help ", "/help [<Seite>]"); return true;
 				}
@@ -86,47 +85,47 @@ public class CommandHelp implements CommandExecutor {
 			if(player.hasPermission("mycmd.command.help")) {
 				
 				this.plugin.usageMessage(player, "/help [<Seite>]", "suggest_command", "/help ", "/help [<Seite>]");
+				return true;
 			}
-			return true;
 		}
 		
 		//Console
-		if(arg.length == 0) {
+		if(args.length == 0) {
 			
-			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "--- " + ChatColor.GREEN + "Hilfe" + ChatColor.GRAY + " --- " + ChatColor.GREEN + "(Seite " + ChatColor.GRAY + "1" + ChatColor.GREEN + " von " + ChatColor.GRAY + Math.ceil(this.plugin.commandList.size() / 7) + ChatColor.GREEN + ")");
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "--- " + ChatColor.GREEN + "Hilfe" + ChatColor.GRAY + " --- " + ChatColor.GREEN + "(Seite " + ChatColor.GRAY + "1" + ChatColor.GREEN + " von " + ChatColor.GRAY + Math.ceil(this.plugin.commandList.size() / 7) + ChatColor.GREEN + ")");
 			
 			for(int i = 0; i < 7; i++) {
 				
 				if(this.plugin.commandList.isEmpty() || i >= this.plugin.commandList.size()) { break; }
-				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + this.plugin.commandList.get(i).getName() + " (?)");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + this.plugin.commandList.get(i).getName() + " (?)");
 			}
 			
 			return true;
 		}
 		
-		if(arg.length == 1) {
+		if(args.length == 1) {
 			
 			int page = 0;
 			
-			try { page = Integer.parseInt(arg[0]); } catch(Exception exception) {
+			try { page = Integer.parseInt(args[0]); } catch(Exception exception) {
 				
-				sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/help [<Seite>]")); return true;
+				this.plugin.usageMessage(commandSender, "/help [<Seite>]"); return true;
 			}
 			
-			if(page < 1 || page > Math.ceil(this.plugin.commandList.size() / 7)) { sender.sendMessage(this.plugin.pluginPrefix + "Verfügbare Seiten: 1 bis " + Math.ceil(this.plugin.commandList.size() / 7)); return true; }
+			if(page < 1 || page > Math.ceil(this.plugin.commandList.size() / 7)) { commandSender.sendMessage(this.plugin.pluginPrefix + "Verfügbare Seiten: 1 bis " + Math.ceil(this.plugin.commandList.size() / 7)); return true; }
 			
-			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "--- " + ChatColor.GREEN + "Hilfe" + ChatColor.GRAY + " --- " + ChatColor.GREEN + "(Seite " + ChatColor.GRAY + page + ChatColor.GREEN + " von " + ChatColor.GRAY + Math.ceil(this.plugin.commandList.size() / 7) + ChatColor.GREEN + ")");
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "--- " + ChatColor.GREEN + "Hilfe" + ChatColor.GRAY + " --- " + ChatColor.GREEN + "(Seite " + ChatColor.GRAY + page + ChatColor.GREEN + " von " + ChatColor.GRAY + Math.ceil(this.plugin.commandList.size() / 7) + ChatColor.GREEN + ")");
 			
 			for(int i = ((page - 1) * 7); i < (page * 7) ; i++) {
 				
 				if(this.plugin.commandList.isEmpty() || i >= this.plugin.commandList.size()) { break; }
-				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + this.plugin.commandList.get(i).getName() + " (?)");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + this.plugin.commandList.get(i).getName() + " (?)");
 			}
 			
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/help [<Seite>]"));
+		this.plugin.usageMessage(commandSender, "/help [<Seite>]");
 		return true;
 	}
 

@@ -17,12 +17,12 @@ public class CommandDelhome implements CommandExecutor {
 		this.plugin = mycmd;
 	}
 	
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
 		//Player
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.delhome") && !player.hasPermission("mycmd.command.delhome.other")) {
 				
@@ -30,7 +30,7 @@ public class CommandDelhome implements CommandExecutor {
 				return true;
 			}
 			
-			if(arg.length == 0) {
+			if(args.length == 0) {
 				
 				if(!player.hasPermission("mycmd.command.delhome")) {
 					
@@ -64,7 +64,7 @@ public class CommandDelhome implements CommandExecutor {
 				return true;
 			}
 			
-			if(arg.length == 1) {
+			if(args.length == 1) {
 				
 				if(!player.hasPermission("mycmd.command.delhome.other")) {
 					
@@ -72,7 +72,7 @@ public class CommandDelhome implements CommandExecutor {
 					return true;
 				}
 				
-				_delhome_other_(sender, arg[0]);
+				_delhome_other_(commandSender, args[0]);
 				return true;
 			}
 			
@@ -97,24 +97,24 @@ public class CommandDelhome implements CommandExecutor {
 		//End Player
 		
 		//Console
-		if(arg.length == 1) {
+		if(args.length == 1) {
 			
-			_delhome_other_(sender, arg[0]);
+			_delhome_other_(commandSender, args[0]);
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/delhome <Spieler>"));
+		this.plugin.usageMessage(commandSender, "/delhome <Spieler>");
 		return true;
 		//End Console
 	}
 	
 	/**
 	 * 
-	 * @param sender Specifies the sender of the command.
+	 * @param commandSender Specifies the sender of the command.
 	 * @param string Specifies a player's name.
 	 */
 	@SuppressWarnings("deprecation")
-	public void _delhome_other_(CommandSender sender, String string) {
+	public void _delhome_other_(CommandSender commandSender, String string) {
 		
 		if(Bukkit.getOnlineMode()) {
 			
@@ -122,11 +122,11 @@ public class CommandDelhome implements CommandExecutor {
 				
 				this.plugin.homes.getMap().remove(Bukkit.getOfflinePlayer(string).getUniqueId().toString());
 				this.plugin.homes.Save();
-				sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast den Home-Punkt vom Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " gelöscht.");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast den Home-Punkt von " + ChatColor.GRAY + string + ChatColor.GREEN + " gelöscht.");
 				return;
 			}
 			
-			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + string + ChatColor.RED + " hat noch keinen Home-Punkt gesetzt.");
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + string + ChatColor.RED + " hat noch keinen Home-Punkt gesetzt.");
 			return;
 		}
 		
@@ -134,11 +134,11 @@ public class CommandDelhome implements CommandExecutor {
 			
 			this.plugin.homes.getMap().remove(string);
 			this.plugin.homes.Save();
-			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast den Home-Punkt vom Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " gelöscht.");
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast den Home-Punkt von " + ChatColor.GRAY + string + ChatColor.GREEN + " gelöscht.");
 			return;
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + string + ChatColor.RED + " hat noch keinen Home-Punkt gesetzt.");
+		commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + string + ChatColor.RED + " hat noch keinen Home-Punkt gesetzt.");
 		return;
 	}
 }

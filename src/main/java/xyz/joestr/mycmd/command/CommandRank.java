@@ -19,23 +19,22 @@ public class CommandRank implements CommandExecutor {
 		this.plugin = mycmd;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
 		// Wenn der Befehl von einem Spieler gesendet wurde
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.rank")) {
 				
-				player.sendMessage(this.plugin.pluginPrefix + this.plugin.noPermissionMessage("mycmd.command.rank"));
+				this.plugin.noPermissionMessage(player, "mycmd.command.rank");
 				return true;
 			}
 			
 			// /rank 
-			if(arg.length == 0) {
+			if(args.length == 0) {
 				
 				// Gleicher Check wie Zeile 30 bsi 34
 				
@@ -48,54 +47,54 @@ public class CommandRank implements CommandExecutor {
 			}
 			
 			// /rank {on,off,reload,list}
-			if(arg.length == 1) {
+			if(args.length == 1) {
 				
 				// Gleicher Check wie Zeile 30 bsi 34
 				
-				if(arg[0].equalsIgnoreCase("on")) {
+				if(args[0].equalsIgnoreCase("on")) {
 					
-					_rank_on_(sender);
+					_rank_on_(commandSender);
 					return true;
 				}
 				
-				if(arg[0].equalsIgnoreCase("off")) {
+				if(args[0].equalsIgnoreCase("off")) {
 					
-					_rank_off_(sender);
+					_rank_off_(commandSender);
 					return true;
 				}
 				
-				if(arg[0].equalsIgnoreCase("reload")) {
+				if(args[0].equalsIgnoreCase("reload")) {
 					
-					_rank_reload_(sender);
+					_rank_reload_(commandSender);
 					return true;
 				}
 				
-				if(arg[0].equalsIgnoreCase("list")) {
+				if(args[0].equalsIgnoreCase("list")) {
 					
-					_rank_list_(sender);
-					return true;
-				}
-			}
-			
-			if(arg.length == 2) {
-				
-				if(arg[0].equalsIgnoreCase("remove")) {
-					
-					_rank_remove_(sender, arg[1]);
+					_rank_list_(commandSender);
 					return true;
 				}
 			}
 			
-			if(arg.length == 5) {
+			if(args.length == 2) {
 				
-				if(arg[0].equalsIgnoreCase("add")) {
+				if(args[0].equalsIgnoreCase("remove")) {
+					
+					_rank_remove_(commandSender, args[1]);
+					return true;
+				}
+			}
+			
+			if(args.length == 5) {
+				
+				if(args[0].equalsIgnoreCase("add")) {
 					
 					_rank_add_(
-							sender,
-							arg[1],
-							this.plugin.replaceSpecialWhitespaceChar(arg[2]),
-							this.plugin.replaceSpecialWhitespaceChar(arg[3]),
-							this.plugin.replaceSpecialWhitespaceChar(arg[4])
+							commandSender,
+							args[1],
+							this.plugin.replaceSpecialWhitespaceChar(args[2]),
+							this.plugin.replaceSpecialWhitespaceChar(args[3]),
+							this.plugin.replaceSpecialWhitespaceChar(args[4])
 					);
 					return true;
 				}
@@ -103,66 +102,66 @@ public class CommandRank implements CommandExecutor {
 			
 			if(player.hasPermission("mycmd.command.rank")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/rank <on|off|reload|list|add|remove> [Rang] [Präfix] [Suffix] [Anzeigename-Präfix]", "suggest_command", "/rank ", "/rank <on|off|reload|list|add|remove> [Rang] [Präfix] [Suffix] [Anzeigename-Präfix]"));
+				this.plugin.usageMessage(player, "/rank <on|off|reload|list|add|remove> [Rang] [Präfix] [Suffix] [Anzeigename-Präfix]", "suggest_command", "/rank ", "/rank <on|off|reload|list|add|remove> [Rang] [Präfix] [Suffix] [Anzeigename-Präfix]");
 			}
 			return true;
 		}
 		
 		//Console
-		if(arg.length == 1) {
+		if(args.length == 1) {
 			
 			// Gleicher Check wie Zeile 30 bsi 34
 			
-			if(arg[0].equalsIgnoreCase("on")) {
+			if(args[0].equalsIgnoreCase("on")) {
 				
-				_rank_on_(sender);
+				_rank_on_(commandSender);
 				return true;
 			}
 			
-			if(arg[0].equalsIgnoreCase("off")) {
+			if(args[0].equalsIgnoreCase("off")) {
 				
-				_rank_off_(sender);
+				_rank_off_(commandSender);
 				return true;
 			}
 			
-			if(arg[0].equalsIgnoreCase("reload")) {
+			if(args[0].equalsIgnoreCase("reload")) {
 				
-				_rank_reload_(sender);
+				_rank_reload_(commandSender);
 				return true;
 			}
 			
-			if(arg[0].equalsIgnoreCase("list")) {
+			if(args[0].equalsIgnoreCase("list")) {
 				
-				_rank_list_(sender);
-				return true;
-			}
-		}
-		
-		if(arg.length == 2) {
-			
-			if(arg[0].equalsIgnoreCase("remove")) {
-				
-				_rank_remove_(sender, arg[1]);
+				_rank_list_(commandSender);
 				return true;
 			}
 		}
 		
-		if(arg.length == 5) {
+		if(args.length == 2) {
 			
-			if(arg[0].equalsIgnoreCase("add")) {
+			if(args[0].equalsIgnoreCase("remove")) {
+				
+				_rank_remove_(commandSender, args[1]);
+				return true;
+			}
+		}
+		
+		if(args.length == 5) {
+			
+			if(args[0].equalsIgnoreCase("add")) {
 				
 				_rank_add_(
-						sender,
-						arg[1],
-						this.plugin.replaceSpecialWhitespaceChar(arg[2]),
-						this.plugin.replaceSpecialWhitespaceChar(arg[3]),
-						this.plugin.replaceSpecialWhitespaceChar(arg[4])
+						commandSender,
+						args[1],
+						this.plugin.replaceSpecialWhitespaceChar(args[2]),
+						this.plugin.replaceSpecialWhitespaceChar(args[3]),
+						this.plugin.replaceSpecialWhitespaceChar(args[4])
 				);
 				return true;
 			}
 		}
 		
-		sender.sendMessage(this.plugin.pluginPrefix + this.plugin.usageMessage("/rank <on|off|reload|list|add|remove> [Rang] [Präfix] [Suffix] [Anzeigename-Präfix]"));
+		this.plugin.usageMessage(commandSender, "/rank <on|off|reload|list|add|remove> [Rang] [Präfix] [Suffix] [Anzeigename-Präfix]");
 		return true;
 	}
 	
