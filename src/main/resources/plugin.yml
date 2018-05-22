@@ -281,6 +281,7 @@ permissions:
       mycmd.command.pvp.other: true
       #mycmd.command.help: true
       mycmd.command.room: true
+      mycmd.command.broadcast: true
   mycmd.preset.spieler:
     description: Berechtigung fuer die Spieler-Befehle von MyCmd.
     default: true

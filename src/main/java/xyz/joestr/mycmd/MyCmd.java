@@ -322,8 +322,8 @@ public class MyCmd extends JavaPlugin {
 		this.getCommand("map").setTabCompleter(new TabCompleteMap(this));
 		this.getCommand("worldspawn").setExecutor(new CommandWorldspawn(this));
 		this.getCommand("worldspawn").setTabCompleter(new TabCompleteWorldspawn(this));
-		this.getCommand("worldspawn").setExecutor(new CommandSetworldspawn(this));
-		this.getCommand("worldspawn").setTabCompleter(new TabCompleteSetworldspawn(this));
+		this.getCommand("setworldspawn").setExecutor(new CommandSetworldspawn(this));
+		this.getCommand("setworldspawn").setTabCompleter(new TabCompleteSetworldspawn(this));
 		this.getCommand("kick").setExecutor(new CommandKick(this));
 		this.getCommand("kick").setTabCompleter(new TabCompleteKick(this));
 		this.getCommand("ban").setExecutor(new CommandBan(this));
