@@ -14,6 +14,7 @@ config:
   chat: "%player_displayname%&r&f: "
   room-chat: "&8[&7%room_name%&8]&r %player_displayname%&r&f: %message%"
   room-info: "&8[&7%room_name%&8]&r "
+  broadcast: "&e[Broadcast]&r "
   wiki: http://minecraft-de.gamepedia.com/
   map: http://example.com/
   map-worlds:

@@ -117,7 +117,7 @@ public class CommandTell implements CommandExecutor {
 				return true;
 			}
 			
-			if (player.hasPermission("mycmd.command.rank")) {
+			if (player.hasPermission("mycmd.command.tell")) {
 				
 				this.plugin.usageMessage(player, "/<tell|t|whisper|w|msg> <Spieler> <Nachricht ...>", "suggest_command", "/t ", "/<tell|t|whisper|w|msg> <Spieler> <Nachricht ...>");
 				return true;

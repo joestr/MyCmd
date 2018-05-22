@@ -29,6 +29,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import xyz.joestr.mycmd.command.CommandBan;
 import xyz.joestr.mycmd.command.CommandBan_ip;
 import xyz.joestr.mycmd.command.CommandBanlist;
+import xyz.joestr.mycmd.command.CommandBroadcast;
 import xyz.joestr.mycmd.command.CommandDelhome;
 import xyz.joestr.mycmd.command.CommandDelhome2;
 import xyz.joestr.mycmd.command.CommandDelspawn;
@@ -228,7 +229,15 @@ public class MyCmd extends JavaPlugin {
 				delegate.Create();
 			}
 			
-			delegate.Load();
+			try {
+				delegate.Load();
+			} catch (Exception e) {
+				
+				delegate.Create();
+			} finally {
+				
+				
+			}
 		}
 				
 		// Überprüfung des Config-Delegates
@@ -337,6 +346,7 @@ public class MyCmd extends JavaPlugin {
 		//this.getCommand("help").setTabCompleter(new TabCompleteHelp(this));
 		this.getCommand("room").setExecutor(new CommandRoom(this));
 		this.getCommand("room").setTabCompleter(new TabCompleteRoom(this));
+		this.getCommand("broadcast").setExecutor(new CommandBroadcast(this));
 		
 		Bukkit.getServer().getPluginManager().registerEvents(new EventEntityDamageByEntity(this), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new EventTeleport(this), this);

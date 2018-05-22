@@ -217,6 +217,12 @@ commands:
     #permission: mycmd.command.room
     #permission-message: Berechtigung mycmd.command.room fehlt.
     usage: /room <...> [<...> ...]
+  broadcast:
+    description: Eine Server-Nachricht abschicken.
+    #permission: mycmd.command.broadcast
+    #permission-message: Berechtigung mycmd.command.broadcast fehlt.
+    usage: /broadcast <Nachricht ...>
+    aliases: [bc]
     
 permissions:
   mycmd.preset.admin:
