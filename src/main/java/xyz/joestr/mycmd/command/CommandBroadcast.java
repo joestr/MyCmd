@@ -29,7 +29,7 @@ public class CommandBroadcast implements CommandExecutor {
 				return true;
 			}
 			
-			if(args.length > 1) {
+			if(args.length > 0) {
 				
 				if(!player.hasPermission("mycmd.command.tell")) {
 					
@@ -39,7 +39,7 @@ public class CommandBroadcast implements CommandExecutor {
 				
 				String msg = "";
 				
-				for (int i = 1; i < args.length; i++) {
+				for (int i = 0; i < args.length; i++) {
 					
 					msg = msg + args[i] + " ";
 				}
@@ -50,6 +50,8 @@ public class CommandBroadcast implements CommandExecutor {
 								this.plugin.config.getMap().get("broadcast").toString() + msg
 						)
 				);
+				
+				return true;
 			}
 			
 			if (player.hasPermission("mycmd.command.broadcast")) {
@@ -60,11 +62,11 @@ public class CommandBroadcast implements CommandExecutor {
 		}
 		
 		//Console
-		if(args.length > 1) {
+		if(args.length > 0) {
 			
 			String msg = "";
 			
-			for (int i = 1; i < args.length; i++) {
+			for (int i = 0; i < args.length; i++) {
 				
 				msg = msg + args[i] + " ";
 			}
@@ -75,6 +77,8 @@ public class CommandBroadcast implements CommandExecutor {
 							this.plugin.config.getMap().get("broadcast").toString() + msg
 					)
 			);
+			
+			return true;
 		}
 		
 		this.plugin.usageMessage(commandSender, "/<broadcast|bc> <Nachricht ...>");
