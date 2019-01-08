@@ -81,7 +81,7 @@ public class CommandPvp implements CommandExecutor {
 					return true;
 				}
 				
-				if(args[0].equalsIgnoreCase("status")) {
+      if(args[0].equalsIgnoreCase("status")) {
 					
 					if(Bukkit.getOnlineMode()) {
 						

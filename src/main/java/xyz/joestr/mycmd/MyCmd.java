@@ -162,37 +162,37 @@ public class MyCmd extends JavaPlugin {
     // Beeinhaltet die zweiten Homes aus der home2.yml
     public YMLDelegate homes2 = new YMLDelegate(this, "homes2", "homes2.yml");
 
-    // Beeinhaltet die Ränge aus der ranks.yml
+    // Beeinhaltet die RÃ¤nge aus der ranks.yml
     public YMLDelegate ranks = new YMLDelegate(this, "ranks", "ranks.yml");
 
     // Beeinhaltet die PvP-Einstellungen aus der pvp.yml
     public YMLDelegate pvp = new YMLDelegate(this, "pvp", "pvp.yml");
 
-    // Beeinhaltet die Räume
+    // Beeinhaltet die RÃ¤ume
     public YMLDelegate rooms = new YMLDelegate(this, "rooms", "rooms.yml");
 
     // Alle oben definierten YMLDelegates werden in dieser Liste gespeichert
     public ArrayList<YMLDelegate> delegates = new ArrayList<YMLDelegate>();
 
-    // Maps für /tpa
+    // Maps fÃ¼r /tpa
     public Map<String, String> tpa = new HashMap<String, String>();
     public Map<String, String> tpaSwitched = new HashMap<String, String>();
 
-    // Maps für /tpahere
+    // Maps fÃ¼r /tpahere
     public Map<String, String> tpahere = new HashMap<String, String>();
     public Map<String, String> tpahereSwitched = new HashMap<String, String>();
 
     // Hier sind die Whisper-Partner
     public Map<String, String> whisper = new HashMap<String, String>();
 
-    // Maps für /navi
+    // Maps fÃ¼r /navi
     public Map<String, String> navi = new HashMap<String, String>();
     public Map<String, String> naviSwitched = new HashMap<String, String>();
 
     // Hier sind PvP-Sachen drin
     public Map<String, Date> pvpList = new HashMap<String, Date>();
 
-    // Liste für gekickte Spieler
+    // Liste fÃ¼r gekickte Spieler
     public ArrayList<String> kickEventList = new ArrayList<String>();
 
     // Kommandoliste
@@ -215,7 +215,7 @@ public class MyCmd extends JavaPlugin {
 
         ConfigurationSerialization.registerClass(Room.class);
 
-        // Die Delegates zur Liste hinzufügen
+        // Die Delegates zur Liste hinzufÃ¼gen
         this.delegates.add(this.config);
         this.delegates.add(this.warps);
         this.delegates.add(this.homes);
@@ -224,7 +224,7 @@ public class MyCmd extends JavaPlugin {
         this.delegates.add(this.pvp);
         this.delegates.add(this.rooms);
 
-        // Delegates prüfen
+        // Delegates prÃ¼fen
         for (YMLDelegate delegate : delegates) {
             if (!delegate.Exist()) {
                 delegate.Create();
@@ -240,9 +240,9 @@ public class MyCmd extends JavaPlugin {
             }
         }
 
-        // Überprüfung des Config-Delegates
-        // Es muss nur das Config-Delegate gepüft werden,
-        // da die anderen Delegates Variable Einträge haben.
+        // ÃœberprÃ¼fung des Config-Delegates
+        // Es muss nur das Config-Delegate gepÃ¼ft werden,
+        // da die anderen Delegates Variable EintrÃ¤ge haben.
         if (this.config.EntryCheck()) {
             this.config.Save();
         }
@@ -260,7 +260,7 @@ public class MyCmd extends JavaPlugin {
         // Scoreboard setzten (Verwendung des Hauptscoreboards)
         this.scoreboard = Bukkit.getServer().getScoreboardManager().getMainScoreboard();
 
-        // Plugin-Präfix setzen
+        // Plugin-PrÃ¤fix setzen
         this.pluginPrefix = this.toColorcode("&", (String) this.config.getMap().get("plugin-prefix"));
 
         // Kommandos registrieren
@@ -357,10 +357,10 @@ public class MyCmd extends JavaPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new EventKick(this), this);
         Bukkit.getServer().getPluginManager().registerEvents(new EventListPing(this), this);
 
-        // Ränge aus der ranks.yml bearbeiten
+        // RÃ¤nge aus der ranks.yml bearbeiten
         for (String string : this.ranks.getMap().keySet()) {
 
-            // Temporäre Variablen
+            // TemporÃ¤re Variablen
             String tString = (String) this.ranks.getMap().get(string);
             String[] tStrings = null;
 
@@ -383,11 +383,11 @@ public class MyCmd extends JavaPlugin {
                 this.scoreboard.registerNewTeam(string);
             }
 
-            // Dem Team Präfix, Suffix und Anzeigename-Präfix setzen.
+            // Dem Team PrÃ¤fix, Suffix und Anzeigename-PrÃ¤fix setzen.
             try {
                 this.scoreboard.getTeam(string).setPrefix(this.toColorcode("&", tStrings[0]));
             } catch (IllegalStateException | IllegalArgumentException e) {
-                Bukkit.getServer().getLogger().log(Level.SEVERE, "Fehler beim setzen des Präfixes vom Rang " + string + ".");
+                Bukkit.getServer().getLogger().log(Level.SEVERE, "Fehler beim setzen des PrÃ¤fixes vom Rang " + string + ".");
             }
 
             try {
@@ -396,11 +396,11 @@ public class MyCmd extends JavaPlugin {
                 Bukkit.getServer().getLogger().log(Level.SEVERE, "Fehler beim setzen des Suffixes vom Rang " + string + ".");
             }
 
-            // Anzeigename-Präfix hier faul über den Team-Anzeigename gesetzt ;D
+            // Anzeigename-PrÃ¤fix hier faul Ã¼ber den Team-Anzeigename gesetzt ;D
             try {
                 this.scoreboard.getTeam(string).setDisplayName(this.toColorcode("&", tStrings[2]));
             } catch (IllegalStateException | IllegalArgumentException e) {
-                Bukkit.getServer().getLogger().log(Level.SEVERE, "Fehler beim setzen des Anzeigenamen-Präfixes vom Rang " + string + ".");
+                Bukkit.getServer().getLogger().log(Level.SEVERE, "Fehler beim setzen des Anzeigenamen-PrÃ¤fixes vom Rang " + string + ".");
             }
         }
     }
@@ -437,7 +437,7 @@ public class MyCmd extends JavaPlugin {
 
     /**
      * Wandelt eine Zeichenkette mit alternativen Farb-Codes in eine
-     * Zeichenkette mit gültigen Farb-Codes um.
+     * Zeichenkette mit gÃ¼ltigen Farb-Codes um.
      *
      * @author joestr
      * @version 1
@@ -457,7 +457,7 @@ public class MyCmd extends JavaPlugin {
     }
 
     /**
-     * Wandelt eine Zeichenkette mit gültigen Farb-Codes in eine Zeichenkette
+     * Wandelt eine Zeichenkette mit gÃ¼ltigen Farb-Codes in eine Zeichenkette
      * mit alternativen Farb-Codes um.
      *
      * @author joestr
@@ -581,8 +581,8 @@ public class MyCmd extends JavaPlugin {
             footer = "";
         }
 
-        header = header.replaceAll("&", "§");
-        footer = footer.replaceAll("&", "§");
+        header = header.replaceAll("&", "Â§");
+        footer = footer.replaceAll("&", "Â§");
         header = header.replaceAll("%player%", player.getDisplayName());
         footer = footer.replaceAll("%player%", player.getDisplayName());
 
@@ -643,17 +643,17 @@ public class MyCmd extends JavaPlugin {
     }
 
     /**
-     * Sendet einem Spieler eine Kommandoübersicht.
+     * Sendet einem Spieler eine KommandoÃ¼bersicht.
      *
      * @author joestr
      * @version 1
      * @since 1
      * @param player {@link Player} Spieler
      * @param title {@link String}[] Titel
-     * @param texts {@link String}[] Feld für Texte
-     * @param actions {@link String}[] Feld für Aktionen
-     * @param commands {@link String}[] Feld für Befehle als Zeichenketten
-     * @param hovers {@link String}[] Feld für Hover-Texte
+     * @param texts {@link String}[] Feld fÃ¼r Texte
+     * @param actions {@link String}[] Feld fÃ¼r Aktionen
+     * @param commands {@link String}[] Feld fÃ¼r Befehle als Zeichenketten
+     * @param hovers {@link String}[] Feld fÃ¼r Hover-Texte
      */
     public void commandOverview(Player player, String title, String[] texts, String[] actions, String[] commands, String[] hovers) {
 
@@ -695,7 +695,7 @@ public class MyCmd extends JavaPlugin {
     }
 
     /**
-     * Füllt die Kommando-Liste
+     * FÃ¼llt die Kommando-Liste
      *
      * @author joestr
      * @version 1
@@ -768,7 +768,7 @@ public class MyCmd extends JavaPlugin {
     }
 
     /**
-     * Verwendung für die Methode "removeFallbackAliases".
+     * Verwendung fÃ¼r die Methode "removeFallbackAliases".
      *
      * @author joestr
      * @version 1
@@ -812,7 +812,7 @@ public class MyCmd extends JavaPlugin {
     }
 
     /**
-     * Behandelt einen String und ersetzt das spezielle Zeichen für ein
+     * Behandelt einen String und ersetzt das spezielle Zeichen fÃ¼r ein
      * Leerzeichen durch ein richtiges Leerzeichen.
      *
      * @author joestr

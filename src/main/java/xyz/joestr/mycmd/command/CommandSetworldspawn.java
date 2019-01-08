@@ -63,7 +63,7 @@ public class CommandSetworldspawn implements CommandExecutor {
 				w = Bukkit.getWorld(args[0]);
 			} catch(Exception e) {
 				
-				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "FÃ¼r Welt muss eine Zeichenkette angegeben werden.");
 				return true;
 			}
 			
@@ -74,7 +74,7 @@ public class CommandSetworldspawn implements CommandExecutor {
 				z = Integer.parseInt(args[3]);
 			} catch(Exception e) {
 				
-				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für X, Y und Z müssen Ganzzahlen angegeben werden.");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "FÃ¼r X, Y und Z mÃ¼ssen Ganzzahlen angegeben werden.");
 				return true;
 			}
 			
