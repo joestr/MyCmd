@@ -21,16 +21,16 @@ public class CommandNavi implements CommandExecutor {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
 		//Player
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.navi")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				this.plugin.noPermissionMessage(player);
 				return true;
 			}
 			
@@ -38,60 +38,60 @@ public class CommandNavi implements CommandExecutor {
 			List<String> nw = (List<String>)this.plugin.config.getMap().get("navi-worlds");
 			//List<String> mw = (List<String>)this.plugin.config.getMap().get("map-worlds");
 			
-			if(arg.length == 0) {
+			if(args.length == 0) {
 				
-				player.sendMessage(ChatColor.RED + "Achtung: Dieser Befehl wird überarbeitet.");
-				player.sendMessage(ChatColor.GREEN + "Navi:");
-				player.sendMessage(ChatColor.GRAY + "/navi r - Zum Spawn deiner Welt");
-				player.sendMessage(ChatColor.GRAY + "/navi <Spieler> - Zu einem Spieler");
-				player.sendMessage(ChatColor.GRAY + "/navi <X> <Z> - Zu bestimmten Koordinaten");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Achtung: Dieser Befehl wird überarbeitet.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Navi:");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "/navi r - Zum Spawn deiner Welt");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "/navi <Spieler> - Zu einem Spieler");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + "/navi <X> <Z> - Zu bestimmten Koordinaten");
 				
 				return true;
 			}
 			
-			if(arg.length == 1) {
+			if(args.length == 1) {
 				
 				if(!player.hasPermission("mycmd.command.navi")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.navi"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.navi");
 					return true;
 				}
 				
 				if(!nw.contains(player.getWorld().getName())) {
 					
-					player.sendMessage(ChatColor.RED + "Für diese Welt ist der Kompass nicht verfügbar.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für diese Welt ist der Kompass nicht verfügbar.");
 					return true;
 				}
 				
-				if(arg[0].equalsIgnoreCase("r")) {
+				if(args[0].equalsIgnoreCase("r")) {
 					
 					player.setCompassTarget(player.getWorld().getSpawnLocation());
-					player.sendMessage(ChatColor.GREEN + "Dein Kompass zeigt nun zum " + ChatColor.GRAY + "Spawn deiner Welt" + ChatColor.GREEN + ".");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.BLUE + "Dein Kompass zeigt nun zum " + ChatColor.GRAY + "Spawn deiner Welt" + ChatColor.BLUE + ".");
 					return true;
 				} else {
 					
-					if(player.getName().equals(arg[0])) {
+					if(player.getName().equals(args[0])) {
 						
-						player.sendMessage(ChatColor.RED + "Du kannst nicht zu dir selbst navigieren. :(");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du kannst nicht zu dir selbst navigieren. :(");
 						return true;
 					}
 					
-					if(Bukkit.getOfflinePlayer(arg[0]).isOnline()) {
+					if(Bukkit.getOfflinePlayer(args[0]).isOnline()) {
 						
-						if(!player.getWorld().equals(Bukkit.getPlayer(arg[0]).getWorld())) {
+						if(!player.getWorld().equals(Bukkit.getPlayer(args[0]).getWorld())) {
 							
-							player.sendMessage(Bukkit.getPlayer(arg[0]).getDisplayName() + ChatColor.RED + " befindet sich auf einer anderen Welt.");
+							player.sendMessage(this.plugin.pluginPrefix + Bukkit.getPlayer(args[0]).getDisplayName() + ChatColor.RED + " befindet sich auf einer anderen Welt.");
 						}
 						
-						player.sendMessage(ChatColor.GREEN + "Dein Kompass zeigt nun auf " + Bukkit.getPlayer(arg[0]).getDisplayName() + ".");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.BLUE + "Dein Kompass zeigt nun auf " + Bukkit.getPlayer(args[0]).getDisplayName() + ChatColor.BLUE + ".");
 						
 						Bukkit.getScheduler().scheduleSyncRepeatingTask(this.plugin, new Runnable() {
 							
 							public void run() {
 								
-								if(Bukkit.getOfflinePlayer(player.getName()).isOnline() && Bukkit.getOfflinePlayer(arg[0]).isOnline()) {
+								if(Bukkit.getOfflinePlayer(player.getName()).isOnline() && Bukkit.getOfflinePlayer(args[0]).isOnline()) {
 									
-									player.setCompassTarget(Bukkit.getPlayer(arg[0]).getLocation());
+									player.setCompassTarget(Bukkit.getPlayer(args[0]).getLocation());
 								} else {
 									
 									return;
@@ -102,23 +102,23 @@ public class CommandNavi implements CommandExecutor {
 						return true;
 					} else {
 						
-						player.sendMessage(ChatColor.RED + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + args[0] + ChatColor.RED + " ist offline.");
 						return true;
 					}
 				}
 			}
 			
-			if(arg.length == 2) {
+			if(args.length == 2) {
 				
 				if(!player.hasPermission("mycmd.command.navi")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.navi"));
+					 this.plugin.noPermissionMessage(player, "mycmd.command.navi");
 					return true;
 				}
 				
 				if(!nw.contains(player.getWorld().getName())) {
 					
-					player.sendMessage(ChatColor.RED + "Für diese Welt ist der Kompass nicht verfügbar.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für diese Welt ist der Kompass nicht verfügbar.");
 					return true;
 				}
 				
@@ -127,37 +127,37 @@ public class CommandNavi implements CommandExecutor {
 				
 				try {
 					
-					x = Integer.parseInt(arg[0]);
-					z = Integer.parseInt(arg[1]);
+					x = Integer.parseInt(args[0]);
+					z = Integer.parseInt(args[1]);
 				} catch(Exception e) {
 					
-					player.sendMessage(ChatColor.RED + "Für X und Z müssen Ganzzahlen angegeben werden.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für X und Z müssen Ganzzahlen angegeben werden.");
 				}
 				
 				Location location = new Location(player.getWorld(), x < 0 ? -0.5D : 0.5D, 127, z < 0 ? -0.5D : 0.5D);
 				
 				player.setCompassTarget(location);
 				
-				player.sendMessage(ChatColor.GREEN + "Dein Kompass zeigt nun auf " + ChatColor.GRAY + x + "/127/" + z + ChatColor.GREEN + ".");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.BLUE + "Dein Kompass zeigt nun auf " + ChatColor.GRAY + x + "/127/" + z + ChatColor.BLUE + ".");
 				return true;
 			}
 			
 			if(player.hasPermission("mycmd.command.navi")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/navi [<r|Spieler|X>] [<Z>]", "suggest_command", "/navi ", "/navi <r|Spieler|X> [<Z>]"));
+				this.plugin.usageMessage(player, "/navi [<r|Spieler|X>] [<Z>]", "suggest_command", "/navi ", "/navi <r|Spieler|X> [<Z>]");
 				return true;
 			}
 		}
 		//End Player
 		
 		//Console
-		if(arg.length == 0) {
+		if(args.length == 0) {
 			
-			sender.sendMessage(ChatColor.RED + "Befehl " + ChatColor.GRAY + "/navi" + ChatColor.RED + " ist in der Konsole nicht verfügbar.");
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Befehl " + ChatColor.GRAY + "/navi" + ChatColor.RED + " ist in der Konsole nicht verfügbar.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/navi"));
+		this.plugin.usageMessage(commandSender, "/navi");
 		return true;
 		//End Console
 	}

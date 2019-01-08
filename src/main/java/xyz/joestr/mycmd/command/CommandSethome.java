@@ -20,24 +20,24 @@ public class CommandSethome implements CommandExecutor {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.sethome") && !player.hasPermission("mycmd.command.sethome")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				this.plugin.noPermissionMessage(player);
 				return true;
 			}
 			
-			if(arg.length == 0) {
+			if(args.length == 0) {
 				
 				if(!player.hasPermission("mycmd.command.sethome")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.sethome"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.sethome");
 					return true;
 				}
 				
@@ -45,81 +45,81 @@ public class CommandSethome implements CommandExecutor {
 					
 					this.plugin.homes.getMap().put(player.getUniqueId().toString(), player.getLocation());
 					this.plugin.homes.Save();
-					player.sendMessage(ChatColor.GREEN + "Dein Home-Punkt wurde auf die aktuelle Position gesetzt.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Dein Home-Punkt wurde auf die aktuelle Position gesetzt.");
 					return true;
 				}
 				
 				this.plugin.homes.getMap().put(player.getName(), player.getLocation());
 				this.plugin.homes.Save();
-				player.sendMessage(ChatColor.GREEN + "Dein Home-Punkt wurde auf die aktuelle Position gesetzt.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Dein Home-Punkt wurde auf die aktuelle Position gesetzt.");
 				return true;
 			}
 			
-			if(arg.length == 1) {
+			if(args.length == 1) {
 				
 				if(!player.hasPermission("mycmd.command.sethome.other")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.sethome.other"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.sethome.other");
 					return true;
 				}
 				
 				if(Bukkit.getOnlineMode()) {
 					
-					this.plugin.homes.getMap().put(Bukkit.getOfflinePlayer(arg[0]).getUniqueId().toString(), player.getLocation());
+					this.plugin.homes.getMap().put(Bukkit.getOfflinePlayer(args[0]).getUniqueId().toString(), player.getLocation());
 					this.plugin.homes.Save();
-					player.sendMessage(ChatColor.GREEN + "Der Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde auf deine aktuelle Position gesetzt.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Home-Punkt vom Spieler " + ChatColor.GRAY + args[0] + ChatColor.GREEN + "wurde auf deine aktuelle Position gesetzt.");
 					return true;
 				}
 				
-				this.plugin.homes.getMap().put(arg[0], player.getLocation());
+				this.plugin.homes.getMap().put(args[0], player.getLocation());
 				this.plugin.homes.Save();
-				player.sendMessage(ChatColor.GREEN + "Der Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde auf deine aktuelle Position gesetzt.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Home-Punkt vom Spieler " + ChatColor.GRAY + args[0] + ChatColor.GREEN + "wurde auf deine aktuelle Position gesetzt.");
 				return true;
 			}
 			
 			if(player.hasPermission("mycmd.command.sethome") && player.hasPermission("mycmd.command.sethome")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/sethome [<Spieler>]", "suggest_command", "/sethome ", "/sethome [<Spieler>]"));
+				this.plugin.usageMessage(player, "/sethome [<Spieler>]", "suggest_command", "/sethome ", "/sethome [<Spieler>]");
 				return true;
 			}
 			
 			if (player.hasPermission("mycmd.command.sethome.other"))
 			{
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/sethome <Spieler>", "suggest_command", "/sethome ", "/sethome <Spieler>"));
+				this.plugin.usageMessage(player, "/sethome <Spieler>", "suggest_command", "/sethome ", "/sethome <Spieler>");
 				return true;
 			}
 			
 			if (player.hasPermission("mycmd.command.sethome"))
 			{
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/sethome", "run_command", "/sethome", "/sethome"));
+				this.plugin.usageMessage(player, "/sethome", "run_command", "/sethome", "/sethome");
 				return true;
 			}
 		}
 		
 		//Console
-		if(arg.length == 5) {
+		if(args.length == 5) {
 			
 			World w = null; int x; int y; int z;
 			
 			try {
 				
-				w = Bukkit.getWorld(arg[1]);
+				w = Bukkit.getWorld(args[1]);
 			} catch(Exception e) {
 				
-				sender.sendMessage(ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
 				return true;
 			}
 			
 			try {
 				
-				x = Integer.parseInt(arg[2]);
-				y = Integer.parseInt(arg[3]);
-				z = Integer.parseInt(arg[4]);
+				x = Integer.parseInt(args[2]);
+				y = Integer.parseInt(args[3]);
+				z = Integer.parseInt(args[4]);
 			} catch(Exception e) {
 				
-				sender.sendMessage(ChatColor.RED + "Für X, Y und Z müssen Ganzzahlen angegeben werden.");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für X, Y und Z müssen Ganzzahlen angegeben werden.");
 				return true;
 			}
 			
@@ -127,41 +127,41 @@ public class CommandSethome implements CommandExecutor {
 			
 			if(Bukkit.getOnlineMode()) {
 				
-				if (this.plugin.homes.getMap().containsKey(Bukkit.getOfflinePlayer(arg[0]).getUniqueId().toString())) {
+				if (this.plugin.homes.getMap().containsKey(Bukkit.getOfflinePlayer(args[0]).getUniqueId().toString())) {
 					
-					this.plugin.homes.getMap().remove(Bukkit.getOfflinePlayer(arg[0]).getUniqueId().toString());
-					this.plugin.homes.getMap().put(Bukkit.getOfflinePlayer(arg[0]).getUniqueId().toString(), location);
+					this.plugin.homes.getMap().remove(Bukkit.getOfflinePlayer(args[0]).getUniqueId().toString());
+					this.plugin.homes.getMap().put(Bukkit.getOfflinePlayer(args[0]).getUniqueId().toString(), location);
 					this.plugin.homes.Save();
-					sender.sendMessage(ChatColor.GREEN + "Der Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde auf die Position " + ChatColor.GRAY + 
+					commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Home-Punkt vom Spieler " + ChatColor.GRAY + args[0] + ChatColor.GREEN + "wurde auf die Position " + ChatColor.GRAY + 
 							location.getWorld().toString() + "/" + location.getX() + "/" + location.getBlockY() + "/" + location.getZ() + ChatColor.GREEN + ".");
 					return true;
 				}
 				
-				this.plugin.homes.getMap().put(Bukkit.getOfflinePlayer(arg[0]).getUniqueId().toString(), location);
+				this.plugin.homes.getMap().put(Bukkit.getOfflinePlayer(args[0]).getUniqueId().toString(), location);
 				this.plugin.homes.Save();
-				sender.sendMessage(ChatColor.GREEN + "Der Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde auf die Position " + ChatColor.GRAY + 
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Home-Punkt vom Spieler " + ChatColor.GRAY + args[0] + ChatColor.GREEN + "wurde auf die Position " + ChatColor.GRAY + 
 						location.getWorld().toString() + "/" + location.getX() + "/" + location.getBlockY() + "/" + location.getZ() + ChatColor.GREEN + ".");
 				return true;
 			}
 			
-			if (this.plugin.homes.getMap().containsKey(arg[0])) {
+			if (this.plugin.homes.getMap().containsKey(args[0])) {
 				
-				this.plugin.homes.getMap().remove(arg[0]);
-				this.plugin.homes.getMap().put(arg[0], location);
+				this.plugin.homes.getMap().remove(args[0]);
+				this.plugin.homes.getMap().put(args[0], location);
 				this.plugin.homes.Save();
-				sender.sendMessage(ChatColor.GREEN + "Der Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde auf die Position " + ChatColor.GRAY + 
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Home-Punkt vom Spieler " + ChatColor.GRAY + args[0] + ChatColor.GREEN + "wurde auf die Position " + ChatColor.GRAY + 
 						location.getWorld().toString() + "/" + location.getX() + "/" + location.getBlockY() + "/" + location.getZ() + ChatColor.GREEN + ".");
 				return true;
 			}
 			
-			this.plugin.homes.getMap().put(arg[0], location);
+			this.plugin.homes.getMap().put(args[0], location);
 			this.plugin.homes.Save();
-			sender.sendMessage(ChatColor.GREEN + "Der Home-Punkt vom Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde auf die Position " + ChatColor.GRAY + 
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der Home-Punkt vom Spieler " + ChatColor.GRAY + args[0] + ChatColor.GREEN + "wurde auf die Position " + ChatColor.GRAY + 
 					location.getWorld().toString() + "/" + location.getX() + "/" + location.getBlockY() + "/" + location.getZ() + ChatColor.GREEN + ".");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/sethome <Spieler> <Welt> <X> <Y> <Z>"));
+		this.plugin.usageMessage(commandSender, "/sethome <Spieler> <Welt> <X> <Y> <Z>");
 		return true;
 	}
 }

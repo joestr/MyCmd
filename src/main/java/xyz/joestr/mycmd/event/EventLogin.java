@@ -1,5 +1,6 @@
 package xyz.joestr.mycmd.event;
 
+import org.bukkit.BanEntry;
 import org.bukkit.BanList.Type;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -33,14 +34,29 @@ public class EventLogin
 			
 			if(!event.getPlayer().isWhitelisted()) {
 				
-				event.disallow(null, this.plugin.toColorcode("&", (String)this.plugin.config.getMap().get("whitelist-message")));
+				event.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, this.plugin.toColorcode("&", (String)this.plugin.config.getMap().get("whitelist-message")));
 				return;
 			}
 		}
 		
 		if(Bukkit.getServer().getBanList(Type.NAME).isBanned(event.getPlayer().getName())) {
 			
-			event.disallow(null, Bukkit.getServer().getBanList(Type.NAME).getBanEntry(event.getPlayer().getName()).getReason());
+			BanEntry banEntry = Bukkit.getServer().getBanList(Type.NAME).getBanEntry(event.getPlayer().getName());
+			
+			String kickString =
+					this.plugin.config.getMap().get("ban-screen").toString()
+					.replace("%type%", Type.NAME.toString())
+					.replace("%target%", banEntry.getTarget())
+					.replace("%reason%", banEntry.getReason())
+					.replace("%source%", banEntry.getSource())
+					.replace("%created%", banEntry.getCreated().toInstant().toString())
+					.replace("%expires%", banEntry.getExpiration() == null ? "-" : banEntry.getExpiration().toInstant().toString());
+			
+			event.disallow(
+					PlayerLoginEvent.Result.KICK_BANNED,
+					this.plugin.toColorcode("&", kickString)
+			);
+			
 			return;
 		}
 		
@@ -48,7 +64,22 @@ public class EventLogin
 		
 		if(Bukkit.getServer().getBanList(Type.IP).isBanned(ip)) {
 			
-			event.disallow(null, Bukkit.getServer().getBanList(Type.IP).getBanEntry(ip).getReason());
+			BanEntry banEntry = Bukkit.getServer().getBanList(Type.IP).getBanEntry(ip);
+			
+			String kickString =
+					this.plugin.config.getMap().get("ban-screen").toString()
+					.replace("%type%", Type.IP.toString())
+					.replace("%target%", banEntry.getTarget())
+					.replace("%reason%", banEntry.getReason())
+					.replace("%source%", banEntry.getSource())
+					.replace("%created%", banEntry.getCreated().toInstant().toString())
+					.replace("%expires%", banEntry.getExpiration() == null ? "-" : banEntry.getExpiration().toInstant().toString());
+			
+			event.disallow(
+					PlayerLoginEvent.Result.KICK_BANNED,
+					this.plugin.toColorcode("&", kickString)
+			);
+			
 			return;
 		}
 		
@@ -57,8 +88,8 @@ public class EventLogin
 			if (event.getPlayer().hasPermission("mycmd.rank." + str))
 			{
 				this.plugin.scoreboard.getTeam(str).addEntry(event.getPlayer().getName());
-				String str_ = this.plugin.scoreboard.getTeam(str).getPrefix() + event.getPlayer().getName() + this.plugin.scoreboard.getTeam(str).getSuffix();
-				event.getPlayer().setDisplayName(str_);
+				event.getPlayer().setDisplayName(this.plugin.scoreboard.getTeam(str).getDisplayName() + event.getPlayer().getName());
+				//event.getPlayer().setPlayerListName(this.plugin.scoreboard.getTeam(str).getPrefix() + event.getPlayer().getName() + this.plugin.scoreboard.getTeam(str).getSuffix());
 			}
 		}
 	}

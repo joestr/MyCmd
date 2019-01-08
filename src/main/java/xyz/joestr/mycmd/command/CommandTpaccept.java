@@ -18,24 +18,24 @@ public class CommandTpaccept implements CommandExecutor {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.tpaccept")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.tpaccept"));
+				this.plugin.noPermissionMessage(player, "mycmd.command.tpaccept");
 				return true;
 			}
 			
-			if(arg.length == 0) {
+			if(args.length == 0) {
 				
 				if(!player.hasPermission("mycmd.command.tpaccept")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage());
+					this.plugin.noPermissionMessage(player, "mycmd.command.tpaccept");
 					return true;
 				}
 				
@@ -45,65 +45,114 @@ public class CommandTpaccept implements CommandExecutor {
 						
 						if(Bukkit.getOfflinePlayer((String)this.plugin.tpaSwitched.get(player.getName())).isOnline()) {
 							
-							Bukkit.getPlayer((String)this.plugin.tpaSwitched.get(player.getName())).teleport(player);
-							player.sendMessage(ChatColor.GREEN + "Du wurdest zu " + Bukkit.getPlayer((String)this.plugin.tpaSwitched.get(player.getName())).getDisplayName() + ChatColor.GREEN + " teleportiert.");
-							Bukkit.getPlayer((String)this.plugin.tpaSwitched.get(player.getName())).sendMessage(player.getDisplayName() + ChatColor.GREEN + " wurde zu dir teleportiert.");
+							Bukkit.getPlayer(
+									(String) this.plugin.tpaSwitched.get(player.getName())
+							).teleport(player);
+							
+							player.sendMessage(this.plugin.pluginPrefix + 
+									Bukkit.getPlayer(
+											(String)this.plugin.tpaSwitched.get(
+													player.getName()
+											)
+									).getDisplayName() +
+									ChatColor.GREEN +
+									" wurde zu dir teleportiert."
+							);
+							
+							Bukkit.getPlayer(
+									(String) this.plugin.tpaSwitched.get(
+											player.getName()
+									)
+							).sendMessage(this.plugin.pluginPrefix + 
+									ChatColor.GREEN + "Du wurdest zu " +
+									player.getDisplayName() +
+									ChatColor.GREEN +
+									" teleportiert."
+							);
+							
 							this.plugin.tpa.remove(this.plugin.tpaSwitched.get(player.getName()));
 							this.plugin.tpaSwitched.remove(player.getName());
 							return true;
 						}
 						
-						player.sendMessage(ChatColor.RED + "Spieler " + ChatColor.GRAY + (String)this.plugin.tpaSwitched.get(player.getName()) + ChatColor.GRAY + " ist gerade nicht online.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Spieler " + ChatColor.GRAY + (String)this.plugin.tpaSwitched.get(player.getName()) + ChatColor.GRAY + " ist gerade nicht online.");
 						return true;
 					}
 					
-					player.sendMessage(ChatColor.RED + "Du hast eine TP-Anfrage erhalten, aber niemand hat dir eine gesendet!?");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast eine TP-Anfrage erhalten, aber niemand hat dir eine gesendet!?");
 					this.plugin.tpaSwitched.remove(player.getName());
 					return true;
 				}
 				
 				if(this.plugin.tpahereSwitched.containsKey(player.getName())) {
 					
-					if(this.plugin.Tpahere.containsKey(this.plugin.tpahereSwitched.get(player.getName()))) {
+					if(this.plugin.tpahere.containsKey(this.plugin.tpahereSwitched.get(player.getName()))) {
 						
 						if(Bukkit.getOfflinePlayer((String)this.plugin.tpahereSwitched.get(player.getName())).isOnline()) {
 							
-							player.teleport(Bukkit.getPlayer((String)this.plugin.tpahereSwitched.get(player.getName())));
-							player.sendMessage(Bukkit.getPlayer((String)this.plugin.tpahereSwitched.get(player.getName())).getDisplayName() + ChatColor.GREEN + " wurde zu dir teleportiert.");
-							Bukkit.getPlayer((String)this.plugin.tpahereSwitched.get(player.getName())).sendMessage(ChatColor.GREEN + "Du wurdest zu " + player.getDisplayName() + ChatColor.GREEN + " teleportiert.");
-							this.plugin.Tpahere.remove(this.plugin.tpahereSwitched.get(player.getName()));
+							player.teleport(
+									Bukkit.getPlayer(
+											(String) this.plugin.tpahereSwitched.get(
+													player.getName()
+											)
+									)
+							);
+							
+							player.sendMessage(this.plugin.pluginPrefix + 
+									ChatColor.GREEN +
+									"Du wurdest zu " +
+									Bukkit.getPlayer(
+											(String) this.plugin.tpahereSwitched.get(
+													player.getName()
+											)
+									).getDisplayName() +
+									ChatColor.GREEN +
+									" teleportiert."
+							);
+							
+							Bukkit.getPlayer(
+									(String) this.plugin.tpahereSwitched.get(
+											player.getName()
+									)
+							).sendMessage(this.plugin.pluginPrefix + 
+									player.getDisplayName() + 
+									ChatColor.GREEN + 
+									" wurde zu dir teleportiert."
+							);
+							
+							this.plugin.tpahere.remove(this.plugin.tpahereSwitched.get(player.getName()));
 							this.plugin.tpahereSwitched.remove(player.getName());
 							return true;
 						}
 						
-						player.sendMessage(ChatColor.RED + "Spieler " + ChatColor.GRAY + (String)this.plugin.tpahereSwitched.get(player.getName()) + ChatColor.GRAY + " ist gerade nicht online.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + (String)this.plugin.tpahereSwitched.get(player.getName()) + ChatColor.GRAY + " ist gerade nicht online.");
 						return true;
 					}
 					
-					player.sendMessage(ChatColor.RED + "Du hast eine TP-Anfrage erhalten, aber niemand hat dir eine gesendet!?");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast eine TP-Anfrage erhalten, aber niemand hat dir eine gesendet!?");
 					this.plugin.tpahereSwitched.remove(player.getName());
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.RED + "Du hast keine TP-Anfrage erhalten.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du hast keine TP-Anfrage erhalten.");
 				return true;
 			}
 			
 			if (player.hasPermission("mycmd.command.tpaccept")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/tpaccept", "run_command", "/tpaccept", "/tpaccept"));
+				this.plugin.usageMessage(player, "/tpaccept", "run_command", "/tpaccept", "/tpaccept");
 				return true;
 			}
 		}
 		
 		//Console
-		if(arg.length == 0) {
+		if(args.length == 0) {
 			
-			sender.sendMessage(ChatColor.RED + "Der Befehl /tpaccept ist in der Konsoole nicht verfügbar.");
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Befehl /tpaccept ist in der Konsole nicht verfügbar.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/tpaccept"));
+		this.plugin.usageMessage(commandSender, "/tpaccept");
 		return true;
 	}
 }

@@ -15,7 +15,6 @@ public class CommandList implements CommandExecutor {
 	
 	public CommandList(MyCmd mycmd) { this.plugin = mycmd; }
 	
-	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
 		
 		if(sender instanceof Player) {
@@ -24,7 +23,7 @@ public class CommandList implements CommandExecutor {
 			
 			if(!player.hasPermission("mycmd.command.list")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				this.plugin.noPermissionMessage(player);
 				return true;
 			}
 			
@@ -32,7 +31,7 @@ public class CommandList implements CommandExecutor {
 				
 				if (!player.hasPermission("mycmd.command.list")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.list"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.list");
 					return true;
 				}
 				
@@ -42,7 +41,7 @@ public class CommandList implements CommandExecutor {
 			
 			if(player.hasPermission("mycmd.command.list")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/list", "run_command", "/list", "/list"));
+				this.plugin.usageMessage(player, "/list", "run_command", "/list", "/list");
 				return true;
 			}
 		}
@@ -53,7 +52,7 @@ public class CommandList implements CommandExecutor {
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/list"));
+		this.plugin.usageMessage(sender, "/list");
 		return true;
 	}
 	
@@ -77,19 +76,19 @@ public class CommandList implements CommandExecutor {
 		
 		if(a.toArray().length == 0) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es sind zurzeit " + ChatColor.GRAY + "keine" + ChatColor.GREEN + " Spieler online.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es sind zurzeit " + ChatColor.GRAY + "keine" + ChatColor.GREEN + " Spieler online.");
 		}
 		
 		if(a.toArray().length == 1) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es ist zurzeit " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler online:");
-			sender.sendMessage(str);
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es ist zurzeit " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler online:");
+			sender.sendMessage(this.plugin.pluginPrefix + str);
 		}
 		
 		if(a.toArray().length >= 2) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es sind zurzeit " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler online:");
-			sender.sendMessage(str);
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Es sind zurzeit " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler online:");
+			sender.sendMessage(this.plugin.pluginPrefix + str);
 		}
 	}
 }

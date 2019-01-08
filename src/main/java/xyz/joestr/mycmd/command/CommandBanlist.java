@@ -23,12 +23,12 @@ public class CommandBanlist implements CommandExecutor {
 		this.plugin = mycmd;
 	}
 	
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.banlist")) {
 				
@@ -36,17 +36,23 @@ public class CommandBanlist implements CommandExecutor {
 				return true;
 			}
 			
-			if(arg.length == 1) {
+			if(args.length == 1) {
 				
-				if(arg[0].equalsIgnoreCase("ip")) {
+				if(!player.hasPermission("mycmd.command.banlist")) {
 					
-					_banlist_ip_(sender);
+					this.plugin.noPermissionMessage(player, "mycmd.command.banlist");
 					return true;
 				}
 				
-				if(arg[0].equalsIgnoreCase("player")) {
+				if(args[0].equalsIgnoreCase("ip")) {
 					
-					_banlist_player_(sender);
+					_banlist_ip_(commandSender);
+					return true;
+				}
+				
+				if(args[0].equalsIgnoreCase("player")) {
+					
+					_banlist_player_(commandSender);
 					return true;
 				}
 			}
@@ -59,26 +65,26 @@ public class CommandBanlist implements CommandExecutor {
 		}
 		
 		//Console
-		if(arg.length == 1) {
+		if(args.length == 1) {
 			
-			if(arg[0].equalsIgnoreCase("ip")) {
+			if(args[0].equalsIgnoreCase("ip")) {
 				
-				_banlist_ip_(sender);
+				_banlist_ip_(commandSender);
 				return true;
 			}
 			
-			if(arg[0].equalsIgnoreCase("player")) {
+			if(args[0].equalsIgnoreCase("player")) {
 				
-				_banlist_player_(sender);
+				_banlist_player_(commandSender);
 				return true;
 			}
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/banlist <ip|player>"));
+		this.plugin.usageMessage(commandSender, "/banlist <ip|player>");
 		return true;
 	}
 	
-	public void _banlist_ip_(CommandSender sender) {
+	public void _banlist_ip_(CommandSender commandSender) {
 		
 		String str = "";
 		Collection<BanEntry> a = Bukkit.getServer().getBanList(Type.IP).getBanEntries();
@@ -89,7 +95,7 @@ public class CommandBanlist implements CommandExecutor {
 			i++;
 			if(i < a.toArray().length) {
 				
-				str = str + ChatColor.GRAY + be.getTarget() + ChatColor.GREEN + ", ";
+				str = str + ChatColor.GRAY + be.getTarget() + ChatColor.BLUE + ", ";
 			} else {
 				
 				str = str + ChatColor.GRAY + be.getTarget();
@@ -98,23 +104,23 @@ public class CommandBanlist implements CommandExecutor {
 		
 		if(a.toArray().length == 0) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es sind " + ChatColor.GRAY + "keine" + ChatColor.GREEN + " IPs gebannt.");
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.BLUE + "Es sind " + ChatColor.GRAY + "keine" + ChatColor.BLUE + " IP-Adressen gebannt.");
 		}
 		
 		if(a.toArray().length == 1) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es ist " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " IP gebannt:");
-			sender.sendMessage(str);
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.BLUE + "Es ist " + ChatColor.GRAY + a.toArray().length + ChatColor.BLUE + " IP-Adresse gebannt:");
+			commandSender.sendMessage(this.plugin.pluginPrefix + str);
 		}
 		
 		if(a.toArray().length >= 2) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es sind " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " IPs gebannt:");
-			sender.sendMessage(str);
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.BLUE + "Es sind " + ChatColor.GRAY + a.toArray().length + ChatColor.BLUE + " IP-Adressen gebannt:");
+			commandSender.sendMessage(this.plugin.pluginPrefix + str);
 		}
 	}
 	
-	public void _banlist_player_(CommandSender sender) {
+	public void _banlist_player_(CommandSender commandSender) {
 		
 		String str = "";
 		Collection<BanEntry> a = Bukkit.getServer().getBanList(Type.NAME).getBanEntries();
@@ -125,7 +131,7 @@ public class CommandBanlist implements CommandExecutor {
 			i++;
 			if(i < a.toArray().length) {
 				
-				str = str + ChatColor.GRAY + be.getTarget() + ChatColor.GREEN + ", ";
+				str = str + ChatColor.GRAY + be.getTarget() + ChatColor.BLUE + ", ";
 			} else {
 				
 				str = str + ChatColor.GRAY + be.getTarget();
@@ -134,19 +140,19 @@ public class CommandBanlist implements CommandExecutor {
 		
 		if(a.toArray().length == 0) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es sind " + ChatColor.GRAY + "keine" + ChatColor.GREEN + " Spieler gebannt.");
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.BLUE + "Es sind " + ChatColor.GRAY + "keine" + ChatColor.BLUE + " Spieler gebannt.");
 		}
 		
 		if(a.toArray().length == 1) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es ist " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler gebannt:");
-			sender.sendMessage(str);
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.BLUE + "Es ist " + ChatColor.GRAY + a.toArray().length + ChatColor.BLUE + " Spieler gebannt:");
+			commandSender.sendMessage(this.plugin.pluginPrefix + str);
 		}
 		
 		if(a.toArray().length >= 2) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Es sind " + ChatColor.GRAY + a.toArray().length + ChatColor.GREEN + " Spieler gebannt:");
-			sender.sendMessage(str);
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.BLUE + "Es sind " + ChatColor.GRAY + a.toArray().length + ChatColor.BLUE + " Spieler gebannt:");
+			commandSender.sendMessage(this.plugin.pluginPrefix + str);
 		}
 	}
 }

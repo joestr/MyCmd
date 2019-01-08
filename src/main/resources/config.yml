@@ -2,12 +2,21 @@ config:
   join: "%player_displayname% &eist dem Spiel beigetreten."
   quit: "%player_displayname% &ehat das Spiel verlassen."
   kick: "%player_displayname% &r&ewurde gekickt. (&7%reason%&e)"
-  ban-name: 
+  ban: "&7%player% &r&ewurde gebannt. (&7%reason%&e)"
+  ban-temp: "&7%player% &r&ewurde temporär gebannt. (&7%reason%&e)"
+  pardon: "&7%player%&e wurde entbannt. (&7%reason%&e)"
+  ban-ip: "&eIP-Adresse &7%ip% &r&ewurde gebannt. (&7%reason%&e)"
+  ban-ip-temp: "&eIP-Adresse &7%ip% &r&ewurde temporär gebannt. (&7%reason%&e)"
+  pardon-ip: "&eIP-Adresse &7%ip%&e wurde entbannt. (&7%reason%&e)"
+  ban-screen: "&cGebannt.\n\nTyp: &7%type%\n&cZiel: &7%target%\n&cGrund: &7%reason%\n&cQuelle: &7%source%\n&cErstellt: &7%created%\n&cEnde: &7%expires%\n"
   whisper_sender: "&3Du an %target_player_displayname%&3: &r&f%message%"
   whisper_target: "&3%sender_player_displayname% &3an dich: &r&f%message%"
   chat: "%player_displayname%&r&f: "
+  room-chat: "&8[&7%room_name%&8]&r %player_displayname%&r&f: %message%"
+  room-info: "&8[&7%room_name%&8]&r "
+  broadcast: "&e[Broadcast]&r "
   wiki: http://minecraft-de.gamepedia.com/
-  map: http://zeus.gstd.eu/
+  map: http://example.com/
   map-worlds:
     - world
   map-name: flat
@@ -19,3 +28,4 @@ config:
   motd1: "&aServer"
   motd2: "&7Server"
   whitelist-message: "&cNicht auf der Whitelist."
+  plugin-prefix: ""

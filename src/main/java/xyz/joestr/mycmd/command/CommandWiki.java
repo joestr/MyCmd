@@ -17,37 +17,36 @@ public class CommandWiki implements CommandExecutor {
 		this.plugin = mycmd;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.wiki")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				this.plugin.noPermissionMessage(player);
 				return true;
 			}
 			
-			if(arg.length == 1)
+			if(args.length == 1)
 			{
 				if(!player.hasPermission("mycmd.command.wiki")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.wiki"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.wiki");
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.GREEN + "Wiki:");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Wiki:");
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), 
 					"tellraw " + player.getName() + " " + 
 					"[\"\"," + 
 					"{" + 
-					"\"text\":\">> " + arg[0] + "\",\"color\":\"gray\"," + 
+					"\"text\":\">> " + args[0] + "\",\"color\":\"gray\"," + 
 					"\"clickEvent\":" + 
 					"{" + 
-					"\"action\":\"open_url\",\"value\":\"" + (String)this.plugin.config.getMap().get("wiki") + arg[0] + "\"" + 
+					"\"action\":\"open_url\",\"value\":\"" + (String)this.plugin.config.getMap().get("wiki") + args[0] + "\"" + 
 					"}," + 
 					"\"hoverEvent\":" + 
 					"{" + 
@@ -56,7 +55,7 @@ public class CommandWiki implements CommandExecutor {
 					"\"text\":\"\",\"extra\":" + 
 					"[" + 
 					"{" + 
-					"\"text\":\"" + (String)this.plugin.config.getMap().get("wiki") + arg[0] + "\",\"color\":\"gray\"" + 
+					"\"text\":\"" + (String)this.plugin.config.getMap().get("wiki") + args[0] + "\",\"color\":\"gray\"" + 
 					"}" + 
 					"]" + 
 					"}" + 
@@ -70,19 +69,19 @@ public class CommandWiki implements CommandExecutor {
 			
 			if(player.hasPermission("mycmd.command.wiki")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/wiki <Stichwort>", "suggest_command", "/wiki ", "/wiki <Stichwort>"));
+				this.plugin.usageMessage(player, "/wiki <Stichwort>", "suggest_command", "/wiki ", "/wiki <Stichwort>");
 				return true;
 			}
 		}
 		
 		//Console
-		if(arg.length == 0) {
+		if(args.length == 0) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Wiki: " + ChatColor.GRAY + (String)this.plugin.config.getMap().get("wiki"));
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Wiki: " + ChatColor.GRAY + (String)this.plugin.config.getMap().get("wiki"));
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/wiki"));
+		this.plugin.usageMessage(commandSender, "/wiki");
 		return true;
 	}
 }

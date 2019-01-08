@@ -1,6 +1,5 @@
 package xyz.joestr.mycmd.command;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,48 +16,47 @@ public class CommandRam implements CommandExecutor {
 		this.plugin = mycmd;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
 		//Player
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.ram")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				this.plugin.noPermissionMessage(player);
 				return true;
 			}
 			
-			if (arg.length == 0) {
+			if (args.length == 0) {
 				
 				if(!player.hasPermission("mycmd.command.ram")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.ram"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.ram");
 					return true;
 				}
 				
-				_ram_(sender);
+				_ram_(commandSender);
 				return true;
 			}
 			
 			if(player.hasPermission("mycmd.command.ram")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/ram", "run_command", "/ram", "/ram"));
+				this.plugin.usageMessage(player, "/ram", "run_command", "/ram", "/ram");
 			}
 			return true;
 		}
 		//End Player
 		
 		//Console
-		if (arg.length == 0) {
+		if (args.length == 0) {
 			
-			_ram_(sender);
+			_ram_(commandSender);
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/ram"));
+		this.plugin.usageMessage(commandSender, "/ram");
 		return true;
 		//End Console
 	}
@@ -66,9 +64,9 @@ public class CommandRam implements CommandExecutor {
 	private void _ram_(CommandSender sender) {
 		
 		Runtime runtime = Runtime.getRuntime();
-		sender.sendMessage(ChatColor.GREEN + "Maximaler RAM: " + ChatColor.GRAY + (int)(runtime.maxMemory() / 1000000L) + "MB");
-		sender.sendMessage(ChatColor.GREEN + "Reservierter RAM: " + ChatColor.GRAY + (int)(runtime.totalMemory() / 1000000L) + "MB");
-		sender.sendMessage(ChatColor.GREEN + "Freier RAM: " + ChatColor.GRAY + (int)(runtime.freeMemory() / 1000000L) + "MB");
-		sender.sendMessage(ChatColor.GREEN + "Belegter RAM: " + ChatColor.GRAY + ((int)(runtime.totalMemory() / 1000000L) - (int)(runtime.freeMemory() / 1000000L)) + "MB");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Maximaler RAM: " + ChatColor.GRAY + (int)(runtime.maxMemory() / 1000000L) + "MB");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Reservierter RAM: " + ChatColor.GRAY + (int)(runtime.totalMemory() / 1000000L) + "MB");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Freier RAM: " + ChatColor.GRAY + (int)(runtime.freeMemory() / 1000000L) + "MB");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Belegter RAM: " + ChatColor.GRAY + ((int)(runtime.totalMemory() / 1000000L) - (int)(runtime.freeMemory() / 1000000L)) + "MB");
 	}
 }

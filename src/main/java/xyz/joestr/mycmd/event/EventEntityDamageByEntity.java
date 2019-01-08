@@ -86,13 +86,13 @@ public class EventEntityDamageByEntity implements Listener {
 				if(!(Boolean)this.plugin.pvp.getMap().get(o.getUniqueId().toString())) {
 					
 					e.setCancelled(true);
-					plugin.sendActionBarToPlayer(a, ChatColor.RED + "PvP vom Spieler " + ChatColor.GRAY + o.getName() + ChatColor.RED + " ist zurzeit deaktiviert.");
+					plugin.sendActionBarToPlayer(a, ChatColor.RED + "PvP von " + ChatColor.GRAY + o.getName() + ChatColor.RED + " ist zurzeit deaktiviert.");
 					return;
 				}
 			} else {
 				
 				e.setCancelled(true);
-				plugin.sendActionBarToPlayer(a, ChatColor.RED + "PvP vom Spieler " + ChatColor.GRAY + o.getName() + ChatColor.RED + " ist zurzeit deaktiviert.");
+				plugin.sendActionBarToPlayer(a, ChatColor.RED + "PvP von " + ChatColor.GRAY + o.getName() + ChatColor.RED + " ist zurzeit deaktiviert.");
 				return;
 			}
 		} else {
@@ -117,13 +117,13 @@ public class EventEntityDamageByEntity implements Listener {
 				if(!(Boolean)this.plugin.pvp.getMap().get(o.getName())) {
 					
 					e.setCancelled(true);
-					plugin.sendActionBarToPlayer(a, ChatColor.RED + "PvP vom Spieler " + ChatColor.GRAY + o.getName() + ChatColor.RED + " ist zurzeit deaktiviert.");
+					plugin.sendActionBarToPlayer(a, ChatColor.RED + "PvP von " + ChatColor.GRAY + o.getName() + ChatColor.RED + " ist zurzeit deaktiviert.");
 					return;
 				}
 			} else {
 				
 				e.setCancelled(true);
-				plugin.sendActionBarToPlayer(a, ChatColor.RED + "PvP vom Spieler " + ChatColor.GRAY + o.getName() + ChatColor.RED + " ist zurzeit deaktiviert.");
+				plugin.sendActionBarToPlayer(a, ChatColor.RED + "PvP von " + ChatColor.GRAY + o.getName() + ChatColor.RED + " ist zurzeit deaktiviert.");
 				return;
 			}
 		}

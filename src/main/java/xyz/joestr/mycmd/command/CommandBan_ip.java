@@ -9,91 +9,61 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.BanList.Type;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.ProxiedCommandSender;
+import org.bukkit.command.RemoteConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import xyz.joestr.mycmd.MyCmd;
+import xyz.joestr.mycmd.command.noplayercommand.NoPlayerCommandBan_ip;
+import xyz.joestr.mycmd.command.playercommand.PlayerCommandBan_ip;
 
 public class CommandBan_ip implements CommandExecutor {
 	
 	MyCmd plugin;
 	
+	PlayerCommandBan_ip playerCommandBan_ip = null;
+	NoPlayerCommandBan_ip noPlayerCommandBan_ip = null;
+	
 	public CommandBan_ip(MyCmd mycmd) {
 		
 		this.plugin = mycmd;
+		
+		playerCommandBan_ip = new PlayerCommandBan_ip(this.plugin);
+		noPlayerCommandBan_ip = new NoPlayerCommandBan_ip(this.plugin);
 	}
 	
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		// From a player
+		if(commandSender instanceof Player) {
 			
-			//Player
-			Player player = (Player)sender;
+			// Cast command sender to a player
+			Player player = (Player) commandSender;
 			
-			if(!player.hasPermission("mycmd.command.ban-ip")) {
-				
-				this.plugin.noPermissionMessage(player, "mycmd.command.ban-ip");
-				return true;
-			}
-			
-			if(arg.length >= 2) {
-				
-				if(!player.hasPermission("mycmd.command.ban-ip")) {
-					
-					this.plugin.noPermissionMessage(player, "mycmd.command.ban-ip");
-					return true;
-				}
-				
-				Pattern p = Pattern.compile("(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))");
-				if(!arg[0].matches(p.toString())) { sender.sendMessage(ChatColor.RED + "Es muss eine gültige IP-Adresse angegeben werden."); return true; }
-				
-				String message = "";
-				
-				for(int i = 1; i < arg.length; i++) { 
-					
-					if(i + 1 == arg.length) { message += arg[i]; continue; }
-					message += arg[i] + " ";
-				}
-				
-				Bukkit.getServer().getBanList(Type.IP).addBan(arg[0], message, null, player.getName());
-				for(Player pl : Bukkit.getOnlinePlayers()) { if(pl.getAddress().toString().contains(arg[0])) { pl.kickPlayer(message); } }
-				Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "IP " + ChatColor.GRAY + arg[0] + ChatColor.YELLOW +" wurde gebannt. (" + ChatColor.GRAY + message + ChatColor.YELLOW + ")");
-				return true;
-			}
-			
-			if(player.hasPermission("mycmd.command.ban-ip")) {
-				
-				this.plugin.usageMessage(player, "/ban-ip <Adresse> <Grund ...>", "suggest_command", "/ban-ip ", "/ban-ip <Adresse> <Grund ...>");
-				return true;
-			}
+			return this.playerCommandBan_ip.process(player, args);
 		}
 		
-		//Console
-		if(arg.length >= 2) {
+		// From block / console / proxied command / remote console
+		if(
+				commandSender instanceof BlockCommandSender ||
+				commandSender instanceof ConsoleCommandSender ||
+				commandSender instanceof ProxiedCommandSender ||
+				commandSender instanceof RemoteConsoleCommandSender
+		) {
 			
-			Pattern p = Pattern.compile("(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))");
-			if(!arg[0].matches(p.toString())) { sender.sendMessage(ChatColor.RED + "Es muss eine gültige IP-Adresse angegeben werden."); return true; }
-			
-			String message = "";
-			
-			for(int i = 1; i < arg.length; i++) { 
-				
-				if(i + 1 == arg.length) { message += arg[i]; continue; }
-				message += arg[i] + " ";
-			}
-			
-			Bukkit.getServer().getBanList(Type.IP).addBan(arg[0], message, null, "KONSOLE");
-			for(Player pl : Bukkit.getOnlinePlayers()) { if(pl.getAddress().toString().contains(arg[0])) { pl.kickPlayer(message); } }
-			Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + "IP " + ChatColor.GRAY + arg[0] + ChatColor.YELLOW +" wurde gebannt. (" + ChatColor.GRAY + message + ChatColor.YELLOW + ")");
-			return true;
+			return this.noPlayerCommandBan_ip.process(commandSender, args);
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/ban-ip <Adresse> <Grund ...>"));
+		// Hier sollte man eigentlich nicht hinkommen.
 		return true;
 	}
 	
+	// Für später (mit Zeitabfrage)
 	public void _ban_ip_(CommandSender sender, String[] arg) {
 		
 		Pattern p = Pattern.compile("(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))\\.(\\d|[1-9]\\d|1\\d\\d|2([0-4]\\d|5[0-5]))");
@@ -125,7 +95,12 @@ public class CommandBan_ip implements CommandExecutor {
 		Date date = new Date();
 		date.setTime(date.getTime() + tdiff);
 		
-		Bukkit.getServer().broadcastMessage(ChatColor.YELLOW + arg[0] + " wurde temporär vom Server gebannt. (" + message + ")");
+		Bukkit.getServer().broadcastMessage(
+				this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("ban-ip-temp")))
+				.replace("%ip%", arg[0])
+				.replace("%reason%", message)
+		);
+		
 		Bukkit.getServer().getBanList(Type.IP).addBan(arg[0], message, date, "MyCmd");
 	}
 }

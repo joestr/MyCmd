@@ -17,47 +17,46 @@ public class CommandSeen implements CommandExecutor {
 		this.plugin = mycmd;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.seen")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.seen"));
+				this.plugin.noPermissionMessage(player, "mycmd.command.seen");
 				return true;
 			}
 			
-			if(arg.length == 1) {
+			if(args.length == 1) {
 				
 				if(!player.hasPermission("mycmd.command.seen")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.seen"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.seen");
 					return true;
 				}
 				
-				_seen_(sender, arg[0]);
+				_seen_(commandSender, args[0]);
 				return true;
 			}
 			
 			if(player.hasPermission("mycmd.command.seen")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/seen <Spieler>", "suggest_command", "/seen ", "/seen <Spieler>"));
+				this.plugin.usageMessage(player, "/seen <Spieler>", "suggest_command", "/seen ", "/seen <Spieler>");
 			}
 			return true;
 		}
 		
 		//Console
-		if(arg.length == 1) {
+		if(args.length == 1) {
 			
-			_seen_(sender, arg[0]);
+			_seen_(commandSender, args[0]);
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/seen <Spieler>"));
+		this.plugin.usageMessage(commandSender, "/seen <Spieler>");
 		return true;
 	}
 	
@@ -66,13 +65,13 @@ public class CommandSeen implements CommandExecutor {
 		
 		if (Bukkit.getOfflinePlayer(string).isOnline()) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Spieler " + Bukkit.getPlayer(string).getDisplayName() + ChatColor.GREEN + " ist online.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + Bukkit.getPlayer(string).getName() + ChatColor.GREEN + " ist online.");
 			return;
 		}
 		
 		if (Bukkit.getOfflinePlayer(string).getLastPlayed() == 0L) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " war nie zuvor auf diesem Server.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + string + ChatColor.GREEN + " war nie zuvor auf diesem Server.");
 			return;
 		}
 		
@@ -104,6 +103,6 @@ public class CommandSeen implements CommandExecutor {
 			ms %= 1000L;
 		//}
 		
-		sender.sendMessage(ChatColor.GREEN + "Spieler " + ChatColor.GRAY + string + ChatColor.GREEN + " ist seit " + text + ChatColor.GREEN + " offline.");
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + string + ChatColor.GREEN + " ist seit " + text + ChatColor.GREEN + " offline.");
 	}
 }

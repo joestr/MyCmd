@@ -18,57 +18,57 @@ public class CommandTpahere implements CommandExecutor {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, final String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, final String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.tpahere")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.tpahere"));
+				this.plugin.noPermissionMessage(player, "mycmd.command.tpahere");
 				return true;
 			}
 			
-			if(arg.length == 1) {
+			if(args.length == 1) {
 				
-				if(this.plugin.Tpahere.containsKey(player.getName())) {
+				if(this.plugin.tpahere.containsKey(player.getName())) {
 					
-					player.sendMessage(ChatColor.RED + "Du kannst nur alle 60 Sekunden eine TP-Anfrage versenden.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du kannst nur alle 60 Sekunden eine TP-Anfrage versenden.");
 					return true;
 				}
 				
-				if(player.getName().equals(arg[0])) {
+				if(player.getName().equals(args[0])) {
 					
-					player.sendMessage(ChatColor.RED + "Du kannst dir selbst keine TP-Anfrage schicken.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Du kannst dir selbst keine TP-Anfrage schicken.");
 					return true;
 				}
 				
-				if(Bukkit.getOfflinePlayer(arg[0]).isOnline()) {
+				if(Bukkit.getOfflinePlayer(args[0]).isOnline()) {
 					
-					if((Bukkit.getPlayer(arg[0]).hasPermission("mycmd.command.tpdeny")) && (Bukkit.getPlayer(arg[0]).hasPermission("mycmd.command.tpaccept"))) {
+					if((Bukkit.getPlayer(args[0]).hasPermission("mycmd.command.tpdeny")) && (Bukkit.getPlayer(args[0]).hasPermission("mycmd.command.tpaccept"))) {
 						
-						if(this.plugin.tpahereSwitched.containsKey(arg[0])) {
+						if(this.plugin.tpahereSwitched.containsKey(args[0])) {
 							
-							player.sendMessage(ChatColor.RED + "Spieler " + Bukkit.getServer().getPlayer(arg[0]).getDisplayName() + ChatColor.RED + " hat bereits eine TP-Anfrage erhalten.");
+							player.sendMessage(this.plugin.pluginPrefix + Bukkit.getServer().getPlayer(args[0]).getDisplayName() + ChatColor.RED + " hat bereits eine TP-Anfrage erhalten.");
 							return true;
 						}
 						
-						this.plugin.Tpahere.put(player.getName(), Bukkit.getPlayer(arg[0]).getName());
-						this.plugin.tpahereSwitched.put(Bukkit.getPlayer(arg[0]).getName(), player.getName());
+						this.plugin.tpahere.put(player.getName(), Bukkit.getPlayer(args[0]).getName());
+						this.plugin.tpahereSwitched.put(Bukkit.getPlayer(args[0]).getName(), player.getName());
 						
 						Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable() {
 							
 							public void run() {
 									
-								CommandTpahere.this.plugin.Tpahere.remove(player.getName());
-								CommandTpahere.this.plugin.tpahereSwitched.remove(arg[0]);
+								CommandTpahere.this.plugin.tpahere.remove(player.getName());
+								CommandTpahere.this.plugin.tpahereSwitched.remove(args[0]);
 							}
 						}, 600L);
 							
 						Bukkit.dispatchCommand(Bukkit.getConsoleSender(), 
-							"tellraw " + arg[0] + " " + 
+							"tellraw " + args[0] + " " + 
 							"[\"\"," + 
 							"{" + 
 							"\"text\":\"TP-Anfrage: \",\"color\":\"green\"" + 
@@ -132,33 +132,33 @@ public class CommandTpahere implements CommandExecutor {
 							"]"
 						);
 						
-						player.sendMessage(ChatColor.GREEN + "Du hast eine TP-Anfrage an " + Bukkit.getPlayer(arg[0]).getDisplayName() + ChatColor.GREEN + " gesendet.");
+						player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du hast eine TP-Anfrage an " + Bukkit.getPlayer(args[0]).getDisplayName() + ChatColor.GREEN + " gesendet.");
 						return true;
 					}
 					
-					player.sendMessage(ChatColor.RED + "Der Spieler " + Bukkit.getPlayer(arg[0]).getDisplayName() + ChatColor.RED + " hat keine Berechtigung.");
+					player.sendMessage(this.plugin.pluginPrefix + Bukkit.getPlayer(args[0]).getDisplayName() + ChatColor.RED + " hat keine Berechtigung.");
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.RED + "Der Spieler ist nicht online.");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + args[0] + ChatColor.RED +" ist nicht online.");
 				return true;
 			}
 			
 			if(player.hasPermission("mycmd.command.tpahere")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/tpahere <Spieler>", "suggest_command", "/tpahere ", "/tpahere <Spieler>"));
+				this.plugin.usageMessage(player, "/tpahere <Spieler>", "suggest_command", "/tpahere ", "/tpahere <Spieler>");
 				return true;
 			}
 		}
 		
 		//Console
-		if(arg.length == 0) {
+		if(args.length == 0) {
 			
-			sender.sendMessage(ChatColor.RED + "Der Befehl /tpahere ist in der Konsole nicht verfügbar.");
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Der Befehl /tpahere ist in der Konsole nicht verfügbar.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/tpahere"));
+		this.plugin.usageMessage(commandSender, "/tpahere");
 		return true;
 	}
 }

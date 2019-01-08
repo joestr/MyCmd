@@ -19,9 +19,33 @@ public class EventJoin implements Listener {
 	public void OnJoin(PlayerJoinEvent event) {
 		
 		event.getPlayer().setScoreboard(this.plugin.scoreboard);
-		this.plugin.sendPlayerlistHeaderFooter(event.getPlayer(), this.plugin.toColorcode("&", (String)this.plugin.config.getMap().get("motd1")), this.plugin.toColorcode("&", (String)this.plugin.config.getMap().get("motd2")));
-		event.getPlayer().sendMessage(this.plugin.toColorcode("&", (String)this.plugin.config.getMap().get("motd1") + "\n" + ChatColor.RESET + (String)this.plugin.config.getMap().get("motd2")));
-		event.setJoinMessage(this.plugin.toColorcode("&", ((String)this.plugin.config.getMap().get("join")).replace("%player_displayname%", event.getPlayer().getDisplayName()).replace("%player%", event.getPlayer().getName())));
+		this.plugin.sendPlayerlistHeaderFooter(
+				event.getPlayer(),
+				this.plugin.toColorcode(
+						"&",
+						(String) this.plugin.config.getMap().get("motd1")
+				),
+				this.plugin.toColorcode(
+						"&",
+						(String) this.plugin.config.getMap().get("motd2")
+				)
+		);
+		event.getPlayer().sendMessage(
+				this.plugin.toColorcode(
+						"&",
+						(String)this.plugin.config.getMap().get("motd1") +
+						"\n" +
+						ChatColor.RESET + (String) this.plugin.config.getMap().get("motd2")
+				)
+		);
+		event.setJoinMessage(
+				this.plugin.toColorcode(
+						"&",
+						((String) this.plugin.config.getMap().get("join"))
+						.replace("%player_displayname%", event.getPlayer().getDisplayName())
+						.replace("%player%", event.getPlayer().getName())
+				)
+		);
 		return;
 	}
 }

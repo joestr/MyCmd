@@ -17,29 +17,28 @@ public class CommandWarps implements CommandExecutor {
 		this.plugin = mycmd;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.warps")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				this.plugin.noPermissionMessage(player);
 				return true;
 			}
 			
-			if(arg.length == 0) {
+			if(args.length == 0) {
 				
 				if(!player.hasPermission("mycmd.command.warps")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.warps"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.warps");
 					return true;
 				}
 				
-				player.sendMessage(ChatColor.GREEN + "Warp-Punkte:");
+				player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Warp-Punkte:");
 				
 				if(!this.plugin.warps.getMap().isEmpty()) {
 					
@@ -77,28 +76,28 @@ public class CommandWarps implements CommandExecutor {
 			
 			if (player.hasPermission("mycmd.command.warps")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/warps", "run_command", "/warps", "/warps"));
+				this.plugin.usageMessage(player, "/warps", "run_command", "/warps", "/warps");
 				return true;
 			}
 		}
 		
 		//Console
-		if(arg.length == 0) {
+		if(args.length == 0) {
 			
-			sender.sendMessage(ChatColor.GREEN + "Warp-Punkte:");
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Warp-Punkte:");
 			
 			if(!this.plugin.warps.getMap().isEmpty()) {
 				
 				for (String str : this.plugin.warps.getMap().keySet()) {
 					
-					sender.sendMessage(ChatColor.GRAY + str);
+					commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + str);
 				}
 			}
 			
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/warps"));
+		this.plugin.usageMessage(commandSender, "/warps");
 		return true;
 	}
 }

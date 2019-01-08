@@ -25,9 +25,9 @@ public class EventQuit implements Listener {
 			}
 		}
 		
-		if(this.plugin.KickEventList.contains(event.getPlayer().getName())) {
+		if(this.plugin.kickEventList.contains(event.getPlayer().getName())) {
 			
-			this.plugin.KickEventList.remove(event.getPlayer().getName());
+			this.plugin.kickEventList.remove(event.getPlayer().getName());
 			event.setQuitMessage("");
 		} else {
 		

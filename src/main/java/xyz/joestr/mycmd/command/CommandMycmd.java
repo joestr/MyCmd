@@ -9,7 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.joestr.mycmd.MyCmd;
-import xyz.joestr.mycmd.delegates.YMLDelegate;
+import xyz.joestr.mycmd.util.YMLDelegate;
 
 public class CommandMycmd implements CommandExecutor {
 	
@@ -20,48 +20,47 @@ public class CommandMycmd implements CommandExecutor {
 		this.plugin = mycmd;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
 		//Player
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.mycmd")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				this.plugin.noPermissionMessage(player);
 				return true;
 			}
 			
-			if(arg.length == 0) {
+			if(args.length == 0) {
 				
 				if(!player.hasPermission("mycmd.command.mycmd")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.mycmd"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.mycmd");
 					return true;
 				}
 				
-				_mycmd_(sender);
+				_mycmd_(commandSender);
 				return true;
 			}
 			
 			if (player.hasPermission("mycmd.command.mycmd")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/mycmd", "run_command", "/mycmd", "/mycmd"));
+				this.plugin.usageMessage(player, "/mycmd", "run_command", "/mycmd", "/mycmd");
 			}
 			return true;
 		}
 		//End Player
 		
 		//Console
-		if(arg.length == 0) {
+		if(args.length == 0) {
 			
-			_mycmd_(sender);
+			_mycmd_(commandSender);
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/mycmd"));
+		this.plugin.usageMessage(commandSender, "/mycmd");
 		return true;
 		//End Console
 	}
@@ -80,13 +79,15 @@ public class CommandMycmd implements CommandExecutor {
 		
 		if(!this.plugin.config.Check()) {
 			
-			sender.sendMessage(ChatColor.RED + "Fehler in der Datei " + ChatColor.GRAY + this.plugin.config.getFileName() + ChatColor.RED + " von" + ChatColor.GRAY + " MyCmd " + ChatColor.RED + ". MyCmd deaktiviert.");
+			sender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Fehler in der Datei " + ChatColor.GRAY + this.plugin.config.getFileName() + ChatColor.RED + " von" + ChatColor.GRAY + " MyCmd " + ChatColor.RED + ". MyCmd deaktiviert.");
 			Bukkit.getLogger().log(Level.WARNING, "Error in the " + this.plugin.config.getFileName() + " file of MyCmd. MyCmd deactivated.");
 			Bukkit.getPluginManager().disablePlugin(this.plugin);
 			return;
 		}
 		
-		sender.sendMessage(ChatColor.GREEN + "Die Dateien von " + ChatColor.GRAY + "MyCmd" + ChatColor.GREEN + " wurden neu geladen.");
+		this.plugin.pluginPrefix = this.plugin.toColorcode("&", (String) this.plugin.config.getMap().get("plugin-prefix"));
+		
+		sender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Die Dateien von " + ChatColor.GRAY + "MyCmd" + ChatColor.GREEN + " wurden neu geladen.");
 		return;
 	}
 }

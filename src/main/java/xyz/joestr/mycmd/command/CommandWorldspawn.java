@@ -20,37 +20,38 @@ public class CommandWorldspawn implements CommandExecutor {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command command, String string, String[] arg) {
+	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 		
-		if(sender instanceof Player) {
+		if(commandSender instanceof Player) {
 			
 			//Player
-			Player player = (Player)sender;
+			Player player = (Player)commandSender;
 			
 			if(!player.hasPermission("mycmd.command.worldspawn")) {
 				
-				player.sendMessage(this.plugin.noPermissionMessage());
+				this.plugin.noPermissionMessage(player);
 				return true;
 			}
 			
-			if(arg.length == 0) {
+			if(args.length == 0) {
 				
 				if(!player.hasPermission("mycmd.command.worldspawn")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.worldspawn"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.worldspawn");
 					return true;
 				}
 				
-				player.teleport(player.getWorld().getSpawnLocation());
-				player.sendMessage(ChatColor.GREEN + "Du wurdest zum " + ChatColor.GRAY + "Spawn-Punkt deiner Welt" + ChatColor.GREEN + " teleportiert.");
+				if(player.teleport(player.getWorld().getSpawnLocation())) {
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du wurdest zum " + ChatColor.GRAY + "Spawn-Punkt deiner Welt" + ChatColor.GREEN + " teleportiert.");
+				}
 				return true;
 			}
 			
-			if(arg.length == 1) {
+			if(args.length == 1) {
 				
 				if(!player.hasPermission("mycmd.command.worldspawn")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.worldspawn.other"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.worldspawn.other");
 					return true;
 				}
 				
@@ -58,23 +59,24 @@ public class CommandWorldspawn implements CommandExecutor {
 				
 				try {
 					
-					w = Bukkit.getWorld(arg[1]);
+					w = Bukkit.getWorld(args[1]);
 				} catch(Exception e) {
 					
-					player.sendMessage(ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
 					return true;
 				}
 				
-				player.teleport(player.getWorld().getSpawnLocation());
-				player.sendMessage(ChatColor.GREEN + "Du wurdest zum " + ChatColor.GRAY + "Spawn-Punkt der Welt "+ w.getName() + ChatColor.GREEN + " teleportiert.");
+				if(player.teleport(player.getWorld().getSpawnLocation())) {
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Du wurdest zum " + ChatColor.GRAY + "Spawn-Punkt der Welt "+ w.getName() + ChatColor.GREEN + " teleportiert.");
+				}
 				return true;
 			}
 			
-			if(arg.length == 2) {
+			if(args.length == 2) {
 				
 				if(!player.hasPermission("mycmd.command.worldspawn.other")) {
 					
-					player.sendMessage(this.plugin.noPermissionMessage("mycmd.command.worldspawn.other"));
+					this.plugin.noPermissionMessage(player, "mycmd.command.worldspawn.other");
 					return true;
 				}
 				
@@ -82,88 +84,89 @@ public class CommandWorldspawn implements CommandExecutor {
 				
 				try {
 					
-					w = Bukkit.getWorld(arg[0]);
+					w = Bukkit.getWorld(args[0]);
 				} catch(Exception e) {
 					
-					player.sendMessage(ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
 					return true;
 				}
 				
-				if(!Bukkit.getOfflinePlayer(arg[1]).isOnline()) {
+				if(!Bukkit.getOfflinePlayer(args[1]).isOnline()) {
 					
-					player.sendMessage(ChatColor.RED + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + args[0] + ChatColor.RED + " ist offline.");
 					return true;
 				}
 				
-				Bukkit.getPlayer(arg[0]).teleport(w.getSpawnLocation());
-				player.sendMessage(ChatColor.GREEN + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde zum " + ChatColor.GRAY + "Spawn-Punkt der Welt " + arg[0] + ChatColor.GREEN + " teleportiert.");
+				if(Bukkit.getPlayer(args[0]).teleport(w.getSpawnLocation())) {
+					player.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + args[0] + ChatColor.GREEN + "wurde zum " + ChatColor.GRAY + "Spawn-Punkt der Welt " + args[0] + ChatColor.GREEN + " teleportiert.");
+				}
 				return true;
 			}
 			
 			if(player.hasPermission("mycmd.command.worldspawn") && player.hasPermission("mycmd.command.worldspawn.other")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/worldspawn [<Welt>] [<Spieler>]", "suggest_command", "/worldspawn ", "/worldspawn [<Welt>] [<Spieler>]"));
+				this.plugin.usageMessage(player, "/worldspawn [<Welt>] [<Spieler>]", "suggest_command", "/worldspawn ", "/worldspawn [<Welt>] [<Spieler>]");
 				return true;
 			}
 			
 			if(player.hasPermission("mycmd.command.worldspawn.other")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/worldspawn <Welt> <Spieler>", "suggest_command", "/worldspawn ", "/worldspawn <Welt> <Spieler>"));
+				this.plugin.usageMessage(player, "/worldspawn <Welt> <Spieler>", "suggest_command", "/worldspawn ", "/worldspawn <Welt> <Spieler>");
 				return true;
 			}
 			
 			if(player.hasPermission("mycmd.command.worldspawn")) {
 				
-				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), this.plugin.usageMessage(player.getName(), "/worldspawn [<Welt>]", "suggest_command", "/worldspawn ", "/worldspawn [<Welt>]"));
+				this.plugin.usageMessage(player, "/worldspawn [<Welt>]", "suggest_command", "/worldspawn ", "/worldspawn [<Welt>]");
 				return true;
 			}
 		}
 		
 		//Console
-		if(arg.length == 1) {
+		if(args.length == 1) {
 			
 			World w = null;
 			
 			try {
 				
-				w = Bukkit.getWorld(arg[0]);
+				w = Bukkit.getWorld(args[0]);
 			} catch(Exception e) {
 				
-				sender.sendMessage(ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
 				return true;
 			}
 			
 			Location location = w.getSpawnLocation();
-			sender.sendMessage(ChatColor.GREEN + "Der " + ChatColor.GRAY + "Spawn-Punkt der Welt " + arg[0] + ChatColor.GREEN + " befindet sich bei " +
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GREEN + "Der " + ChatColor.GRAY + "Spawn-Punkt der Welt " + args[0] + ChatColor.GREEN + " befindet sich bei " +
 					ChatColor.GRAY + "/" + location.getX() + "/" + location.getBlockY() + "/" + location.getZ() + ChatColor.GREEN + ".");
 			return true;
 		}
 		
-		if(arg.length == 2) {
+		if(args.length == 2) {
 			
 			World w = null;
 			
 			try {
 				
-				w = Bukkit.getWorld(arg[0]);
+				w = Bukkit.getWorld(args[0]);
 			} catch(Exception e) {
 				
-				sender.sendMessage(ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.RED + "Für Welt muss eine Zeichenkette angegeben werden.");
 				return true;
 			}
 			
-			if(!Bukkit.getOfflinePlayer(arg[1]).isOnline()) {
+			if(!Bukkit.getOfflinePlayer(args[1]).isOnline()) {
 				
-				sender.sendMessage(ChatColor.RED + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.RED + " ist offline.");
+				commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + args[0] + ChatColor.RED + " ist offline.");
 				return true;
 			}
 			
-			Bukkit.getPlayer(arg[1]).teleport(w.getSpawnLocation());
-			sender.sendMessage(ChatColor.GREEN + "Der Spieler " + ChatColor.GRAY + arg[0] + ChatColor.GREEN + "wurde zum " + ChatColor.GRAY + "Spawn-Punkt der Welt " + arg[0] + ChatColor.GREEN + " teleportiert.");
+			Bukkit.getPlayer(args[1]).teleport(w.getSpawnLocation());
+			commandSender.sendMessage(this.plugin.pluginPrefix + ChatColor.GRAY + args[0] + ChatColor.GREEN + "wurde zum " + ChatColor.GRAY + "Spawn-Punkt der Welt " + args[0] + ChatColor.GREEN + " teleportiert.");
 			return true;
 		}
 		
-		sender.sendMessage(this.plugin.usageMessage("/worldspawn <Welt> [<Spieler>]"));
+		this.plugin.usageMessage(commandSender, "/worldspawn <Welt> [<Spieler>]");
 		return true;
 	}
 }

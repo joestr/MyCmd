@@ -24,14 +24,14 @@ public class EventKick implements Listener {
 		if(Bukkit.getServer().getBanList(Type.NAME).isBanned(event.getPlayer().getName())) {
 			
 			event.setLeaveMessage("");
-			this.plugin.KickEventList.add(event.getPlayer().getName());
+			this.plugin.kickEventList.add(event.getPlayer().getName());
 			return;
 		}
 		
 		if(Bukkit.getServer().getBanList(Type.NAME).isBanned(event.getPlayer().getAddress().toString().split(":")[0].replace("/", ""))) {
 			
 			event.setLeaveMessage("");
-			this.plugin.KickEventList.add(event.getPlayer().getName());
+			this.plugin.kickEventList.add(event.getPlayer().getName());
 			return;
 		}
 		
@@ -42,7 +42,7 @@ public class EventKick implements Listener {
 			.replace("%reason%", event.getReason())
 		);
 		
-		this.plugin.KickEventList.add(event.getPlayer().getName());
+		this.plugin.kickEventList.add(event.getPlayer().getName());
 		Bukkit.broadcastMessage(event.getLeaveMessage());
 	}
 }

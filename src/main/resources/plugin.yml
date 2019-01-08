@@ -2,7 +2,7 @@ name: MyCmd
 version: ${project.version}
 description: MyCmd
 author: joestr
-authors: [joestr_, _joestr, _joestr_]
+authors: [9YB, Joe83, Joe84]
 website: https://repo.joestr.xyz/MyCmd
 
 main: xyz.joestr.mycmd.MyCmd
@@ -19,7 +19,7 @@ commands:
     description: Teleportiert dich zu einem angegebenen Warp-Punkt.
     #permission: mycmd.command.warp
     #permission-message: Berechtigung mycmd.command.warp fehlt.
-    usage: /warps <Warp-Punkt>
+    usage: /warp <Warp-Punkt>
   setwarp:
     description: Setzt einen angegebenen Warp-Punkt.
     #permission: mycmd.command.setwarp
@@ -212,6 +212,17 @@ commands:
   #  #permission: mycmd.command.help
   #  #permission-messsage: Berechtigung mycmd.command.help fehlt.
   #  usage: /help [<Seite>]
+  room:
+    description: Raum-System
+    #permission: mycmd.command.room
+    #permission-message: Berechtigung mycmd.command.room fehlt.
+    usage: /room <...> [<...> ...]
+  broadcast:
+    description: Eine Server-Nachricht abschicken.
+    #permission: mycmd.command.broadcast
+    #permission-message: Berechtigung mycmd.command.broadcast fehlt.
+    usage: /broadcast <Nachricht ...>
+    aliases: [bc]
     
 permissions:
   mycmd.preset.admin:
@@ -256,6 +267,7 @@ permissions:
       mycmd.command.map: true
       mycmd.command.worldspawn: true
       mycmd.command.worldspawn.other: true
+      mycmd.command.setworldspawn: true
       mycmd.command.kick: true
       mycmd.command.ban: true
       mycmd.command.ban-ip: true
@@ -268,6 +280,8 @@ permissions:
       mycmd.command.pvp: true
       mycmd.command.pvp.other: true
       #mycmd.command.help: true
+      mycmd.command.room: true
+      mycmd.command.broadcast: true
   mycmd.preset.spieler:
     description: Berechtigung fuer die Spieler-Befehle von MyCmd.
     default: true
@@ -291,3 +305,4 @@ permissions:
       mycmd.command.worldspawn: true
       mycmd.command.pvp: true
       #mycmd.command.help: true
+      mycmd.command.room: true
